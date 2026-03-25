@@ -970,7 +970,12 @@
   }
 
 
-  // ===== CONTACT FORM =====
+  // ===== CONTACT FORM — Web3Forms =====
+  // Email is never stored in source — only the public access key is here
+  const _k = ['6','b','c','3','e','2','f','4','-','a','1','b','2','-','4','c','d','3','-','8','e','f','4','-','1','2','3','4','5','6','7','8','9','0','a','b'];
+  // Web3Forms public access key (safe to expose — tied to email on their server)
+  const W3F_KEY = 'YOUR_KEY_PLACEHOLDER';
+
   async function sendContactForm() {
     const name    = document.getElementById('cf-name').value.trim();
     const email   = document.getElementById('cf-email').value.trim();
@@ -988,45 +993,39 @@
     status.className = 'contact-status sending';
     status.textContent = '⏳ جارٍ الإرسال...';
 
-    const body = `الاسم: ${name}\nالإيميل: ${email || 'لم يُذكر'}\n\nالرسالة:\n${message}`;
-
     try {
-      const res = await fetch('https://formsubmit.co/ajax/e6478e4788da2e7c0c2abf5222310896', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({
-          _subject: 'رسالة جديدة من أبوعريش — ' + name,
-          name: name,
-          email: email || 'no-reply@aboarish.page',
-          message: body,
-          _replyto: email || 'no-reply@aboarish.page',
-          _template: 'table'
+          access_key: '58adba93-25bf-4e40-a3e4-6733f923d2bb',
+          subject: 'رسالة جديدة من أبوعريش — ' + name,
+          from_name: name,
+          email: email || 'visitor@aboarish.page',
+          message: `الاسم: ${name}\nالإيميل: ${email || 'لم يُذكر'}\n\nالرسالة:\n${message}`,
+          botcheck: ''
         })
       });
 
       const data = await res.json();
-      if (data.success === 'true' || data.success === true) {
+      if (data.success) {
         status.className = 'contact-status success';
-        status.textContent = '✅ وصلت رسالتك! سنرد عليك قريباً 🌴';
+        status.textContent = '✅ وصلت رسالتك! سنرد قريباً 🌴';
         document.getElementById('cf-name').value = '';
         document.getElementById('cf-email').value = '';
         document.getElementById('cf-msg').value = '';
       } else {
-        throw new Error('failed');
+        throw new Error(data.message || 'failed');
       }
-    } catch {
-      // Fallback: mailto hidden
-      const mailBody = encodeURIComponent(body);
-      const mailSub  = encodeURIComponent('رسالة من أبوعريش: ' + name);
-      window.location.href = `mailto:e6478e4788da2e7c0c2abf5222310896@formsubmit.co?subject=${mailSub}&body=${mailBody}`;
-      status.className = 'contact-status success';
-      status.textContent = '📧 فُتح تطبيق البريد — أرسل الرسالة منه';
+    } catch(err) {
+      status.className = 'contact-status error';
+      status.textContent = '❌ تعذّر الإرسال، حاول مجدداً';
+      console.error(err);
     }
 
     btn.disabled = false;
   }
 
-  // Allow Enter in name/email to jump to next field
   document.getElementById('cf-name').addEventListener('keydown', e => {
     if (e.key === 'Enter') { e.preventDefault(); document.getElementById('cf-email').focus(); }
   });
