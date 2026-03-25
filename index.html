@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جدول عضو هيئة التدريب — فهد رفاعي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0a0e1a;
+  --card:    #111827;
+  --elev:    #1a2235;
+  --blue:    #3b82f6;
+  --green:   #10b981;
+  --yellow:  #f59e0b;
+  --red:     #ef4444;
+  --text:    #f1f5f9;
+  --muted:   #94a3b8;
+  --border:  #2d3748;
+  --glow:    0 0 24px rgba(59,130,246,0.25);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh;}
+
+/* ─── HEADER ─── */
+header{
+  background:linear-gradient(135deg,#0f1629,#1a2235);
+  border-bottom:1px solid var(--border);
+  padding:1rem 1.5rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.brand{display:flex;align-items:center;gap:.75rem;}
+.brand-icon{font-size:2rem;}
+.brand-name{font-size:1.1rem;font-weight:900;color:var(--blue);}
+.brand-sub{font-size:.78rem;color:var(--muted);}
+.header-title{font-size:1.2rem;font-weight:900;color:var(--text);}
+
+/* ─── UPLOAD ZONE ─── */
+#uploadZone{
+  margin:2rem auto;max-width:600px;padding:0 1.5rem;
+}
+.upload-card{
+  background:var(--card);border:2px dashed var(--border);border-radius:16px;
+  padding:3rem 2rem;text-align:center;cursor:pointer;transition:all .3s;
+}
+.upload-card:hover,.upload-card.drag{border-color:var(--blue);background:var(--elev);box-shadow:var(--glow);}
+.upload-icon{font-size:3.5rem;margin-bottom:1rem;}
+.upload-title{font-size:1.2rem;font-weight:700;margin-bottom:.5rem;}
+.upload-hint{color:var(--muted);font-size:.85rem;}
+#fileInput{display:none;}
+.btn-upload{
+  margin-top:1.5rem;background:linear-gradient(135deg,var(--blue),#1d4ed8);
+  color:#fff;border:none;padding:.75rem 2rem;border-radius:8px;
+  font-family:'Cairo',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-upload:hover{transform:translateY(-2px);box-shadow:var(--glow);}
+
+/* ─── PROCESSING ─── */
+#processing{display:none;text-align:center;padding:3rem 1.5rem;}
+.spinner{
+  width:60px;height:60px;border:4px solid var(--border);
+  border-top-color:var(--blue);border-radius:50%;
+  animation:spin 1s linear infinite;margin:0 auto 1.5rem;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.proc-title{font-size:1.1rem;font-weight:700;margin-bottom:.5rem;}
+.proc-sub{color:var(--muted);font-size:.85rem;}
+
+/* ─── ERROR ─── */
+#errorBox{
+  display:none;margin:1rem auto;max-width:600px;padding:1rem 1.5rem;
+  background:rgba(239,68,68,.1);border:1px solid var(--red);border-radius:12px;
+  color:var(--red);text-align:center;
+}
+
+/* ─── SCHEDULE VIEW ─── */
+#scheduleView{display:none;padding:1.5rem;}
+
+.trainer-bar{
+  background:var(--elev);border:1px solid var(--border);border-radius:12px;
+  padding:1rem 1.5rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center;
+  margin-bottom:1.5rem;justify-content:space-between;
+}
+.trainer-field{display:flex;align-items:center;gap:.5rem;}
+.tl{color:var(--muted);font-size:.82rem;}
+.tv{font-weight:700;}
+
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center;transition:border-color .3s;}
+.stat-card:hover{border-color:var(--blue);}
+.stat-num{font-size:2rem;font-weight:900;}
+.stat-label{font-size:.73rem;color:var(--muted);margin-top:.2rem;}
+
+.filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.filter-btn{
+  padding:.4rem 1rem;border-radius:20px;border:1px solid var(--border);
+  background:var(--card);color:var(--muted);font-family:'Cairo',sans-serif;
+  font-size:.85rem;cursor:pointer;transition:all .2s;
+}
+.filter-btn.active,.filter-btn:hover{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600;}
+
+.day-section{margin-bottom:2rem;}
+.day-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;}
+.day-badge{
+  background:linear-gradient(135deg,var(--blue),#1d4ed8);color:#fff;
+  font-weight:900;padding:.4rem 1.2rem;border-radius:20px;
+}
+.day-count{color:var(--muted);font-size:.85rem;}
+
+.sessions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:.75rem;}
+
+.session-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:1rem 1.25rem;transition:all .25s;position:relative;overflow:hidden;
+}
+.session-card::before{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;border-radius:0 12px 12px 0;}
+.session-card.nazari::before{background:var(--blue);}
+.session-card.amali::before{background:var(--green);}
+.session-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:var(--glow);}
+
+.session-time{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;}
+.time-badge{background:var(--elev);padding:.2rem .7rem;border-radius:8px;font-size:.85rem;font-weight:700;color:var(--yellow);direction:ltr;}
+.type-tag{font-size:.75rem;padding:.15rem .6rem;border-radius:20px;font-weight:600;}
+.type-tag.nazari{background:rgba(59,130,246,.15);color:var(--blue);}
+.type-tag.amali{background:rgba(16,185,129,.15);color:var(--green);}
+
+.subject-name{font-size:1rem;font-weight:700;margin-bottom:.4rem;line-height:1.4;}
+.session-meta{display:flex;flex-wrap:wrap;gap:.5rem;font-size:.78rem;color:var(--muted);}
+.meta-item{display:flex;align-items:center;gap:.25rem;}
+.meta-item strong{color:var(--text);}
+
+.baddal-badge{margin-top:.6rem;display:inline-block;font-size:.72rem;padding:.15rem .6rem;border-radius:20px;font-weight:600;}
+.baddal-yes{background:rgba(16,185,129,.15);color:var(--green);}
+.baddal-no{background:rgba(148,163,184,.1);color:var(--muted);}
+
+/* Reset btn */
+.btn-reset{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.5rem 1.2rem;border-radius:8px;border:1px solid var(--border);
+  background:var(--card);color:var(--muted);font-family:'Cairo',sans-serif;
+  font-size:.85rem;cursor:pointer;transition:all .2s;margin-bottom:1.5rem;
+}
+.btn-reset:hover{border-color:var(--red);color:var(--red);}
+
+/* Footer */
+footer{text-align:center;color:var(--muted);font-size:.82rem;padding:1.5rem;border-top:1px solid var(--border);margin-top:1rem;}
+footer a{color:var(--blue);text-decoration:none;}
+
+@media(max-width:600px){
+  header{flex-direction:column;align-items:flex-start;}
+  .trainer-bar{flex-direction:column;align-items:flex-start;}
+  .sessions-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-icon">⚡</div>
+    <div>
+      <div class="brand-name">fahdacademy.org</div>
+      <div class="brand-sub">المدرب فهد رفاعي</div>
+    </div>
+  </div>
+  <div class="header-title">📅 جدول هيئة التدريب</div>
+</header>
+
+<!-- UPLOAD -->
+<div id="uploadZone">
+  <div class="upload-card" id="dropArea">
+    <div class="upload-icon">🗓️</div>
+    <div class="upload-title">ارفع صورة جدولك التدريبي</div>
+    <div class="upload-hint">سيتم استخراج البيانات تلقائياً بالذكاء الاصطناعي</div>
+    <div class="upload-hint" style="margin-top:.5rem;">JPG · PNG · WebP</div>
+    <button class="btn-upload" onclick="document.getElementById('fileInput').click()">📎 اختر الصورة</button>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+</div>
+
+<!-- PROCESSING -->
+<div id="processing">
+  <div class="spinner"></div>
+  <div class="proc-title">جاري تحليل الجدول…</div>
+  <div class="proc-sub">الذكاء الاصطناعي يقرأ البيانات، لحظة من فضلك</div>
+</div>
+
+<!-- ERROR -->
+<div id="errorBox"></div>
+
+<!-- SCHEDULE VIEW -->
+<div id="scheduleView">
+  <button class="btn-reset" onclick="resetApp()">↩ رفع جدول جديد</button>
+  <div class="trainer-bar" id="trainerBar"></div>
+  <div class="stats-row" id="statsRow"></div>
+  <div class="filters" id="filters"></div>
+  <div id="schedule"></div>
+</div>
+
+<footer>المدرب فهد رفاعي — <a href="https://fahdacademy.org">fahdacademy.org</a></footer>
+
+<script>
+// ── Drag & Drop ──────────────────────────────────────────
+const dropArea = document.getElementById('dropArea');
+['dragenter','dragover'].forEach(e => dropArea.addEventListener(e, ev => { ev.preventDefault(); dropArea.classList.add('drag'); }));
+['dragleave','drop'].forEach(e => dropArea.addEventListener(e, ev => { ev.preventDefault(); dropArea.classList.remove('drag'); }));
+dropArea.addEventListener('drop', ev => {
+  const file = ev.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) processImage(file);
+});
+document.getElementById('fileInput').addEventListener('change', e => {
+  if (e.target.files[0]) processImage(e.target.files[0]);
+});
+
+// ── Image → Base64 → Claude API ─────────────────────────
+async function processImage(file) {
+  show('processing');
+
+  const base64 = await toBase64(file);
+  const mediaType = file.type;
+
+  const prompt = `أنت مساعد يستخرج بيانات جدول هيئة تدريب من صورة.
+
+استخرج المعلومات التالية من الجدول وأعدها كـ JSON فقط بدون أي نص إضافي أو backticks:
+
+{
+  "trainerName": "اسم المدرب",
+  "trainerId": "رقم المدرب",
+  "department": "القسم",
+  "reportId": "رقم التقرير",
+  "date": "التاريخ",
+  "semester": "الفصل",
+  "sessions": [
+    {
+      "day": "اليوم بالعربي (الأحد/الاثنين/الثلاثاء/الأربعاء/الخميس)",
+      "time": "الوقت مثل 0800 - 0940",
+      "subject": "عنوان المقرر",
+      "code": "رمز المقرر",
+      "ref": "الرقم المرجعي",
+      "type": "nazari أو amali",
+      "typeLabel": "نظري أو عملي",
+      "room": "اسم الغرفة",
+      "roomCode": "رقم الغرفة",
+      "hours": عدد الساعات كرقم,
+      "baddal": true أو false (هل يستحق بدل خطر)
+    }
+  ]
+}
+
+ملاحظات:
+- type يكون "nazari" إذا المحاضرة/العملي = نظري، و"amali" إذا عملي
+- baddal يكون true إذا كانت خانة "بدل خطر" تقول "يستحق"، وfalse إذا "لا يستحق"
+- أعد JSON فقط، بدون أي شيء آخر`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
+            { type: 'text', text: prompt }
+          ]
+        }]
+      })
+    });
+
+    const data = await response.json();
+    if (data.error) throw new Error(data.error.message);
+
+    const text = data.content.map(b => b.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const schedule = JSON.parse(clean);
+
+    renderSchedule(schedule);
+  } catch (err) {
+    showError('حدث خطأ أثناء التحليل: ' + err.message);
+  }
+}
+
+function toBase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = () => rej(new Error('فشل قراءة الملف'));
+    r.readAsDataURL(file);
+  });
+}
+
+// ── Render ────────────────────────────────────────────────
+const DAYS_ORDER = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس'];
+let currentData = null;
+let activeDay = 'all';
+
+function renderSchedule(data) {
+  currentData = data;
+  activeDay = 'all';
+
+  // Trainer bar
+  document.getElementById('trainerBar').innerHTML = `
+    <div class="trainer-field"><span class="tl">المدرب:</span><span class="tv">${data.trainerName || '—'}</span></div>
+    <div class="trainer-field"><span class="tl">رقم المدرب:</span><span class="tv">${data.trainerId || '—'}</span></div>
+    <div class="trainer-field"><span class="tl">القسم:</span><span class="tv">${data.department || '—'}</span></div>
+    <div class="trainer-field"><span class="tl">التاريخ:</span><span class="tv">${data.date || '—'}</span></div>
+    <div class="trainer-field"><span class="tl">الفصل:</span><span class="tv">${data.semester || '—'}</span></div>
+  `;
+
+  buildStats(data.sessions);
+  buildFilters(data.sessions);
+  buildSessions(data.sessions, 'all');
+  show('scheduleView');
+}
+
+function buildStats(sessions) {
+  const amali  = sessions.filter(s => s.type === 'amali').length;
+  const nazari = sessions.filter(s => s.type === 'nazari').length;
+  const hours  = sessions.reduce((a, s) => a + (s.hours || 0), 0);
+  const stats  = [
+    { num: sessions.length, label: 'إجمالي الحصص', color: 'var(--blue)'   },
+    { num: nazari,          label: 'نظري',          color: 'var(--blue)'   },
+    { num: amali,           label: 'عملي',          color: 'var(--green)'  },
+    { num: hours,           label: 'ساعات أسبوعية', color: 'var(--yellow)' },
+  ];
+  document.getElementById('statsRow').innerHTML = stats.map(s =>
+    `<div class="stat-card">
+       <div class="stat-num" style="color:${s.color}">${s.num}</div>
+       <div class="stat-label">${s.label}</div>
+     </div>`
+  ).join('');
+}
+
+function buildFilters(sessions) {
+  const presentDays = DAYS_ORDER.filter(d => sessions.some(s => s.day === d));
+  const btns = [
+    `<button class="filter-btn active" onclick="filterDay('all',this)">الكل</button>`,
+    ...presentDays.map(d => `<button class="filter-btn" onclick="filterDay('${d}',this)">${d}</button>`)
+  ];
+  document.getElementById('filters').innerHTML = btns.join('');
+}
+
+function buildSessions(sessions, filter) {
+  const days = filter === 'all'
+    ? DAYS_ORDER.filter(d => sessions.some(s => s.day === d))
+    : [filter];
+
+  document.getElementById('schedule').innerHTML = days.map(day => {
+    const ds = sessions.filter(s => s.day === day);
+    if (!ds.length) return '';
+    return `
+      <div class="day-section">
+        <div class="day-header">
+          <span class="day-badge">${day}</span>
+          <span class="day-count">${ds.length} حصص • ${ds.reduce((a,s)=>a+(s.hours||0),0)} ساعة</span>
+        </div>
+        <div class="sessions-grid">
+          ${ds.map(s => `
+            <div class="session-card ${s.type}">
+              <div class="session-time">
+                <span class="time-badge">${s.time}</span>
+                <span class="type-tag ${s.type}">${s.typeLabel}</span>
+              </div>
+              <div class="subject-name">${s.subject}</div>
+              <div class="session-meta">
+                <div class="meta-item">📌 <strong>${s.code}</strong></div>
+                <div class="meta-item">🔢 <strong>${s.ref}</strong></div>
+                <div class="meta-item">🏫 ${s.room}</div>
+              </div>
+              <div class="baddal-badge ${s.baddal ? 'baddal-yes' : 'baddal-no'}">
+                ${s.baddal ? '✅ يستحق بدل خطر' : '— لا يستحق بدل خطر'}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function filterDay(day, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildSessions(currentData.sessions, day);
+}
+
+// ── Helpers ──────────────────────────────────────────────
+function show(id) {
+  ['uploadZone','processing','errorBox','scheduleView'].forEach(s =>
+    document.getElementById(s).style.display = 'none'
+  );
+  document.getElementById(id).style.display = id === 'scheduleView' ? 'block' : id === 'uploadZone' ? 'block' : 'block';
+}
+
+function showError(msg) {
+  const box = document.getElementById('errorBox');
+  box.textContent = '⚠️ ' + msg;
+  box.style.display = 'block';
+  show('uploadZone');
+  box.style.display = 'block';
+}
+
+function resetApp() {
+  currentData = null;
+  document.getElementById('fileInput').value = '';
+  show('uploadZone');
+}
+</script>
+</body>
+</html>
