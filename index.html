@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>محاكاة تيار النيوترال والاتزان | فهد رفاعي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { renderActions: { addMenu: [] } }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+  <style>
+    :root {
+      --bg-primary:    #0a0e1a;
+      --bg-card:       #111827;
+      --bg-elevated:   #1a2235;
+      --accent-blue:   #3b82f6;
+      --accent-green:  #10b981;
+      --accent-yellow: #f59e0b;
+      --accent-red:    #ef4444;
+      --accent-neutral:#10b981;
+      --text-primary:  #f1f5f9;
+      --text-secondary:#94a3b8;
+      --border:        #2d3748;
+      --glow:          0 0 20px rgba(59,130,246,0.3);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    /* ── Header ── */
+    .page-header {
+      background: linear-gradient(135deg, #0f1729 0%, #1a2235 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+    }
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-icon { font-size: 2rem; }
+    .brand-name { font-size: 1rem; font-weight: 700; color: var(--accent-blue); }
+    .brand-sub  { font-size: 0.8rem; color: var(--text-secondary); }
+    .page-title-block { text-align: center; flex: 1; }
+    .page-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.01em;
+    }
+    .page-meta { font-size: 0.9rem; color: var(--text-secondary); }
+
+    /* ── Container ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    /* ── Controls ── */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .control-item { display: flex; flex-direction: column; gap: 0.6rem; }
+    .label-row { display: flex; justify-content: space-between; align-items: center; }
+    label { font-size: 0.88rem; font-weight: 600; color: var(--text-secondary); }
+    .pct-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 700;
+      background: rgba(0,0,0,0.3);
+      padding: 0.15rem 0.55rem;
+      border-radius: 6px;
+    }
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--bg-elevated);
+      cursor: pointer;
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      cursor: pointer;
+      box-shadow: 0 0 6px rgba(59,130,246,0.5);
+    }
+    .btn-reset {
+      align-self: flex-end;
+      background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+      color: white;
+      border: none;
+      padding: 0.65rem 1.4rem;
+      border-radius: 8px;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-reset:hover { transform: translateY(-2px); box-shadow: var(--glow); }
+
+    /* ── Visual Grid ── */
+    .visual-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.6fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .card:hover { border-color: var(--accent-blue); box-shadow: var(--glow); }
+    .card-title {
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-blue);
+      font-size: 0.95rem;
+    }
+
+    svg.wave-svg {
+      width: 100%; height: auto;
+      border-radius: 12px;
+      background: #05080f;
+      border: 1px solid #1e293b;
+    }
+    .axis { stroke: #334155; stroke-width: 1; }
+    .phase-1 { stroke: #ef4444; fill: none; stroke-width: 3; }
+    .phase-2 { stroke: #f59e0b; fill: none; stroke-width: 3; }
+    .phase-3 { stroke: #3b82f6; fill: none; stroke-width: 3; }
+    .neutral-path { stroke: #10b981; fill: none; stroke-width: 2.5; stroke-dasharray: 5 3; }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.78rem;
+      margin-right: auto;
+    }
+
+    /* ── Legend ── */
+    .wave-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    .legend-dot {
+      width: 28px; height: 4px;
+      border-radius: 2px;
+    }
+
+    /* ── Math Section ── */
+    .math-section {
+      background: rgba(16,185,129,0.05);
+      border: 1px solid rgba(16,185,129,0.25);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .math-section h2 { color: var(--accent-green); margin-bottom: 1rem; }
+
+    .formula-display {
+      background: rgba(0,0,0,0.3);
+      padding: 1.2rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      text-align: center;
+    }
+
+    .live-calc-box {
+      background: #000;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      border: 1px solid var(--accent-green);
+      position: relative;
+      text-align: center;
+    }
+    .live-calc-box::before {
+      content: "الحساب اللحظي";
+      position: absolute;
+      top: -11px; right: 20px;
+      background: var(--accent-green);
+      color: #000;
+      font-size: 0.7rem;
+      padding: 0.1rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 900;
+    }
+    .formula-line {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      direction: ltr;
+      margin-bottom: 0.5rem;
+    }
+    .result-line {
+      font-size: 2.2rem;
+      color: var(--accent-green);
+      font-weight: 700;
+      border-top: 1px solid #1e293b;
+      padding-top: 0.5rem;
+      direction: ltr;
+    }
+
+    /* ── Theory Cards ── */
+    .theory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .theory-card {
+      background: var(--bg-elevated);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-right: 4px solid var(--accent-blue);
+    }
+    .theory-card.green  { border-right-color: var(--accent-green); }
+    .theory-card.yellow { border-right-color: var(--accent-yellow); }
+    .theory-card.red    { border-right-color: var(--accent-red); }
+    .theory-card h3 {
+      color: var(--accent-blue);
+      margin-bottom: 0.75rem;
+      font-size: 1rem;
+    }
+    .theory-card.green h3  { color: var(--accent-green); }
+    .theory-card.yellow h3 { color: var(--accent-yellow); }
+    .theory-card.red h3    { color: var(--accent-red); }
+    .theory-card p { font-size: 0.9rem; color: var(--text-secondary); }
+
+    /* ── Proof Section ── */
+    .proof-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .proof-section h2 { color: var(--accent-green); text-align: center; margin-bottom: 1.5rem; }
+    .proof-step {
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .proof-step:last-child { border-bottom: none; margin-bottom: 0; }
+    .proof-step h4 {
+      color: var(--accent-blue);
+      margin-bottom: 0.75rem;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .proof-step p { color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 0.75rem; }
+    .eq-box {
+      background: rgba(0,0,0,0.25);
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      margin: 0.75rem 0;
+    }
+    .final-eq {
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.3);
+      padding: 1.2rem 1.5rem;
+      border-radius: 10px;
+      margin: 0.75rem 0;
+      text-align: center;
+    }
+    .step-list { list-style: none; margin: 0.75rem 0 0.75rem 1.5rem; color: var(--text-secondary); font-size: 0.9rem; }
+    .step-list li { margin-bottom: 0.3rem; }
+
+    /* ── Share Section ── */
+    .share-section {
+      background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(16,185,129,0.06));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .share-section h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+    }
+    .share-section p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+    .share-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+    .btn-share {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.4rem;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      text-decoration: none;
+    }
+    .btn-share:hover { transform: translateY(-2px); opacity: 0.92; }
+    .btn-share:active { transform: translateY(0); }
+    .btn-whatsapp {
+      background: #25d366;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(37,211,102,0.25);
+    }
+    .btn-whatsapp:hover { box-shadow: 0 6px 20px rgba(37,211,102,0.4); }
+    .btn-twitter {
+      background: #000;
+      color: #fff;
+      border: 1px solid #333;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    }
+    .btn-twitter:hover { box-shadow: 0 6px 20px rgba(255,255,255,0.1); }
+    .btn-telegram {
+      background: #0088cc;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(0,136,204,0.25);
+    }
+    .btn-telegram:hover { box-shadow: 0 6px 20px rgba(0,136,204,0.4); }
+    .btn-copy {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .btn-copy:hover { border-color: var(--accent-blue); }
+    .copy-feedback {
+      display: inline-block;
+      font-size: 0.78rem;
+      color: var(--accent-green);
+      margin-top: 0.5rem;
+      height: 1.2em;
+      transition: opacity 0.3s;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: var(--accent-blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .visual-grid { grid-template-columns: 1fr; }
+      .page-title { font-size: 1.2rem; }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 1rem; }
+      .controls-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="page-header">
+  <div class="header-content">
+    <div class="brand">
+      <span class="brand-icon">⚡</span>
+      <div>
+        <div class="brand-name">fahdacademy.org</div>
+        <div class="brand-sub">المدرب فهد رفاعي</div>
+      </div>
+    </div>
+    <div class="page-title-block">
+      <h1 class="page-title">كشف لغز تيار النيوترال ($I_N$)</h1>
+      <div class="page-meta">لماذا يختفي التيار في سلك المحايد عند الاتزان؟ وكيف يعود عند خلل الأحمال؟</div>
+    </div>
+    <div class="brand" style="opacity:0; pointer-events:none;">
+      <span class="brand-icon">⚡</span>
+      <div><div class="brand-name">fahdacademy.org</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ═══ CONTROLS ═══ -->
+  <div class="controls-grid">
+    <div class="control-item">
+      <div class="label-row">
+        <label style="color:#ef4444">تيار الطور الأول ($I_1$)</label>
+        <span id="loadVal1" class="pct-badge" style="color:#ef4444">100A</span>
+      </div>
+      <input type="range" id="load1" min="0" max="100" value="100" style="accent-color:#ef4444">
+    </div>
+
+    <div class="control-item">
+      <div class="label-row">
+        <label style="color:#f59e0b">تيار الطور الثاني ($I_2$)</label>
+        <span id="loadVal2" class="pct-badge" style="color:#f59e0b">100A</span>
+      </div>
+      <input type="range" id="load2" min="0" max="100" value="100" style="accent-color:#f59e0b">
+    </div>
+
+    <div class="control-item">
+      <div class="label-row">
+        <label style="color:#3b82f6">تيار الطور الثالث ($I_3$)</label>
+        <span id="loadVal3" class="pct-badge" style="color:#3b82f6">100A</span>
+      </div>
+      <input type="range" id="load3" min="0" max="100" value="100" style="accent-color:#3b82f6">
+    </div>
+
+    <div class="control-item" style="justify-content:center">
+      <button class="btn-reset" onclick="resetLoads()">⟳ إعادة الضبط (اتزان تام)</button>
+    </div>
+  </div>
+
+  <!-- ═══ VISUAL GRID ═══ -->
+  <div class="visual-grid">
+    <div class="card">
+      <div class="card-title">
+        <span>📊</span> المخطط الموجي اللحظي
+        <span id="balanceStatus" class="status-badge">متزن</span>
+      </div>
+
+      <svg class="wave-svg" id="waveVisual" viewBox="0 0 800 320">
+        <!-- Grid lines -->
+        <line x1="50" y1="80"  x2="750" y2="80"  stroke="#1e293b" stroke-width="1" stroke-dasharray="2"/>
+        <line x1="50" y1="160" x2="750" y2="160" class="axis"/>
+        <line x1="50" y1="240" x2="750" y2="240" stroke="#1e293b" stroke-width="1" stroke-dasharray="2"/>
+        <line x1="50" y1="30"  x2="50"  y2="290" class="axis"/>
+        <!-- Period markers -->
+        <line x1="225" y1="155" x2="225" y2="165" stroke="#334155" stroke-width="1"/>
+        <line x1="400" y1="155" x2="400" y2="165" stroke="#334155" stroke-width="1"/>
+        <line x1="575" y1="155" x2="575" y2="165" stroke="#334155" stroke-width="1"/>
+        <line x1="750" y1="155" x2="750" y2="165" stroke="#334155" stroke-width="1"/>
+        <text x="220" y="285" fill="#475569" font-size="10" font-family="Cairo,sans-serif">T/2</text>
+        <text x="395" y="285" fill="#475569" font-size="10" font-family="Cairo,sans-serif">T</text>
+        <!-- Y-axis label -->
+        <text x="55"  y="85"  fill="#475569" font-size="10" font-family="Cairo,sans-serif">+A</text>
+        <text x="55"  y="242" fill="#475569" font-size="10" font-family="Cairo,sans-serif">−A</text>
+        <!-- Wave paths -->
+        <path id="w1" class="phase-1"/>
+        <path id="w2" class="phase-2"/>
+        <path id="w3" class="phase-3"/>
+        <path id="wN" class="neutral-path"/>
+      </svg>
+
+      <div class="wave-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>$I_1$ (طور ١)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>$I_2$ (طور ٢)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>$I_3$ (طور ٣)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#10b981; background: repeating-linear-gradient(90deg,#10b981 0,#10b981 6px,transparent 6px,transparent 10px)"></div>$I_N$ (نيوترال)</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🔄</span> الجمع الشعاعي (Phasors)</div>
+      <svg viewBox="0 0 300 300" style="border-radius:12px; background:#05080f; border:1px solid #1e293b; width:100%; height:auto;">
+        <circle cx="150" cy="150" r="100" fill="none" stroke="#1e293b" stroke-dasharray="4"/>
+        <circle cx="150" cy="150" r="50"  fill="none" stroke="#0f1729" stroke-dasharray="2"/>
+        <line x1="50"  y1="150" x2="250" y2="150" stroke="#1e293b" stroke-width="1"/>
+        <line x1="150" y1="50"  x2="150" y2="250" stroke="#1e293b" stroke-width="1"/>
+        <line id="v1" x1="150" y1="150" x2="250" y2="150" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+        <line id="v2" x1="150" y1="150" x2="100" y2="236" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+        <line id="v3" x1="150" y1="150" x2="100" y2="64"  stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
+        <line id="vN" x1="150" y1="150" x2="150" y2="150" stroke="#10b981" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowN)"/>
+        <defs>
+          <marker id="arrowN" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/>
+          </marker>
+        </defs>
+        <text x="150" y="22" fill="#94a3b8" font-size="11" font-family="Cairo,sans-serif" text-anchor="middle">محصلة الأشعة = I_N</text>
+      </svg>
+      <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.75rem; text-align:center;">
+        عند التزان: الأشعة تلتقي في النقطة المركزية → $I_N = 0$
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══ MATH SECTION ═══ -->
+  <section class="math-section">
+    <h2>📜 الحساب الرياضي الدقيق لتيار النيوترال</h2>
+    <p style="color:var(--text-secondary); margin-bottom:1rem;">
+      يُحسب تيار المحايد $I_N$ في الأنظمة ثلاثية الأطوار عبر المعادلة الشعاعية المجمّعة:
+    </p>
+    <div class="formula-display">
+      $$I_N = \sqrt{I_1^2 + I_2^2 + I_3^2 - (I_1 I_2 + I_2 I_3 + I_3 I_1)}$$
+    </div>
+    <div class="live-calc-box">
+      <div class="formula-line" id="liveFormulaSubstitution">√[ ... ]</div>
+      <div class="result-line">I<sub>N</sub> = <span id="liveResultVal">0.00</span> A</div>
+    </div>
+  </section>
+
+  <!-- ═══ THEORY CARDS ═══ -->
+  <h2 style="text-align:center; margin-bottom:1.5rem; color:var(--text-primary);">📚 المبادئ النظرية الأساسية</h2>
+  <div class="theory-grid">
+    <div class="theory-card">
+      <h3>١. الطبيعة الموجية للنظام</h3>
+      <p>ثلاث موجات جهد جيبية مزاحة بمقدار $120^\circ$ عن بعضها:</p>
+      <div class="eq-box" style="font-size:0.85rem; direction:ltr;">
+        $$v_1 = V_m \sin(\omega t)$$
+        $$v_2 = V_m \sin(\omega t - 120°)$$
+        $$v_3 = V_m \sin(\omega t - 240°)$$
+      </div>
+    </div>
+
+    <div class="theory-card yellow">
+      <h3>٢. جهد الخط مقابل جهد الطور</h3>
+      <p>في التوصيلة النجمية (Star)، الجهد بين خطين هو المحصلة الاتجاهية:</p>
+      <div class="eq-box" style="direction:ltr;">
+        $$V_{Line} = \sqrt{3} \times V_{Phase}$$
+      </div>
+      <p style="font-size:0.85rem;">مثال: $220\text{V} \times 1.732 \approx 380\text{V}$</p>
+    </div>
+
+    <div class="theory-card green">
+      <h3>٣. لماذا المجموع = صفر؟</h3>
+      <p>الإعجاز الرياضي في زاوية $120^\circ$ — عند الاتزان تتلاشى الموجات في كل لحظة:</p>
+      <div class="eq-box" style="direction:ltr;">
+        $$\sin\theta + \sin(\theta\!-\!120°) + \sin(\theta\!-\!240°) = 0$$
+      </div>
+    </div>
+
+    <div class="theory-card red">
+      <h3>٤. القدرة الكلية المستقرة</h3>
+      <p>خلافاً للنظام أحادي الطور، القدرة اللحظية الكلية ثابتة تماماً:</p>
+      <div class="eq-box" style="direction:ltr;">
+        $$P_{total} = 3 \cdot V_p I_p \cos\phi = \text{const.}$$
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PROOF SECTION ═══ -->
+  <section class="proof-section">
+    <h2>📐 الإثبات الرياضي التفصيلي لمعادلة النيوترال</h2>
+
+    <div class="proof-step">
+      <h4>⓵ التمثيل الشعاعي (Phasor Representation)</h4>
+      <p>نفترض تيارات منزاحة بـ $120^\circ$:</p>
+      <div class="eq-box" style="direction:ltr;">
+        $$\vec{I_1} = I_1 \angle 0° = I_1 + j0$$
+        $$\vec{I_2} = I_2 \angle{-120°} = -0.5I_2 - j\tfrac{\sqrt{3}}{2}I_2$$
+        $$\vec{I_3} = I_3 \angle{+120°} = -0.5I_3 + j\tfrac{\sqrt{3}}{2}I_3$$
+      </div>
+    </div>
+
+    <div class="proof-step">
+      <h4>⓶ تحليل المركبات (X &amp; Y Components)</h4>
+      <p>نجمع المركبات الأفقية $I_x$ والرأسية $I_y$ بشكل منفصل:</p>
+      <div class="eq-box" style="direction:ltr;">
+        $$I_x = I_1 - 0.5I_2 - 0.5I_3 = I_1 - 0.5(I_2 + I_3)$$
+        $$I_y = \tfrac{\sqrt{3}}{2}(I_3 - I_2)$$
+      </div>
+    </div>
+
+    <div class="proof-step">
+      <h4>⓷ حساب المحصلة (Magnitude)</h4>
+      <p>بنظرية فيثاغورس: $I_N = \sqrt{I_x^2 + I_y^2}$</p>
+      <div class="eq-box" style="direction:ltr;">
+        $$I_N^2 = \left[I_1 - 0.5(I_2+I_3)\right]^2 + \left[\tfrac{\sqrt{3}}{2}(I_3-I_2)\right]^2$$
+        $$= I_1^2 + 0.25(I_2+I_3)^2 - I_1(I_2+I_3) + 0.75(I_3-I_2)^2$$
+      </div>
+    </div>
+
+    <div class="proof-step">
+      <h4>⓸ التبسيط النهائي</h4>
+      <p>بتجميع الحدود المتشابهة:</p>
+      <ul class="step-list">
+        <li>• معامل $I_2^2$: $0.25 + 0.75 = 1$</li>
+        <li>• معامل $I_3^2$: $0.25 + 0.75 = 1$</li>
+        <li>• معامل $I_2 I_3$: $0.5 - 1.5 = -1$</li>
+      </ul>
+      <p>نحصل على المعادلة النهائية:</p>
+      <div class="final-eq">
+        $$I_N = \sqrt{I_1^2 + I_2^2 + I_3^2 - (I_1 I_2 + I_2 I_3 + I_3 I_1)}$$
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══ SHARE SECTION ═══ -->
+<div class="container">
+  <div class="share-section">
+    <h3>📤 شارك هذه المحاكاة</h3>
+    <p>انشر الأداة مع زملائك وطلابك في هندسة القدرة</p>
+    <div class="share-buttons">
+      <button class="btn-share btn-whatsapp" onclick="shareWhatsApp()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        واتساب
+      </button>
+      <button class="btn-share btn-twitter" onclick="shareTwitter()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        تويتر / X
+      </button>
+      <button class="btn-share btn-telegram" onclick="shareTelegram()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.820 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        تيليجرام
+      </button>
+      <button class="btn-share btn-copy" id="copyBtn" onclick="copyLink()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        نسخ الرابط
+      </button>
+    </div>
+    <div class="copy-feedback" id="copyFeedback"></div>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p>المحتوى التعليمي من إعداد <strong>المدرب فهد رفاعي</strong></p>
+  <p>© 2026 <a href="https://fahdacademy.org" target="_blank">fahdacademy.org</a></p>
+</footer>
+
+<!-- ═══ POPUP MODAL ═══ -->
+<div id="popupOverlay" style="
+  display:none;
+  position:fixed; inset:0; z-index:1000;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(6px);
+  align-items:center; justify-content:center;
+">
+  <div style="
+    background:linear-gradient(135deg,#111827,#1a2235);
+    border:1px solid #2d3748;
+    border-radius:20px;
+    padding:2.5rem 2rem;
+    max-width:440px; width:90%;
+    text-align:center;
+    position:relative;
+    box-shadow:0 25px 60px rgba(0,0,0,0.6), 0 0 40px rgba(59,130,246,0.15);
+    animation: popIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  ">
+    <!-- Close -->
+    <button onclick="closePopup()" style="
+      position:absolute; top:1rem; left:1rem;
+      background:rgba(255,255,255,0.06); border:1px solid #2d3748;
+      color:#94a3b8; width:32px; height:32px; border-radius:50%;
+      font-size:1rem; cursor:pointer; line-height:1;
+      transition:background 0.2s;
+    " onmouseover="this.style.background='rgba(239,68,68,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.06)'">✕</button>
+
+    <!-- Icon -->
+    <div style="font-size:3rem; margin-bottom:0.5rem;">⚡</div>
+
+    <!-- Title -->
+    <h2 style="font-family:'Cairo',sans-serif; font-size:1.4rem; font-weight:900; color:#ffffff; margin-bottom:0.4rem;">
+      كورسات هندسة القدرة
+    </h2>
+    <p style="font-family:'Cairo',sans-serif; font-size:0.88rem; color:#94a3b8; margin-bottom:1.5rem;">
+      تعلّم بأسلوب تفاعلي مع المدرب فهد رفاعي
+    </p>
+
+    <!-- URL Box -->
+    <div style="
+      background:#000;
+      border:1px solid #3b82f6;
+      border-radius:10px;
+      padding:0.75rem 1rem;
+      font-family:'JetBrains Mono',monospace;
+      font-size:1rem;
+      color:#3b82f6;
+      font-weight:700;
+      letter-spacing:0.02em;
+      margin-bottom:1.5rem;
+    ">fahdacademy.org</div>
+
+    <!-- CTA Button -->
+    <a href="https://fahdacademy.org" target="_blank" style="
+      display:block;
+      background:linear-gradient(135deg,#3b82f6,#1d4ed8);
+      color:#fff;
+      text-decoration:none;
+      font-family:'Cairo',sans-serif;
+      font-weight:700;
+      font-size:1rem;
+      padding:0.85rem 1.5rem;
+      border-radius:10px;
+      margin-bottom:0.75rem;
+      transition:transform 0.2s, box-shadow 0.2s;
+      box-shadow:0 4px 14px rgba(59,130,246,0.35);
+    " onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(59,130,246,0.5)'"
+       onmouseout="this.style.transform='';this.style.boxShadow='0 4px 14px rgba(59,130,246,0.35)'">
+      🎓 زيارة المنصة
+    </a>
+
+    <!-- Dismiss -->
+    <button onclick="closePopup()" style="
+      background:none; border:none;
+      color:#475569; font-family:'Cairo',sans-serif;
+      font-size:0.82rem; cursor:pointer;
+      transition:color 0.2s;
+    " onmouseover="this.style.color='#94a3b8'" onmouseout="this.style.color='#475569'">
+      إغلاق
+    </button>
+  </div>
+</div>
+
+<style>
+  @keyframes popIn {
+    from { opacity:0; transform:scale(0.85) translateY(20px); }
+    to   { opacity:1; transform:scale(1)    translateY(0);    }
+  }
+</style>
+
+<script>
+  const SHARE_URL  = 'https://fahdacademy.org';
+  const SHARE_TEXT = '🔌 محاكاة تفاعلية رائعة: كشف لغز تيار النيوترال في أنظمة الثلاثة أطوار\nشوف كيف يختفي تيار المحايد عند الاتزان وكيف يرجع عند خلل الأحمال ⚡\nمن منصة المدرب فهد رفاعي\n👇\n';
+
+  function shareWhatsApp() {
+    window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(SHARE_TEXT + SHARE_URL), '_blank');
+  }
+  function shareTwitter() {
+    window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(SHARE_TEXT) + '&url=' + encodeURIComponent(SHARE_URL), '_blank');
+  }
+  function shareTelegram() {
+    window.open('https://t.me/share/url?url=' + encodeURIComponent(SHARE_URL) + '&text=' + encodeURIComponent(SHARE_TEXT), '_blank');
+  }
+  function copyLink() {
+    const btn = document.getElementById('copyBtn');
+    const fb  = document.getElementById('copyFeedback');
+    navigator.clipboard.writeText(SHARE_URL).then(() => {
+      btn.style.borderColor = 'var(--accent-green)';
+      btn.style.color = 'var(--accent-green)';
+      fb.textContent = '✓ تم نسخ الرابط بنجاح!';
+      setTimeout(() => {
+        btn.style.borderColor = '';
+        btn.style.color = '';
+        fb.textContent = '';
+      }, 2500);
+    }).catch(() => {
+      fb.textContent = '⚠ يرجى النسخ يدوياً: ' + SHARE_URL;
+    });
+  }
+
+  let time = 0;
+  const speed = 0.04;
+
+  function resetLoads() {
+    document.getElementById('load1').value = 100;
+    document.getElementById('load2').value = 100;
+    document.getElementById('load3').value = 100;
+  }
+
+  function calcNeutral(i1, i2, i3) {
+    const val = Math.sqrt(Math.max(0, i1*i1 + i2*i2 + i3*i3 - (i1*i2 + i2*i3 + i3*i1)));
+    return val;
+  }
+
+  function update() {
+    time += speed;
+
+    const r1 = parseInt(document.getElementById('load1').value);
+    const r2 = parseInt(document.getElementById('load2').value);
+    const r3 = parseInt(document.getElementById('load3').value);
+
+    document.getElementById('loadVal1').textContent = r1 + "A";
+    document.getElementById('loadVal2').textContent = r2 + "A";
+    document.getElementById('loadVal3').textContent = r3 + "A";
+
+    const iN = calcNeutral(r1, r2, r3);
+    document.getElementById('liveResultVal').textContent = iN.toFixed(2);
+    document.getElementById('liveFormulaSubstitution').innerHTML =
+      `√[ ${r1}² + ${r2}² + ${r3}² − (${r1*r2} + ${r2*r3} + ${r3*r1}) ]`;
+
+    const badge = document.getElementById('balanceStatus');
+    if (r1 === r2 && r2 === r3) {
+      badge.textContent = "✓ متزن — I_N = 0";
+      badge.style.background = "rgba(16,185,129,0.15)";
+      badge.style.color = "#10b981";
+    } else {
+      badge.textContent = "⚡ غير متزن — I_N موجود";
+      badge.style.background = "rgba(239,68,68,0.15)";
+      badge.style.color = "#ef4444";
+    }
+
+    const l1 = r1 / 100;
+    const l2 = r2 / 100;
+    const l3 = r3 / 100;
+
+    const cy = 160, r = 70;
+    const paths = ['w1','w2','w3'];
+    const amps  = [l1, l2, l3];
+
+    amps.forEach((amp, i) => {
+      let d = "";
+      for (let x = 0; x <= 700; x += 3) {
+        const angle = (x / 700) * Math.PI * 4;
+        const phase = i * (2 * Math.PI / 3);
+        const y = cy - Math.sin(angle - time - phase) * r * amp;
+        d += (x === 0 ? "M " : " L ") + (x + 50) + " " + y.toFixed(1);
+      }
+      document.getElementById(paths[i]).setAttribute('d', d);
+    });
+
+    // Neutral wave
+    let dN = "";
+    for (let x = 0; x <= 700; x += 3) {
+      const a = (x / 700) * Math.PI * 4;
+      const sum = Math.sin(a - time) * l1
+                + Math.sin(a - time - (2*Math.PI/3)) * l2
+                + Math.sin(a - time - (4*Math.PI/3)) * l3;
+      dN += (x === 0 ? "M " : " L ") + (x + 50) + " " + (cy - sum * r).toFixed(1);
+    }
+    document.getElementById('wN').setAttribute('d', dN);
+
+    // Phasors
+    const cx = 150, pcy = 150, vr = 100;
+    let tX = 0, tY = 0;
+    const vecs = ['v1','v2','v3'];
+    amps.forEach((amp, i) => {
+      const a = time + i * (2 * Math.PI / 3);
+      const vx = cx + vr * amp * Math.cos(a);
+      const vy = pcy - vr * amp * Math.sin(a);
+      document.getElementById(vecs[i]).setAttribute('x2', vx.toFixed(1));
+      document.getElementById(vecs[i]).setAttribute('y2', vy.toFixed(1));
+      tX += vr * amp * Math.cos(a);
+      tY -= vr * amp * Math.sin(a);
+    });
+    const vN = document.getElementById('vN');
+    const nx = cx + tX, ny = pcy + tY;
+    vN.setAttribute('x2', nx.toFixed(1));
+    vN.setAttribute('y2', ny.toFixed(1));
+    vN.setAttribute('stroke-opacity', (Math.abs(tX) + Math.abs(tY) > 1.5) ? 1 : 0);
+
+    requestAnimationFrame(update);
+  }
+
+  update();
+
+  // ── Popup ──
+  function openPopup() {
+    const el = document.getElementById('popupOverlay');
+    el.style.display = 'flex';
+  }
+  function closePopup() {
+    document.getElementById('popupOverlay').style.display = 'none';
+  }
+  // Close on overlay click
+  document.getElementById('popupOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closePopup();
+  });
+  // Auto-show after 2.5s
+  setTimeout(openPopup, 20000);
+</script>
+</body>
+</html>
