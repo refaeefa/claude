@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مقارنة محركات التيار المستمر | fahdacademy.org</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root {
+  --bg-primary:    #0a0e1a;
+  --bg-card:       #111827;
+  --bg-elevated:   #1a2235;
+  --accent-blue:   #3b82f6;
+  --accent-green:  #10b981;
+  --accent-yellow: #f59e0b;
+  --accent-red:    #ef4444;
+  --accent-purple: #a855f7;
+  --accent-cyan:   #06b6d4;
+  --text-primary:  #f1f5f9;
+  --text-secondary:#94a3b8;
+  --border:        #2d3748;
+  --glow:          0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Cairo', sans-serif;
+  min-height: 100vh;
+  direction: rtl;
+}
+
+/* ===== HEADER ===== */
+.page-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 1.5rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.brand { display: flex; align-items: center; gap: 0.75rem; }
+.brand-icon { font-size: 2rem; }
+.brand-name { font-size: 1.1rem; font-weight: 700; color: var(--accent-blue); }
+.brand-sub  { font-size: 0.8rem; color: var(--text-secondary); }
+.page-title-block { text-align: left; }
+.page-title { font-size: 1.4rem; font-weight: 900; color: var(--text-primary); }
+.page-meta  { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem; }
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 3rem 2rem 2rem;
+  background: radial-gradient(ellipse at center, rgba(59,130,246,0.08) 0%, transparent 70%);
+}
+.hero h2 {
+  font-size: 2rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.75rem;
+}
+.hero p { color: var(--text-secondary); max-width: 600px; margin: 0 auto 2rem; line-height: 1.8; }
+
+/* ===== TABS ===== */
+.tabs-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  padding: 0.6rem 1.4rem;
+  color: var(--text-secondary);
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+  border-color: transparent;
+  color: white;
+  box-shadow: var(--glow);
+}
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.section { display: none; animation: fadeIn 0.4s ease; }
+.section.active { display: block; }
+
+@keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+
+/* ===== MOTOR CARDS ===== */
+.motors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.motor-card {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.motor-card:hover, .motor-card.selected {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+.motor-card.selected { border-color: var(--card-color, var(--accent-blue)); box-shadow: 0 0 25px rgba(59,130,246,0.25); }
+
+.motor-header {
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.motor-icon {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.motor-name { font-size: 1.1rem; font-weight: 700; }
+.motor-en   { font-size: 0.75rem; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; }
+
+.motor-body { padding: 1.5rem; }
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.spec-row:last-child { border-bottom: none; }
+.spec-label { color: var(--text-secondary); font-size: 0.85rem; }
+.spec-value { font-weight: 600; font-size: 0.9rem; }
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-blue   { background: rgba(59,130,246,0.15); color: var(--accent-blue); }
+.badge-green  { background: rgba(16,185,129,0.15); color: var(--accent-green); }
+.badge-yellow { background: rgba(245,158,11,0.15); color: var(--accent-yellow); }
+.badge-red    { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+.badge-purple { background: rgba(168,85,247,0.15); color: var(--accent-purple); }
+.badge-cyan   { background: rgba(6,182,212,0.15); color: var(--accent-cyan); }
+
+/* Rating bars */
+.rating-bar-wrap { width: 100%; }
+.rating-bar-track {
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  height: 6px;
+  margin-top: 0.3rem;
+  overflow: hidden;
+}
+.rating-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ===== CIRCUIT DIAGRAM ===== */
+.circuit-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+.circuit-section h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--accent-blue);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.circuits-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.circuit-item {
+  text-align: center;
+  padding: 1rem;
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.circuit-item:hover { border-color: var(--accent-blue); }
+.circuit-item svg { width: 100%; max-width: 180px; height: 130px; }
+.circuit-item .circuit-label { font-weight: 600; margin-top: 0.75rem; font-size: 0.9rem; }
+.circuit-item .circuit-sub { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem; }
+
+/* ===== COMPARISON TABLE ===== */
+.comparison-table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+thead tr { background: var(--bg-elevated); }
+th {
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--border);
+}
+th:first-child { text-align: right; }
+td {
+  padding: 0.9rem 1rem;
+  text-align: center;
+  font-size: 0.88rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  line-height: 1.6;
+}
+td:first-child { text-align: right; font-weight: 600; color: var(--text-secondary); }
+tbody tr:hover { background: rgba(59,130,246,0.04); }
+tbody tr:last-child td { border-bottom: none; }
+
+/* ===== CHART ===== */
+.chart-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+.chart-wrap h3 { font-size: 1.2rem; font-weight: 700; color: var(--accent-blue); margin-bottom: 1.5rem; }
+.chart-container { position: relative; height: 350px; }
+
+/* ===== APPLICATIONS ===== */
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
+}
+.app-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.4rem;
+  transition: all 0.3s;
+}
+.app-card:hover { border-color: var(--accent-green); box-shadow: 0 0 15px rgba(16,185,129,0.15); }
+.app-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+.app-icon { font-size: 1.8rem; }
+.app-motor { font-weight: 700; font-size: 1rem; }
+.app-type { font-size: 0.75rem; color: var(--text-secondary); }
+.app-list { list-style: none; }
+.app-list li {
+  padding: 0.35rem 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.app-list li::before { content: '◈'; color: var(--accent-green); font-size: 0.6rem; }
+
+/* ===== QUIZ ===== */
+.quiz-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+}
+.quiz-question {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+.quiz-question.active { display: block; }
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.q-number { font-size: 0.85rem; color: var(--text-secondary); }
+.q-progress-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+.q-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+  border-radius: 2px;
+  transition: width 0.5s;
+}
+
+.question-text { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.7; }
+
+.options { display: flex; flex-direction: column; gap: 0.75rem; }
+.option-btn {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.9rem 1.2rem;
+  color: var(--text-primary);
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: right;
+  transition: all 0.2s;
+}
+.option-btn:hover:not(:disabled) { border-color: var(--accent-blue); background: rgba(59,130,246,0.08); }
+.option-btn.correct { background: rgba(16,185,129,0.15); border-color: var(--accent-green); color: var(--accent-green); }
+.option-btn.wrong   { background: rgba(239,68,68,0.1); border-color: var(--accent-red); color: var(--accent-red); }
+
+.feedback-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  display: none;
+}
+.feedback-box.show { display: block; }
+.feedback-correct { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: var(--accent-green); }
+.feedback-wrong   { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: var(--accent-red); }
+
+.next-btn {
+  margin-top: 1.2rem;
+  background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: none;
+}
+.next-btn.show { display: inline-flex; align-items: center; gap: 0.5rem; }
+.next-btn:hover { transform: translateY(-2px); box-shadow: var(--glow); }
+
+/* RESULT */
+.result-box {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+}
+.result-box.show { display: block; animation: fadeIn 0.5s ease; }
+.result-score {
+  font-size: 4rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.result-msg { font-size: 1.2rem; font-weight: 700; margin: 1rem 0 0.5rem; }
+.result-sub { color: var(--text-secondary); margin-bottom: 1.5rem; }
+.share-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.share-btn {
+  padding: 0.65rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.share-wa { background: #25D366; color: white; }
+.share-tw { background: #1da1f2; color: white; }
+.retry-btn {
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.65rem 1.5rem;
+  border-radius: 8px;
+  font-family: 'Cairo', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.retry-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+
+/* ===== FORMULA BOX ===== */
+.formula-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+.formula-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+.formula-title { font-weight: 700; color: var(--accent-blue); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+.formula-box {
+  background: var(--bg-elevated);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  color: var(--accent-cyan);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.formula-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
+
+/* ===== SECTION TITLE ===== */
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 900;
+  margin: 2rem 0 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-primary);
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* ===== TORQUE SPEED SELECTOR ===== */
+.curve-controls { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center; }
+.curve-toggle {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  font-family: 'Cairo', sans-serif;
+  color: var(--text-secondary);
+}
+.curve-toggle input { cursor: pointer; }
+.curve-toggle.on { border-color: var(--toggle-color, var(--accent-blue)); color: var(--text-primary); }
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+footer a { color: var(--accent-blue); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+@media (max-width: 600px) {
+  .hero h2 { font-size: 1.4rem; }
+  .page-title { font-size: 1.1rem; }
+  .motors-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="header-content">
+    <div class="brand">
+      <span class="brand-icon">⚡</span>
+      <div>
+        <div class="brand-name">fahdacademy.org</div>
+        <div class="brand-sub">المدرب فهد رفاعي</div>
+      </div>
+    </div>
+    <div class="page-title-block">
+      <h1 class="page-title">مقارنة محركات التيار المستمر</h1>
+      <div class="page-meta">DC Motors Comparison | هندسة القدرة الكهربائية</div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h2>⚙️ محركات DC — كلها تدور، لكنها مختلفة!</h2>
+  <p>كيف تختار المحرك الصح للتطبيق الصح؟ هنا المقارنة الكاملة بطريقة مرئية وتفاعلية</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrapper">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showSection('overview')">🏠 نظرة عامة</button>
+    <button class="tab-btn" onclick="showSection('circuits')">🔌 الدوائر الكهربائية</button>
+    <button class="tab-btn" onclick="showSection('table')">📊 جدول المقارنة</button>
+    <button class="tab-btn" onclick="showSection('curves')">📈 منحنيات العزم والسرعة</button>
+    <button class="tab-btn" onclick="showSection('formulas')">🧮 المعادلات الأساسية</button>
+    <button class="tab-btn" onclick="showSection('apps')">🏭 التطبيقات</button>
+    <button class="tab-btn" onclick="showSection('quiz')">🎯 اختبر نفسك</button>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- ===== OVERVIEW ===== -->
+  <div id="sec-overview" class="section active">
+    <div class="section-title">⚙️ أنواع محركات التيار المستمر الأربعة</div>
+    <div class="motors-grid">
+      <!-- Series -->
+      <div class="motor-card" style="--card-color: #ef4444" onclick="toggleCard(this)">
+        <div class="motor-header">
+          <div class="motor-icon" style="background: rgba(239,68,68,0.15);">🔴</div>
+          <div>
+            <div class="motor-name">محرك التسلسل</div>
+            <div class="motor-en">Series Motor</div>
+          </div>
+        </div>
+        <div class="motor-body">
+          <div class="spec-row">
+            <span class="spec-label">ربط ملف التحريض</span>
+            <span class="spec-value"><span class="badge badge-red">على التوالي مع الأرماتير</span></span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">عزم الإقلاع</span>
+            <div class="rating-bar-wrap">
+              <span class="spec-value" style="color: var(--accent-green)">ممتاز 🏆</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%; background: var(--accent-red)" data-val="95"></div></div>
+            </div>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">تحكم في السرعة</span>
+            <div class="rating-bar-wrap">
+              <span class="spec-value" style="color: var(--accent-red)">ضعيف</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%; background: var(--accent-red)" data-val="25"></div></div>
+            </div>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">السرعة بلا حمل</span>
+            <span class="spec-value" style="color: var(--accent-red)">⚠️ خطيرة جداً</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">الاستخدام الأبرز</span>
+            <span class="spec-value">القطارات • الرافعات</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shunt -->
+      <div class="motor-card" style="--card-color: #3b82f6" onclick="toggleCard(this)">
+        <div class="motor-header">
+          <div class="motor-icon" style="background: rgba(59,130,246,0.15);">🔵</div>
+          <div>
+            <div class="motor-name">محرك التوازي</div>
+            <div class="motor-en">Shunt Motor</div>
+          </div>
+        </div>
+        <div class="motor-body">
+          <div class="spec-row">
+            <span class="spec-label">ربط ملف التحريض</span>
+            <span class="spec-value"><span class="badge badge-blue">على التوازي مع الأرماتير</span></span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">ثبات السرعة</span>
+            <div class="rating-bar-wrap">
+              <span class="spec-value" style="color: var(--accent-green)">ممتاز ✅</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%; background: var(--accent-blue)" data-val="92"></div></div>
+            </div>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">عزم الإقلاع</span>
+            <div class="rating-bar-wrap">
+              <span class="spec-value" style="color: var(--accent-yellow)">متوسط</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%; background: var(--accent-blue)" data-val="50"></div></div>
+            </div>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">السرعة بلا حمل</span>
+            <span class="spec-value" style="color: var(--accent-green)">✅ آمنة</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">الاستخدام الأبرز</span>
+            <span class="spec-value">مراوح • مضخات • آلات CNC</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compound -->
+      <div class="motor-card" style="--card-color: #a855f7" onclick="toggleCard(this)">
+        <div class="motor-header">
+          <div class="motor-icon" style="background: rgba(168,85,247,0.15);">🟣</div>
+          <div>
+            <div class="motor-name">محرك المركب</div>
+            <div class="motor-en">Compound Motor</div>
+          </div>
+        </div>
+        <div class="motor-body">
+          <div class="spec-row">
+            <span class="spec-label">ربط ملف التحريض</span>
+            <span class="spec-value"><span class="badge badge-purple">توالي + توازي معاً</span></span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">توازن عزم / سرعة</span>
+            <div class="rating-bar-wrap">
+              <span class="spec-value" style="color: var(--accent-green)">جيد جداً 👍</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%; background: var(--accent-purple)" data-val="78"></div></div>
+            </div>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">عزم الإقلاع</span>
+            <div class="rating-bar-wrap">
+              <span class="spec-value" style="color: var(--accent-green)">عالي</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%; background: var(--accent-purple)" data-val="80"></div></div>
+            </div>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">السرعة بلا حمل</span>
+            <span class="spec-value" style="color: var(--accent-yellow)">🟡 معقولة</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">الاستخدام الأبرز</span>
+            <span class="spec-value">مضاغط • مصاعد • مطابع</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PMDC -->
+      <div class="motor-card" style="--card-color: #10b981" onclick="toggleCard(this)">
+        <div class="motor-header">
+          <div class="motor-icon" style="background: rgba(16,185,129,0.15);">🟢</div>
+          <div>
+            <div class="motor-name">محرك المغناطيس الدائم</div>
+            <div class="motor-en">PMDC Motor</div>
+          </div>
+        </div>
+        <div class="motor-body">
+          <div class="spec-row">
+            <span class="spec-label">ملف التحريض</span>
+            <span class="spec-value"><span class="badge badge-green">مغناطيس دائم بدون ملف</span></span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">الكفاءة</span>
+            <div class="rating-bar-wrap">
+              <span class="spec-value" style="color: var(--accent-green)">عالية جداً ⚡</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%; background: var(--accent-green)" data-val="88"></div></div>
+            </div>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">الحجم / الوزن</span>
+            <div class="rating-bar-wrap">
+              <span class="spec-value" style="color: var(--accent-green)">صغير وخفيف 🪶</span>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%; background: var(--accent-green)" data-val="90"></div></div>
+            </div>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">السعر</span>
+            <span class="spec-value" style="color: var(--accent-yellow)">🟡 متوسط</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">الاستخدام الأبرز</span>
+            <span class="spec-value">روبوتات • سيارات كهربائية صغيرة</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick fact -->
+    <div style="background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(6,182,212,0.08)); border: 1px solid rgba(59,130,246,0.2); border-radius: 12px; padding: 1.2rem 1.5rem; margin-top: 1rem;">
+      <strong style="color: var(--accent-cyan);">💡 قاعدة ذهبية:</strong>
+      <span style="color: var(--text-secondary); margin-right: 0.5rem;">عزم الإقلاع المطلوب عالي؟ → توالي. سرعة ثابتة مهمة؟ → توازي. تحتاج الاثنين؟ → مركب. تطبيق صغير وكفاءة عالية؟ → PMDC.</span>
+    </div>
+  </div>
+
+  <!-- ===== CIRCUITS ===== -->
+  <div id="sec-circuits" class="section">
+    <div class="section-title">🔌 الدوائر الكهربائية لكل نوع</div>
+    <div class="circuit-section">
+      <h3>🔍 اضغط على الدائرة لتكبيرها</h3>
+      <div class="circuits-row">
+
+        <!-- Series -->
+        <div class="circuit-item" onclick="showCircuitInfo('series')">
+          <svg viewBox="0 0 180 130" xmlns="http://www.w3.org/2000/svg">
+            <!-- Supply lines -->
+            <line x1="20" y1="20" x2="160" y2="20" stroke="#ef4444" stroke-width="2"/>
+            <line x1="20" y1="110" x2="160" y2="110" stroke="#94a3b8" stroke-width="2"/>
+            <!-- Left wire -->
+            <line x1="20" y1="20" x2="20" y2="110" stroke="#94a3b8" stroke-width="2"/>
+            <!-- Right wire -->
+            <line x1="160" y1="20" x2="160" y2="55" stroke="#ef4444" stroke-width="2"/>
+            <line x1="160" y1="85" x2="160" y2="110" stroke="#94a3b8" stroke-width="2"/>
+            <!-- Series Field coil -->
+            <rect x="140" y="55" width="40" height="30" rx="4" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="1.5"/>
+            <text x="160" y="74" text-anchor="middle" font-size="8" fill="#ef4444" font-family="Cairo">Lse</text>
+            <!-- Armature -->
+            <circle cx="90" cy="65" r="25" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1.5"/>
+            <text x="90" y="62" text-anchor="middle" font-size="9" fill="#ef4444" font-family="Cairo">Arm</text>
+            <text x="90" y="74" text-anchor="middle" font-size="7" fill="#94a3b8" font-family="Cairo">Ra</text>
+            <!-- Connect armature to supply -->
+            <line x1="20" y1="65" x2="65" y2="65" stroke="#94a3b8" stroke-width="2"/>
+            <line x1="115" y1="65" x2="140" y2="65" stroke="#94a3b8" stroke-width="2"/>
+            <!-- V+ V- labels -->
+            <text x="20" y="15" text-anchor="middle" font-size="9" fill="#ef4444">V+</text>
+            <text x="20" y="120" text-anchor="middle" font-size="9" fill="#94a3b8">V−</text>
+          </svg>
+          <div class="circuit-label">محرك التسلسل</div>
+          <div class="circuit-sub">Lse على التوالي مع الأرماتير</div>
+        </div>
+
+        <!-- Shunt -->
+        <div class="circuit-item" onclick="showCircuitInfo('shunt')">
+          <svg viewBox="0 0 180 130" xmlns="http://www.w3.org/2000/svg">
+            <line x1="20" y1="20" x2="160" y2="20" stroke="#3b82f6" stroke-width="2"/>
+            <line x1="20" y1="110" x2="160" y2="110" stroke="#94a3b8" stroke-width="2"/>
+            <line x1="20" y1="20" x2="20" y2="110" stroke="#94a3b8" stroke-width="2"/>
+            <!-- Armature -->
+            <circle cx="80" cy="65" r="25" fill="rgba(59,130,246,0.08)" stroke="#3b82f6" stroke-width="1.5"/>
+            <text x="80" y="62" text-anchor="middle" font-size="9" fill="#3b82f6" font-family="Cairo">Arm</text>
+            <text x="80" y="74" text-anchor="middle" font-size="7" fill="#94a3b8" font-family="Cairo">Ra</text>
+            <line x1="20" y1="65" x2="55" y2="65" stroke="#94a3b8" stroke-width="2"/>
+            <line x1="105" y1="65" x2="160" y2="65" stroke="#3b82f6" stroke-width="2"/>
+            <line x1="160" y1="20" x2="160" y2="65" stroke="#3b82f6" stroke-width="2"/>
+            <line x1="160" y1="65" x2="160" y2="110" stroke="#94a3b8" stroke-width="2"/>
+            <!-- Shunt coil parallel branch -->
+            <line x1="105" y1="65" x2="105" y2="40" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4"/>
+            <line x1="55" y1="65" x2="55" y2="40" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4"/>
+            <rect x="55" y="28" width="50" height="15" rx="3" fill="rgba(59,130,246,0.15)" stroke="#3b82f6" stroke-width="1.5"/>
+            <text x="80" y="39" text-anchor="middle" font-size="8" fill="#3b82f6" font-family="Cairo">Lsh</text>
+            <text x="20" y="15" text-anchor="middle" font-size="9" fill="#3b82f6">V+</text>
+            <text x="20" y="120" text-anchor="middle" font-size="9" fill="#94a3b8">V−</text>
+          </svg>
+          <div class="circuit-label">محرك التوازي</div>
+          <div class="circuit-sub">Lsh على التوازي مع الأرماتير</div>
+        </div>
+
+        <!-- Compound -->
+        <div class="circuit-item" onclick="showCircuitInfo('compound')">
+          <svg viewBox="0 0 180 130" xmlns="http://www.w3.org/2000/svg">
+            <line x1="20" y1="20" x2="160" y2="20" stroke="#a855f7" stroke-width="2"/>
+            <line x1="20" y1="110" x2="160" y2="110" stroke="#94a3b8" stroke-width="2"/>
+            <line x1="20" y1="20" x2="20" y2="110" stroke="#94a3b8" stroke-width="2"/>
+            <!-- Armature -->
+            <circle cx="90" cy="75" r="22" fill="rgba(168,85,247,0.08)" stroke="#a855f7" stroke-width="1.5"/>
+            <text x="90" y="73" text-anchor="middle" font-size="8" fill="#a855f7" font-family="Cairo">Arm</text>
+            <text x="90" y="83" text-anchor="middle" font-size="7" fill="#94a3b8" font-family="Cairo">Ra</text>
+            <!-- Series field -->
+            <rect x="118" y="65" width="28" height="20" rx="3" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="1.5"/>
+            <text x="132" y="78" text-anchor="middle" font-size="7" fill="#ef4444" font-family="Cairo">Lse</text>
+            <line x1="112" y1="75" x2="118" y2="75" stroke="#a855f7" stroke-width="1.5"/>
+            <line x1="146" y1="75" x2="160" y2="75" stroke="#a855f7" stroke-width="1.5"/>
+            <line x1="160" y1="20" x2="160" y2="75" stroke="#a855f7" stroke-width="1.5"/>
+            <line x1="160" y1="75" x2="160" y2="110" stroke="#94a3b8" stroke-width="1.5"/>
+            <line x1="20" y1="75" x2="68" y2="75" stroke="#94a3b8" stroke-width="1.5"/>
+            <!-- Shunt parallel -->
+            <line x1="68" y1="75" x2="68" y2="38" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4"/>
+            <line x1="146" y1="75" x2="146" y2="38" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4"/>
+            <rect x="68" y="28" width="78" height="13" rx="3" fill="rgba(59,130,246,0.12)" stroke="#3b82f6" stroke-width="1.5"/>
+            <text x="107" y="38" text-anchor="middle" font-size="7" fill="#3b82f6" font-family="Cairo">Lsh</text>
+            <text x="20" y="15" text-anchor="middle" font-size="9" fill="#a855f7">V+</text>
+            <text x="20" y="120" text-anchor="middle" font-size="9" fill="#94a3b8">V−</text>
+          </svg>
+          <div class="circuit-label">محرك المركب</div>
+          <div class="circuit-sub">Lse + Lsh معاً</div>
+        </div>
+
+        <!-- PMDC -->
+        <div class="circuit-item" onclick="showCircuitInfo('pmdc')">
+          <svg viewBox="0 0 180 130" xmlns="http://www.w3.org/2000/svg">
+            <line x1="20" y1="20" x2="160" y2="20" stroke="#10b981" stroke-width="2"/>
+            <line x1="20" y1="110" x2="160" y2="110" stroke="#94a3b8" stroke-width="2"/>
+            <line x1="20" y1="20" x2="20" y2="110" stroke="#94a3b8" stroke-width="2"/>
+            <line x1="160" y1="20" x2="160" y2="110" stroke="#10b981" stroke-width="2"/>
+            <!-- Armature -->
+            <circle cx="90" cy="65" r="28" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-width="2"/>
+            <text x="90" y="61" text-anchor="middle" font-size="9" fill="#10b981" font-family="Cairo">Arm</text>
+            <text x="90" y="72" text-anchor="middle" font-size="7" fill="#94a3b8" font-family="Cairo">Ra</text>
+            <line x1="20" y1="65" x2="62" y2="65" stroke="#94a3b8" stroke-width="2"/>
+            <line x1="118" y1="65" x2="160" y2="65" stroke="#10b981" stroke-width="2"/>
+            <!-- PM symbol -->
+            <rect x="35" y="28" width="110" height="14" rx="4" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1" stroke-dasharray="3"/>
+            <text x="90" y="38" text-anchor="middle" font-size="8" fill="#10b981" font-family="Cairo">🧲 مغناطيس دائم</text>
+            <text x="20" y="15" text-anchor="middle" font-size="9" fill="#10b981">V+</text>
+            <text x="20" y="120" text-anchor="middle" font-size="9" fill="#94a3b8">V−</text>
+          </svg>
+          <div class="circuit-label">محرك PMDC</div>
+          <div class="circuit-sub">بلا ملف تحريض — مغناطيس دائم</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info box -->
+    <div id="circuit-info" style="display:none; background: var(--bg-card); border: 1px solid var(--accent-blue); border-radius: 12px; padding: 1.5rem; animation: fadeIn 0.3s;">
+      <div id="circuit-info-content"></div>
+    </div>
+  </div>
+
+  <!-- ===== TABLE ===== -->
+  <div id="sec-table" class="section">
+    <div class="section-title">📊 جدول المقارنة الشامل</div>
+    <div class="comparison-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>الخاصية</th>
+            <th style="color:#ef4444">🔴 توالي</th>
+            <th style="color:#3b82f6">🔵 توازي</th>
+            <th style="color:#a855f7">🟣 مركب</th>
+            <th style="color:#10b981">🟢 PMDC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ربط ملف التحريض</td>
+            <td><span class="badge badge-red">على التوالي</span></td>
+            <td><span class="badge badge-blue">على التوازي</span></td>
+            <td><span class="badge badge-purple">توالي + توازي</span></td>
+            <td><span class="badge badge-green">مغناطيس دائم</span></td>
+          </tr>
+          <tr>
+            <td>عزم الإقلاع</td>
+            <td style="color:#10b981">عالي جداً ⭐⭐⭐⭐⭐</td>
+            <td style="color:#f59e0b">متوسط ⭐⭐⭐</td>
+            <td style="color:#10b981">عالي ⭐⭐⭐⭐</td>
+            <td style="color:#f59e0b">متوسط ⭐⭐⭐</td>
+          </tr>
+          <tr>
+            <td>ثبات السرعة</td>
+            <td style="color:#ef4444">ضعيف جداً</td>
+            <td style="color:#10b981">ممتاز ✅</td>
+            <td style="color:#f59e0b">جيد</td>
+            <td style="color:#10b981">جيد جداً ✅</td>
+          </tr>
+          <tr>
+            <td>السرعة عند تحميل كامل</td>
+            <td>منخفضة</td>
+            <td>ثابتة تقريباً</td>
+            <td>منخفضة قليلاً</td>
+            <td>خطية مع العزم</td>
+          </tr>
+          <tr>
+            <td>السرعة بلا حمل</td>
+            <td style="color:#ef4444">⚠️ لا نهائية (خطر)</td>
+            <td style="color:#10b981">✅ سرعة مقبولة</td>
+            <td style="color:#f59e0b">🟡 عالية نسبياً</td>
+            <td style="color:#10b981">✅ آمنة</td>
+          </tr>
+          <tr>
+            <td>تحكم في السرعة</td>
+            <td>صعب</td>
+            <td>سهل (بمقاومة أو جهد)</td>
+            <td>متوسط</td>
+            <td>سهل جداً (PWM)</td>
+          </tr>
+          <tr>
+            <td>خصائص عزم-سرعة</td>
+            <td>هابطة بشدة</td>
+            <td>شبه ثابتة</td>
+            <td>متوسطة</td>
+            <td>خطية</td>
+          </tr>
+          <tr>
+            <td>الكفاءة</td>
+            <td>متوسطة</td>
+            <td>جيدة</td>
+            <td>جيدة</td>
+            <td>عالية جداً</td>
+          </tr>
+          <tr>
+            <td>الحجم والوزن</td>
+            <td>كبير نسبياً</td>
+            <td>كبير نسبياً</td>
+            <td>الأكبر</td>
+            <td>صغير وخفيف</td>
+          </tr>
+          <tr>
+            <td>التكلفة</td>
+            <td>منخفضة</td>
+            <td>متوسطة</td>
+            <td>أعلى</td>
+            <td>متوسطة–عالية</td>
+          </tr>
+          <tr>
+            <td>الصيانة</td>
+            <td>بسيطة</td>
+            <td>بسيطة</td>
+            <td>أكثر تعقيداً</td>
+            <td>قليلة جداً</td>
+          </tr>
+          <tr>
+            <td>التطبيقات الرئيسية</td>
+            <td>قطارات، رافعات</td>
+            <td>مراوح، مضخات، CNC</td>
+            <td>مصاعد، مطابع</td>
+            <td>روبوتات، EV صغيرة</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== CURVES ===== -->
+  <div id="sec-curves" class="section">
+    <div class="section-title">📈 منحنيات العزم والسرعة</div>
+    <div class="chart-wrap">
+      <h3>📉 منحنى العزم–السرعة (T–N Characteristic)</h3>
+      <div class="curve-controls">
+        <label class="curve-toggle on" style="--toggle-color: #ef4444">
+          <input type="checkbox" id="chk-series" checked onchange="updateCurveChart()">
+          <span style="color:#ef4444">● توالي</span>
+        </label>
+        <label class="curve-toggle on" style="--toggle-color: #3b82f6">
+          <input type="checkbox" id="chk-shunt" checked onchange="updateCurveChart()">
+          <span style="color:#3b82f6">● توازي</span>
+        </label>
+        <label class="curve-toggle on" style="--toggle-color: #a855f7">
+          <input type="checkbox" id="chk-compound" checked onchange="updateCurveChart()">
+          <span style="color:#a855f7">● مركب</span>
+        </label>
+        <label class="curve-toggle on" style="--toggle-color: #10b981">
+          <input type="checkbox" id="chk-pmdc" checked onchange="updateCurveChart()">
+          <span style="color:#10b981">● PMDC</span>
+        </label>
+      </div>
+      <div class="chart-container">
+        <canvas id="tnChart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <h3>📊 مقارنة الخصائص الرئيسية (Radar Chart)</h3>
+      <div class="chart-container" style="height:280px">
+        <canvas id="radarChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FORMULAS ===== -->
+  <div id="sec-formulas" class="section">
+    <div class="section-title">🧮 المعادلات الأساسية</div>
+    <div class="formula-section">
+      <div class="formula-card">
+        <div class="formula-title">⚡ معادلة الجهد الأساسية</div>
+        <div class="formula-box">V = Ea + Ia × Ra</div>
+        <div class="formula-desc">
+          V: جهد المصدر (Volt) | Ea: القوة الدافعة الكهرومغناطيسية (EMF) | Ia: تيار الأرماتير | Ra: مقاومة الأرماتير
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="formula-title">🔄 سرعة الدوران</div>
+        <div class="formula-box">N = (V − Ia×Ra) / (K × Φ)</div>
+        <div class="formula-desc">
+          N: سرعة الدوران (RPM) | K: ثابت المحرك | Φ: التدفق المغناطيسي (Weber)
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="formula-title">💪 معادلة العزم</div>
+        <div class="formula-box">T = K × Φ × Ia</div>
+        <div class="formula-desc">
+          T: عزم الدوران (N·m) | في محرك التسلسل: Φ ∝ Ia ∴ T ∝ Ia² (عزم هائل عند الإقلاع!)
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="formula-title">🔋 المحرك التسلسلي — التيار</div>
+        <div class="formula-box">Ia = Ise = IL</div>
+        <div class="formula-desc">
+          في التسلسل: تيار الأرماتير = تيار ملف التحريض = تيار الحمل كاملاً. لذلك لا يشتغل أبداً بدون حمل!
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="formula-title">🔌 المحرك التوازي — التيار</div>
+        <div class="formula-box">IL = Ia + Ish | Ish = V/Rsh</div>
+        <div class="formula-desc">
+          تيار الخط = تيار الأرماتير + تيار ملف التحريض. تيار التحريض ثابت لأن الجهد ثابت → سرعة ثابتة!
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="formula-title">⚙️ القدرة الميكانيكية</div>
+        <div class="formula-box">Pmech = Ea × Ia = T × ω</div>
+        <div class="formula-desc">
+          Pmech: القدرة الميكانيكية (Watt) | ω: السرعة الزاوية (rad/s) | ω = 2π × N/60
+        </div>
+      </div>
+    </div>
+
+    <!-- Example -->
+    <div style="background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(6,182,212,0.06)); border: 1px solid rgba(16,185,129,0.2); border-radius: 12px; padding: 1.5rem;">
+      <div style="font-weight: 700; color: var(--accent-green); margin-bottom: 1rem; font-size: 1rem;">📝 مثال محلول — محرك توازي</div>
+      <div style="color: var(--text-secondary); line-height: 2; font-size: 0.9rem;">
+        <strong style="color: var(--text-primary);">المعطيات:</strong> محرك توازي، V = 220V، Ra = 0.5Ω، Rsh = 110Ω، Ia = 20A<br>
+        <strong style="color: var(--accent-cyan);">الحل:</strong><br>
+        Ish = V/Rsh = 220/110 = <strong style="color: var(--accent-green)">2A</strong><br>
+        IL = Ia + Ish = 20 + 2 = <strong style="color: var(--accent-green)">22A</strong><br>
+        Ea = V − Ia×Ra = 220 − (20×0.5) = <strong style="color: var(--accent-green)">210V</strong><br>
+        Pmech = Ea × Ia = 210 × 20 = <strong style="color: var(--accent-green)">4200W = 4.2kW</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== APPS ===== -->
+  <div id="sec-apps" class="section">
+    <div class="section-title">🏭 التطبيقات الصناعية والعملية</div>
+    <div class="apps-grid">
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon">🚂</div>
+          <div>
+            <div class="app-motor" style="color:#ef4444">محرك التسلسل</div>
+            <div class="app-type">Series Motor</div>
+          </div>
+        </div>
+        <ul class="app-list">
+          <li>قطارات وترام المدن الكهربائية</li>
+          <li>رافعات ومصاعد البضائع الثقيلة</li>
+          <li>محركات بداية السيارات (Starter)</li>
+          <li>ونشات الحفر والمناجم</li>
+          <li>ملفات كهرومغناطيسية تدور</li>
+        </ul>
+        <div style="margin-top:1rem; padding:0.6rem; background: rgba(239,68,68,0.08); border-radius:6px; font-size:0.8rem; color:#ef4444;">
+          ⚠️ تحذير: لا يُشغَّل أبداً بدون حمل — السرعة تصل إلى ما لا نهاية!
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon">🌀</div>
+          <div>
+            <div class="app-motor" style="color:#3b82f6">محرك التوازي</div>
+            <div class="app-type">Shunt Motor</div>
+          </div>
+        </div>
+        <ul class="app-list">
+          <li>مراوح ومضخات تبريد</li>
+          <li>ماكينات CNC والخراطة</li>
+          <li>مضخات المياه الصناعية</li>
+          <li>ضواغط الهواء المتوسطة</li>
+          <li>آلات الطباعة الصناعية</li>
+        </ul>
+        <div style="margin-top:1rem; padding:0.6rem; background: rgba(59,130,246,0.08); border-radius:6px; font-size:0.8rem; color:#3b82f6;">
+          ✅ الخيار الأول عندما تحتاج سرعة ثابتة مضمونة
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon">🏗️</div>
+          <div>
+            <div class="app-motor" style="color:#a855f7">محرك المركب</div>
+            <div class="app-type">Compound Motor</div>
+          </div>
+        </div>
+        <ul class="app-list">
+          <li>مصاعد الركاب</li>
+          <li>مطابع الصحف والمجلات</li>
+          <li>ضواغط الهواء الثقيلة</li>
+          <li>مضخات المياه الكبيرة</li>
+          <li>مخارط الثقيلة</li>
+        </ul>
+        <div style="margin-top:1rem; padding:0.6rem; background: rgba(168,85,247,0.08); border-radius:6px; font-size:0.8rem; color:#a855f7;">
+          ⚖️ أفضل حل عند الحاجة لعزم عالي مع سرعة معقولة
+        </div>
+      </div>
+
+      <div class="app-card">
+        <div class="app-header">
+          <div class="app-icon">🤖</div>
+          <div>
+            <div class="app-motor" style="color:#10b981">محرك PMDC</div>
+            <div class="app-type">Permanent Magnet DC</div>
+          </div>
+        </div>
+        <ul class="app-list">
+          <li>روبوتات ومانيبوليتور</li>
+          <li>سيارات كهربائية صغيرة (Golf cart)</li>
+          <li>طائرات مسيّرة (Drones)</li>
+          <li>أجهزة طبية محمولة</li>
+          <li>أجهزة منزلية صغيرة</li>
+        </ul>
+        <div style="margin-top:1rem; padding:0.6rem; background: rgba(16,185,129,0.08); border-radius:6px; font-size:0.8rem; color:#10b981;">
+          🔋 الأعلى كفاءة — التحكم سهل بـ PWM
+        </div>
+      </div>
+    </div>
+
+    <!-- Selection guide -->
+    <div style="margin-top:2rem;">
+      <div class="section-title" style="margin-top:0">🧭 دليل الاختيار السريع</div>
+      <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
+        <div style="padding:1rem 1.5rem; background: var(--bg-elevated); font-weight:700; color: var(--text-secondary); font-size:0.9rem;">اطرح على نفسك هذه الأسئلة بالترتيب ↓</div>
+        <div style="padding:1.5rem; display:flex; flex-direction:column; gap:1rem;">
+          <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; background:rgba(239,68,68,0.06); border-radius:8px; border-right:3px solid #ef4444;">
+            <span style="font-size:1.3rem;">❓</span>
+            <div><strong>هل تحتاج عزم إقلاع ضخم جداً (قطارات، رافعات)؟</strong><br><span style="color:#ef4444; font-size:0.85rem;">→ اختر محرك التسلسل (لكن تأكد من وجود حمل دائم!)</span></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; background:rgba(59,130,246,0.06); border-radius:8px; border-right:3px solid #3b82f6;">
+            <span style="font-size:1.3rem;">❓</span>
+            <div><strong>هل الأولوية لثبات السرعة بتغير الحمل (آلات CNC، مضخات)؟</strong><br><span style="color:#3b82f6; font-size:0.85rem;">→ اختر محرك التوازي</span></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; background:rgba(168,85,247,0.06); border-radius:8px; border-right:3px solid #a855f7;">
+            <span style="font-size:1.3rem;">❓</span>
+            <div><strong>هل تحتاج عزماً عالياً مع سرعة معقولة (مصاعد، مضاغط)؟</strong><br><span style="color:#a855f7; font-size:0.85rem;">→ اختر المحرك المركب</span></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:1rem; padding:0.8rem; background:rgba(16,185,129,0.06); border-radius:8px; border-right:3px solid #10b981;">
+            <span style="font-size:1.3rem;">❓</span>
+            <div><strong>هل التطبيق صغير ويحتاج كفاءة عالية وتحكماً دقيقاً (روبوتات، EV)؟</strong><br><span style="color:#10b981; font-size:0.85rem;">→ اختر PMDC مع تحكم PWM</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== QUIZ ===== -->
+  <div id="sec-quiz" class="section">
+    <div class="section-title">🎯 اختبر نفسك</div>
+    <div class="quiz-wrap">
+      <div class="q-progress-bar"><div class="q-progress-fill" id="q-progress" style="width:0%"></div></div>
+
+      <!-- Q1 -->
+      <div class="quiz-question active" data-q="0">
+        <div class="question-header">
+          <span class="q-number">السؤال 1 من 7</span>
+          <span class="badge badge-blue">عزم وسرعة</span>
+        </div>
+        <div class="question-text">أي نوع من محركات DC يُعطي أعلى عزم إقلاع؟</div>
+        <div class="options">
+          <button class="option-btn" onclick="checkAnswer(this, false, 'محرك التوازي يعطي عزماً متوسطاً فقط لأن تيار التحريض مستقل عن تيار الحمل.')">محرك التوازي (Shunt)</button>
+          <button class="option-btn" onclick="checkAnswer(this, true, '✅ صحيح! في محرك التسلسل: T ∝ Ia² لأن Φ ∝ Ia، مما يعطي عزماً هائلاً عند الإقلاع.')">محرك التسلسل (Series)</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'محرك PMDC يعطي عزماً جيداً لكن ليس الأعلى — المغناطيس الدائم لا يتغير مع التيار.')">محرك PMDC</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'المحرك المركب أفضل من التوازي والـ PMDC، لكن محرك التسلسل يتفوق عليه في عزم الإقلاع.')">محرك المركب (Compound)</button>
+        </div>
+        <div class="feedback-box" id="fb-0"></div>
+        <button class="next-btn" id="next-0" onclick="nextQuestion(1)">التالي ←</button>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question" data-q="1">
+        <div class="question-header">
+          <span class="q-number">السؤال 2 من 7</span>
+          <span class="badge badge-red">سلامة تشغيل</span>
+        </div>
+        <div class="question-text">لماذا لا يجوز تشغيل محرك التسلسل بدون حمل؟</div>
+        <div class="options">
+          <button class="option-btn" onclick="checkAnswer(this, false, 'لا، المشكلة ليست في التسخين — بل في السرعة.')">لأنه سيسخن بشكل خطير</button>
+          <button class="option-btn" onclick="checkAnswer(this, true, '✅ صحيح! بدون حمل: Ia → صغير جداً → Φ صغير جداً → N = (V-IaRa)/(KΦ) → ما لا نهاية! المحرك يتفتت!')">لأن السرعة ترتفع بشكل خطير (تقترب من اللانهاية)</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'لا، يمكنه العمل — لكن المشكلة في السرعة وليس التيار.')">لأنه لن يسحب تياراً كافياً للعمل</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'لا، المشكلة في الديناميكا وليس الجهد.')">لأن الجهد سيرتفع ويتلف المحرك</button>
+        </div>
+        <div class="feedback-box" id="fb-1"></div>
+        <button class="next-btn" id="next-1" onclick="nextQuestion(2)">التالي ←</button>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question" data-q="2">
+        <div class="question-header">
+          <span class="q-number">السؤال 3 من 7</span>
+          <span class="badge badge-blue">تصميم دوائر</span>
+        </div>
+        <div class="question-text">في محرك التوازي (Shunt)، ملف التحريض موصول...</div>
+        <div class="options">
+          <button class="option-btn" onclick="checkAnswer(this, false, 'هذا هو محرك التسلسل — ليس التوازي.')">على التوالي مع الأرماتير</button>
+          <button class="option-btn" onclick="checkAnswer(this, true, '✅ صحيح! في محرك التوازي، ملف التحريض موصول مباشرة على جهد المصدر — لذلك Φ ثابت وN تبقى ثابتة تقريباً.')">على التوازي مع الأرماتير (مباشرة على جهد المصدر)</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'هذا تصميم خاص بالمحركات AC (محرك رنان).')">على التوازي مع المصدر فقط بمكثف</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'هذا وصف للمحرك المركب الذي يجمع الاثنين.')">على التوالي والتوازي معاً</button>
+        </div>
+        <div class="feedback-box" id="fb-2"></div>
+        <button class="next-btn" id="next-2" onclick="nextQuestion(3)">التالي ←</button>
+      </div>
+
+      <!-- Q4 -->
+      <div class="quiz-question" data-q="3">
+        <div class="question-header">
+          <span class="q-number">السؤال 4 من 7</span>
+          <span class="badge badge-green">تطبيقات</span>
+        </div>
+        <div class="question-text">أي محرك DC تختار لتشغيل مصعد ركاب في مبنى سكني؟</div>
+        <div class="options">
+          <button class="option-btn" onclick="checkAnswer(this, false, 'محرك التسلسل خطير في المصاعد لأن الحمل قد يتغير ويصل صفراً مما يرفع السرعة بشكل خطير.')">محرك التسلسل — لأن عزم الإقلاع عالٍ</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'محرك التوازي عزمه متوسط وقد لا يكفي لإقلاع حمل ثقيل.')">محرك التوازي — لأن السرعة ثابتة</button>
+          <button class="option-btn" onclick="checkAnswer(this, true, '✅ صحيح! المحرك المركب يجمع ميزة التسلسل (عزم عالٍ للإقلاع) مع ميزة التوازي (سرعة معقولة ومستقرة) — مثالي للمصاعد!')">محرك المركب — عزم عالٍ + سرعة مستقرة</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'PMDC مناسب للتطبيقات الصغيرة — المصاعد تحتاج قدرة أكبر.')">محرك PMDC — كفاءة عالية</button>
+        </div>
+        <div class="feedback-box" id="fb-3"></div>
+        <button class="next-btn" id="next-3" onclick="nextQuestion(4)">التالي ←</button>
+      </div>
+
+      <!-- Q5 -->
+      <div class="quiz-question" data-q="4">
+        <div class="question-header">
+          <span class="q-number">السؤال 5 من 7</span>
+          <span class="badge badge-purple">معادلات</span>
+        </div>
+        <div class="question-text">في محرك توازي: V = 200V، Ra = 1Ω، Ia = 15A. ما هي قيمة الـ EMF (Ea)؟</div>
+        <div class="options">
+          <button class="option-btn" onclick="checkAnswer(this, false, 'Ea = V − Ia×Ra = 200 − 15×1 = 185V. جرب مرة أخرى!')">200 فولت</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'Ea = V − Ia×Ra = 200 − 15×1 = 185V. ليس 215.')">215 فولت</button>
+          <button class="option-btn" onclick="checkAnswer(this, true, '✅ صحيح! Ea = V − Ia×Ra = 200 − (15×1) = 200 − 15 = 185V')">185 فولت</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'ليس 150. Ea = V − Ia×Ra = 200 − 15 = 185V.')">150 فولت</button>
+        </div>
+        <div class="feedback-box" id="fb-4"></div>
+        <button class="next-btn" id="next-4" onclick="nextQuestion(5)">التالي ←</button>
+      </div>
+
+      <!-- Q6 -->
+      <div class="quiz-question" data-q="5">
+        <div class="question-header">
+          <span class="q-number">السؤال 6 من 7</span>
+          <span class="badge badge-cyan">تقنية حديثة</span>
+        </div>
+        <div class="question-text">أي محرك DC يُستخدم في الروبوتات والطائرات المسيّرة ويُتحكم فيه بـ PWM؟</div>
+        <div class="options">
+          <button class="option-btn" onclick="checkAnswer(this, false, 'محرك التسلسل ثقيل وصعب التحكم — غير مناسب للروبوتات.')">محرك التسلسل</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'محرك التوازي يحتاج ملف تحريض كبير — ثقيل للروبوتات.')">محرك التوازي</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'المركب أكبر وأثقل من PMDC وأقل كفاءة.')">محرك المركب</button>
+          <button class="option-btn" onclick="checkAnswer(this, true, '✅ صحيح! PMDC = مغناطيس دائم → خفيف، كفاءة عالية، استجابة سريعة، تحكم دقيق بـ PWM → مثالي للروبوتات والـ Drones!')">محرك PMDC</button>
+        </div>
+        <div class="feedback-box" id="fb-5"></div>
+        <button class="next-btn" id="next-5" onclick="nextQuestion(6)">التالي ←</button>
+      </div>
+
+      <!-- Q7 -->
+      <div class="quiz-question" data-q="6">
+        <div class="question-header">
+          <span class="q-number">السؤال 7 من 7</span>
+          <span class="badge badge-yellow">مقارنة</span>
+        </div>
+        <div class="question-text">أي عبارة صحيحة عن منحنى العزم–السرعة لمحرك التوازي؟</div>
+        <div class="options">
+          <button class="option-btn" onclick="checkAnswer(this, false, 'هذا وصف لمحرك التسلسل — ليس التوازي.')">السرعة تنخفض بشدة كلما زاد العزم (منحنى متدرج)</button>
+          <button class="option-btn" onclick="checkAnswer(this, true, '✅ صحيح! في محرك التوازي Φ ثابت → العلاقة بين N والعزم شبه خطية وشبه مستوية — السرعة تبقى ثابتة تقريباً مهما تغير الحمل.')">المنحنى شبه مستوٍ — السرعة تبقى ثابتة تقريباً مع تغير العزم</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'السرعة لا تزداد مع العزم في محركات DC الاعتيادية.')">السرعة تزداد مع زيادة العزم</button>
+          <button class="option-btn" onclick="checkAnswer(this, false, 'المنحنى الخطي الكامل هو لمحرك PMDC — التوازي شبه مستوٍ وليس منحنياً.')">المنحنى خطي تماماً مثل PMDC</button>
+        </div>
+        <div class="feedback-box" id="fb-6"></div>
+        <button class="next-btn" id="next-6" onclick="showResult()">عرض النتيجة 🏆</button>
+      </div>
+
+      <!-- RESULT -->
+      <div class="result-box" id="result-box">
+        <div class="result-score" id="result-score">0%</div>
+        <div class="result-msg" id="result-msg"></div>
+        <div class="result-sub" id="result-sub"></div>
+        <div class="share-btns">
+          <button class="share-btn share-wa" onclick="shareResult('wa')">📱 واتساب</button>
+          <button class="share-btn share-tw" onclick="shareResult('tw')">🐦 تويتر</button>
+        </div>
+        <br>
+        <button class="retry-btn" onclick="restartQuiz()">🔄 أعد الاختبار</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  المدرب فهد رفاعي — <a href="https://fahdacademy.org" target="_blank">fahdacademy.org</a> &nbsp;|&nbsp;
+  يوتيوب: <a href="https://youtube.com/@fahraf1" target="_blank">@fahraf1</a>
+</footer>
+
+<script>
+// ===== TABS =====
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  event.target.classList.add('active');
+
+  // Animate rating bars
+  if (id === 'overview') animateBars();
+  if (id === 'curves') { initTNChart(); initRadarChart(); }
+}
+
+// ===== MOTOR CARDS =====
+function toggleCard(card) {
+  document.querySelectorAll('.motor-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+}
+
+// ===== RATING BARS =====
+function animateBars() {
+  setTimeout(() => {
+    document.querySelectorAll('.rating-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.val + '%';
+    });
+  }, 100);
+}
+// Animate on load
+setTimeout(animateBars, 500);
+
+// ===== CIRCUIT INFO =====
+const circuitData = {
+  series: {
+    title: '🔴 محرك التسلسل — Series Motor',
+    html: `<div style="color:var(--accent-red); font-weight:700; margin-bottom:0.75rem;">كيف يعمل؟</div>
+      <p style="color:var(--text-secondary); line-height:1.8; font-size:0.9rem;">
+      ملف التحريض (Lse) موصول على التوالي مع الأرماتير — نفس التيار يمر في الاثنين.<br>
+      <strong style="color:var(--text-primary);">Φ ∝ Ia</strong> مما يعني أن العزم <strong style="color:var(--accent-red);">T ∝ Ia²</strong> — عند الإقلاع يكون التيار كبيراً جداً، فالعزم هائل!<br>
+      <strong style="color:var(--accent-red);">⚠️ خطر:</strong> بدون حمل، الـ Ia يصغر، Φ يصغر، والسرعة ترتفع بلا حدود.
+      </p>`
+  },
+  shunt: {
+    title: '🔵 محرك التوازي — Shunt Motor',
+    html: `<div style="color:var(--accent-blue); font-weight:700; margin-bottom:0.75rem;">كيف يعمل؟</div>
+      <p style="color:var(--text-secondary); line-height:1.8; font-size:0.9rem;">
+      ملف التحريض (Lsh) موصول مباشرة على جهد المصدر — <strong style="color:var(--text-primary);">Φ = ثابت</strong> بغض النظر عن الحمل.<br>
+      لأن Φ ثابت → السرعة N تبقى شبه ثابتة. هذا هو سر "ثبات السرعة" في محرك التوازي!<br>
+      <strong style="color:var(--accent-blue);">✅ آمن بدون حمل</strong> — السرعة لا ترتفع بشكل خطير.
+      </p>`
+  },
+  compound: {
+    title: '🟣 محرك المركب — Compound Motor',
+    html: `<div style="color:var(--accent-purple); font-weight:700; margin-bottom:0.75rem;">كيف يعمل؟</div>
+      <p style="color:var(--text-secondary); line-height:1.8; font-size:0.9rem;">
+      يجمع بين ملف التسلسل (Lse) وملف التوازي (Lsh) معاً.<br>
+      <strong style="color:var(--text-primary);">Cumulative Compound:</strong> التدفقان في نفس الاتجاه → عزم أعلى وسرعة أقل استقراراً من التوازي.<br>
+      <strong style="color:var(--text-primary);">Differential Compound:</strong> التدفقان متعاكسان → أقل شيوعاً، يُستخدم في حالات خاصة.<br>
+      أفضل توازن بين العزم والسرعة.
+      </p>`
+  },
+  pmdc: {
+    title: '🟢 محرك PMDC — Permanent Magnet DC',
+    html: `<div style="color:var(--accent-green); font-weight:700; margin-bottom:0.75rem;">كيف يعمل؟</div>
+      <p style="color:var(--text-secondary); line-height:1.8; font-size:0.9rem;">
+      لا يوجد ملف تحريض — المجال المغناطيسي يأتي من مغناطيس دائم مثبت في الإستاتور.<br>
+      <strong style="color:var(--text-primary);">Φ = ثابت تماماً</strong> → منحنى T-N خطي مثالي → تحكم بسيط وكفاءة عالية.<br>
+      <strong style="color:var(--accent-green);">✅ مزايا:</strong> خفيف، صغير، كفاءة عالية، لا خسائر في ملف التحريض.<br>
+      <strong style="color:var(--accent-yellow);">⚠️ قيد:</strong> المغناطيس الدائم قد يفقد قوته عند درجات حرارة عالية.
+      </p>`
+  }
+};
+
+function showCircuitInfo(type) {
+  const info = circuitData[type];
+  const box = document.getElementById('circuit-info');
+  const content = document.getElementById('circuit-info-content');
+  content.innerHTML = `<div style="font-size:1rem; font-weight:700; margin-bottom:1rem;">${info.title}</div>${info.html}`;
+  box.style.display = 'block';
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ===== CHARTS =====
+let tnChart = null, radarChart = null;
+
+function generateTNData() {
+  const torque = Array.from({length: 20}, (_, i) => i * 5);
+  return {
+    series: torque.map(t => t === 0 ? null : Math.max(10, 1800 / Math.sqrt(t + 1))),
+    shunt:  torque.map(t => Math.max(10, 1500 - t * 10)),
+    compound: torque.map(t => Math.max(10, 1400 - t * 14)),
+    pmdc:   torque.map(t => Math.max(10, 1600 - t * 15)),
+    labels: torque
+  };
+}
+
+function initTNChart() {
+  if (tnChart) return;
+  const data = generateTNData();
+  const ctx = document.getElementById('tnChart').getContext('2d');
+  tnChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.labels,
+      datasets: [
+        { label: 'توالي (Series)', data: data.series, borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.08)', tension: 0.4, borderWidth: 2.5, fill: true, pointRadius: 0, id: 'series' },
+        { label: 'توازي (Shunt)', data: data.shunt, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.08)', tension: 0.3, borderWidth: 2.5, fill: true, pointRadius: 0, id: 'shunt' },
+        { label: 'مركب (Compound)', data: data.compound, borderColor: '#a855f7', backgroundColor: 'rgba(168,85,247,0.08)', tension: 0.3, borderWidth: 2.5, fill: true, pointRadius: 0, id: 'compound' },
+        { label: 'PMDC', data: data.pmdc, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.08)', tension: 0.2, borderWidth: 2.5, fill: true, pointRadius: 0, id: 'pmdc' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#94a3b8', font: { family: 'Cairo', size: 12 } } },
+        tooltip: { backgroundColor: '#1a2235', titleColor: '#f1f5f9', bodyColor: '#94a3b8', borderColor: '#2d3748', borderWidth: 1 }
+      },
+      scales: {
+        x: { title: { display: true, text: 'العزم T (N·m)', color: '#94a3b8', font: { family: 'Cairo' } }, ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+        y: { title: { display: true, text: 'السرعة N (RPM)', color: '#94a3b8', font: { family: 'Cairo' } }, ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+      }
+    }
+  });
+}
+
+function updateCurveChart() {
+  if (!tnChart) return;
+  const map = { series: 0, shunt: 1, compound: 2, pmdc: 3 };
+  Object.entries(map).forEach(([key, idx]) => {
+    tnChart.data.datasets[idx].hidden = !document.getElementById('chk-' + key).checked;
+  });
+  tnChart.update();
+}
+
+function initRadarChart() {
+  if (radarChart) return;
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['عزم الإقلاع', 'ثبات السرعة', 'الكفاءة', 'سهولة التحكم', 'الأمان بدون حمل', 'التكلفة المنخفضة'],
+      datasets: [
+        { label: 'توالي', data: [95, 20, 60, 30, 5, 80], borderColor: '#ef4444', backgroundColor: 'rgba(239,68,68,0.1)', borderWidth: 2, pointBackgroundColor: '#ef4444' },
+        { label: 'توازي', data: [50, 90, 70, 75, 95, 65], borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, pointBackgroundColor: '#3b82f6' },
+        { label: 'مركب', data: [80, 65, 68, 55, 70, 55], borderColor: '#a855f7', backgroundColor: 'rgba(168,85,247,0.1)', borderWidth: 2, pointBackgroundColor: '#a855f7' },
+        { label: 'PMDC', data: [55, 80, 90, 90, 85, 55], borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', borderWidth: 2, pointBackgroundColor: '#10b981' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Cairo', size: 11 } } } },
+      scales: {
+        r: {
+          ticks: { color: '#94a3b8', backdropColor: 'transparent', font: { size: 10 } },
+          grid: { color: '#2d3748' },
+          pointLabels: { color: '#f1f5f9', font: { family: 'Cairo', size: 11 } },
+          min: 0, max: 100
+        }
+      }
+    }
+  });
+}
+
+// ===== QUIZ =====
+let currentQ = 0;
+let score = 0;
+let answered = new Array(7).fill(false);
+
+function checkAnswer(btn, isCorrect, feedback) {
+  const qIdx = parseInt(btn.closest('.quiz-question').dataset.q);
+  if (answered[qIdx]) return;
+  answered[qIdx] = true;
+
+  const allBtns = btn.closest('.options').querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  const fbBox = document.getElementById('fb-' + qIdx);
+  const nextBtn = document.getElementById('next-' + qIdx);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    score++;
+    fbBox.className = 'feedback-box show feedback-correct';
+    fbBox.innerHTML = '✅ ' + feedback;
+  } else {
+    btn.classList.add('wrong');
+    fbBox.className = 'feedback-box show feedback-wrong';
+    fbBox.innerHTML = '❌ ' + feedback;
+    // Highlight correct
+    allBtns.forEach(b => {
+      if (b.onclick.toString().includes('true,')) b.classList.add('correct');
+    });
+  }
+
+  nextBtn.classList.add('show');
+  updateProgress(qIdx + 1);
+}
+
+function nextQuestion(idx) {
+  document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+  document.querySelectorAll('.quiz-question')[idx].classList.add('active');
+  currentQ = idx;
+  updateProgress(idx);
+}
+
+function updateProgress(done) {
+  document.getElementById('q-progress').style.width = (done / 7 * 100) + '%';
+}
+
+function showResult() {
+  document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+  const pct = Math.round(score / 7 * 100);
+  document.getElementById('result-score').textContent = pct + '%';
+  const motiv = getMotivation(pct);
+  document.getElementById('result-msg').textContent = motiv.msg;
+  document.getElementById('result-msg').style.color = motiv.color;
+  document.getElementById('result-sub').textContent = `أجبت صح على ${score} من 7 أسئلة`;
+  document.getElementById('result-box').classList.add('show');
+  document.getElementById('q-progress').style.width = '100%';
+}
+
+function getMotivation(pct) {
+  if (pct >= 86) return { msg: "ممتاز! أنت مهندس محركات DC محترف 🏆", color: "var(--accent-green)" };
+  if (pct >= 71) return { msg: "جيد جداً! راجع النقاط الضعيفة 💪", color: "var(--accent-blue)" };
+  if (pct >= 50) return { msg: "مقبول، راجع الصفحة مرة أخرى 📚", color: "var(--accent-yellow)" };
+  return { msg: "لا تيأس! ادرس ثم عاود المحاولة 🔄", color: "var(--accent-red)" };
+}
+
+function shareResult(platform) {
+  const pct = Math.round(score / 7 * 100);
+  const text = `حصلت على ${pct}% في اختبار "مقارنة محركات التيار المستمر" ⚙️\nجرّب أنت: fahdacademy.org\nالمدرب فهد رفاعي @fahraf1`;
+  if (platform === 'wa') window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
+  else window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
+}
+
+function restartQuiz() {
+  score = 0;
+  currentQ = 0;
+  answered.fill(false);
+  document.getElementById('result-box').classList.remove('show');
+  document.querySelectorAll('.quiz-question').forEach((q, i) => {
+    q.classList.remove('active');
+    q.querySelectorAll('.option-btn').forEach(b => { b.classList.remove('correct','wrong'); b.disabled = false; });
+    const fb = document.getElementById('fb-' + i);
+    if (fb) { fb.className = 'feedback-box'; fb.innerHTML = ''; }
+    const nb = document.getElementById('next-' + i);
+    if (nb) nb.classList.remove('show');
+  });
+  document.querySelectorAll('.quiz-question')[0].classList.add('active');
+  document.getElementById('q-progress').style.width = '0%';
+}
+</script>
+</body>
+</html>
