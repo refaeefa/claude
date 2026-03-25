@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أبوعريش — متحف الزمن الجميل الرقمي</title>
+<meta property="og:title" content="أبوعريش — متحف الزمن الجميل الرقمي">
+<meta property="og:description" content="صور تنطق بالحنين • تحريك AI • Pure Nostalgia">
+<meta property="og:image" content="https://i.imgur.com/placeholder.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sand: #c8a96e;
+    --sand-light: #e8d5a3;
+    --sand-dark: #8b6914;
+    --earth: #3d2b1f;
+    --earth-mid: #5c3d2e;
+    --earth-light: #7a5445;
+    --sky-dusk: #d4724a;
+    --sky-twilight: #8b3a2f;
+    --cream: #f5ede0;
+    --text-warm: #e8d5a3;
+    --text-muted: #a08060;
+    --glow-sand: rgba(200, 169, 110, 0.4);
+    --glow-dusk: rgba(212, 114, 74, 0.3);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--earth);
+    color: var(--text-warm);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== GRAIN OVERLAY ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* ===== HERO SECTION ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem 4rem;
+    overflow: hidden;
+  }
+
+  /* Dusk sky gradient */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 120% 60% at 50% 0%, rgba(212,114,74,0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 80% 40% at 20% 80%, rgba(139,58,47,0.2) 0%, transparent 60%),
+      linear-gradient(180deg, #2a1810 0%, #3d2b1f 40%, #4a3020 100%);
+    z-index: 0;
+  }
+
+  /* Desert horizon line */
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(180deg, transparent 0%, rgba(15,8,4,0.8) 100%);
+    z-index: 0;
+  }
+
+  /* Floating particles */
+  .particles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--sand);
+    border-radius: 50%;
+    opacity: 0;
+    animation: float-up var(--dur, 8s) var(--delay, 0s) infinite ease-in;
+  }
+
+  @keyframes float-up {
+    0% { opacity: 0; transform: translateY(0) scale(1); }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-100px) scale(0.3); }
+  }
+
+  /* ===== LOGO / AVATAR ===== */
+  .avatar-wrap {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 1.5rem;
+    animation: entrance 1s ease-out;
+  }
+
+  @keyframes entrance {
+    from { opacity: 0; transform: translateY(-30px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .avatar-ring {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sand), var(--sky-dusk), var(--sand-dark));
+    padding: 3px;
+    animation: ring-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes ring-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 var(--glow-sand), 0 0 30px var(--glow-dusk); }
+    50% { box-shadow: 0 0 0 8px rgba(200,169,110,0.1), 0 0 50px var(--glow-dusk); }
+  }
+
+  .avatar-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--earth-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Palm tree silhouette in avatar */
+  .avatar-emoji {
+    font-size: 2.8rem;
+    line-height: 1;
+    animation: sway 4s ease-in-out infinite;
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+
+  /* ===== BRAND NAME ===== */
+  .brand-name {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    animation: entrance 1s ease-out 0.2s both;
+  }
+
+  .brand-title {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    font-weight: 700;
+    color: var(--sand);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    text-shadow: 0 2px 20px var(--glow-sand);
+  }
+
+  .brand-handle {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== TAGLINE ===== */
+  .tagline {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin: 1.2rem 0 2rem;
+    animation: entrance 1s ease-out 0.4s both;
+  }
+
+  .tagline-main {
+    font-size: 1.1rem;
+    color: var(--cream);
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  .tagline-accent {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--sand), var(--sky-dusk));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+  }
+
+  /* ===== STATS ROW ===== */
+  .stats-row {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    animation: entrance 1s ease-out 0.5s both;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--sand);
+    display: block;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+  }
+
+  .stat-divider {
+    width: 1px;
+    background: rgba(200,169,110,0.2);
+    align-self: stretch;
+  }
+
+  /* ===== LINKS STACK ===== */
+  .links-stack {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    animation: entrance 1s ease-out 0.6s both;
+  }
+
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.3rem;
+    border-radius: 14px;
+    text-decoration: none;
+    color: var(--text-warm);
+    border: 1px solid rgba(200,169,110,0.15);
+    background: rgba(61, 43, 31, 0.6);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .link-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(200,169,110,0.05));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .link-card:hover::before { opacity: 1; }
+
+  .link-card:hover {
+    border-color: rgba(200,169,110,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3), 0 0 20px var(--glow-sand);
+  }
+
+  .link-card:active {
+    transform: translateY(0);
+  }
+
+  /* Primary TikTok card */
+  .link-card.primary {
+    background: linear-gradient(135deg, rgba(212,114,74,0.2), rgba(139,58,47,0.2));
+    border-color: rgba(212,114,74,0.3);
+  }
+
+  .link-card.primary:hover {
+    border-color: var(--sky-dusk);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3), 0 0 25px var(--glow-dusk);
+  }
+
+  .link-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .link-icon.tiktok { background: rgba(0,0,0,0.4); }
+  .link-icon.twitter { background: rgba(29,161,242,0.1); }
+  .link-icon.youtube { background: rgba(255,0,0,0.1); }
+  .link-icon.map { background: rgba(200,169,110,0.1); }
+
+  .link-text {
+    flex: 1;
+  }
+
+  .link-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: block;
+    line-height: 1.2;
+  }
+
+  .link-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.15rem;
+    display: block;
+  }
+
+  .link-arrow {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+
+  .link-card:hover .link-arrow {
+    transform: translateX(-4px);
+    color: var(--sand);
+  }
+
+  /* ===== DECORATIVE SECTION DIVIDER ===== */
+  .divider {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0.5rem 0;
+    animation: entrance 1s ease-out 0.6s both;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,169,110,0.2), transparent);
+  }
+
+  .divider-dot {
+    font-size: 0.6rem;
+    color: var(--sand);
+    opacity: 0.5;
+  }
+
+  /* ===== NOSTALGIA BADGE ===== */
+  .nostalgia-badge {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    border: 1px solid rgba(200,169,110,0.2);
+    background: rgba(61,43,31,0.5);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 1.8rem;
+    animation: entrance 1s ease-out 0.35s both;
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sky-dusk);
+    animation: blink 2s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-bottom: 2rem;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    opacity: 0.6;
+    animation: entrance 1s ease-out 0.8s both;
+  }
+
+  /* ===== SCROLL HINT ===== */
+  .scroll-hint {
+    display: none;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 360px) {
+    .stats-row { gap: 1rem; }
+    .stat-num { font-size: 1.2rem; }
+    .brand-title { font-size: 1.8rem; }
+  }
+
+  /* ===== ANIMATED BACKGROUND STARS ===== */
+  .bg-stars {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .star {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    background: var(--sand-light);
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle var(--dur, 3s) var(--delay, 0s) infinite ease-in-out;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(2); }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <!-- Background elements -->
+  <div class="bg-stars" id="stars"></div>
+  <div class="particles" id="particles"></div>
+
+  <!-- Avatar -->
+  <div class="avatar-wrap">
+    <div class="avatar-ring">
+      <div class="avatar-inner">
+        <span class="avatar-emoji">🌴</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand -->
+  <div class="brand-name">
+    <div class="brand-title">♦ أبوعريش ♦</div>
+    <div class="brand-handle">@aboarish</div>
+  </div>
+
+  <!-- Badge -->
+  <div class="nostalgia-badge">
+    <span class="badge-dot"></span>
+    متحف الزمن الجميل الرقمي 🇸🇦
+  </div>
+
+  <!-- Tagline -->
+  <div class="tagline">
+    <div class="tagline-main">
+      صور تنطق بالحنين<br>
+      <span class="tagline-accent">تحريك AI · Pure Nostalgia</span>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <span class="stat-num" id="followers-count">10.6K</span>
+      <span class="stat-label">متابع</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num">64.8K</span>
+      <span class="stat-label">إعجاب</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num">1.1M+</span>
+      <span class="stat-label">مشاهدة</span>
+    </div>
+  </div>
+
+  <!-- Links -->
+  <div class="links-stack">
+
+    <!-- TikTok PRIMARY -->
+    <a href="https://www.tiktok.com/@aboarish" target="_blank" class="link-card primary">
+      <div class="link-icon tiktok">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.83 1.56V6.79a4.85 4.85 0 0 1-1.06-.1z"/>
+        </svg>
+      </div>
+      <div class="link-text">
+        <span class="link-title">تيك توك @aboarish</span>
+        <span class="link-sub">الحساب الرئيسي · المحتوى التراثي</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-dot">◆</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Twitter/X -->
+    <a href="https://x.com/aboarishai" target="_blank" class="link-card">
+      <div class="link-icon twitter">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#1d9bf0">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.632 5.903-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      </div>
+      <div class="link-text">
+        <span class="link-title">تويتر @aboarishai</span>
+        <span class="link-sub">آخر المنشورات والصور</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+    <!-- YouTube -->
+    <a href="https://www.youtube.com/@fahraf1" target="_blank" class="link-card">
+      <div class="link-icon youtube">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff0000">
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+      </div>
+      <div class="link-text">
+        <span class="link-title">يوتيوب @fahraf1</span>
+        <span class="link-sub">كورسات هندسية · فهد رفاعي</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-dot">◆</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Abu Arish Map -->
+    <a href="https://maps.google.com/?q=Abu+Arish,+Saudi+Arabia" target="_blank" class="link-card">
+      <div class="link-icon map">🗺️</div>
+      <div class="link-text">
+        <span class="link-title">أبوعريش على الخريطة</span>
+        <span class="link-sub">منطقة جازان · المملكة العربية السعودية</span>
+      </div>
+      <span class="link-arrow">←</span>
+    </a>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    صُنع بحنين 🌴 · أبوعريش ٢٠٢٦
+  </div>
+
+</section>
+
+<script>
+  // Generate twinkling stars
+  const starsContainer = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.cssText = `
+      left: ${Math.random() * 100}%;
+      top: ${Math.random() * 60}%;
+      --dur: ${2 + Math.random() * 4}s;
+      --delay: ${Math.random() * 5}s;
+      width: ${Math.random() > 0.8 ? 2 : 1}px;
+      height: ${Math.random() > 0.8 ? 2 : 1}px;
+    `;
+    starsContainer.appendChild(star);
+  }
+
+  // Generate floating particles
+  const particlesContainer = document.getElementById('particles');
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      left: ${Math.random() * 100}%;
+      bottom: ${Math.random() * 40}%;
+      --dur: ${6 + Math.random() * 8}s;
+      --delay: ${Math.random() * 8}s;
+    `;
+    particlesContainer.appendChild(p);
+  }
+
+  // Animate stats counter
+  function animateCount(el, target, suffix = '') {
+    const isFloat = target.toString().includes('.');
+    const num = parseFloat(target);
+    const dur = 1500;
+    const start = performance.now();
+    
+    requestAnimationFrame(function step(now) {
+      const progress = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = (num * eased);
+      el.textContent = (isFloat ? current.toFixed(1) : Math.round(current)) + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    });
+  }
+
+  // Run on load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const el = document.getElementById('followers-count');
+      animateCount(el, 10.6, 'K');
+    }, 800);
+  });
+
+  // Touch feedback for mobile
+  document.querySelectorAll('.link-card').forEach(card => {
+    card.addEventListener('touchstart', () => card.style.transform = 'scale(0.98)');
+    card.addEventListener('touchend', () => card.style.transform = '');
+  });
+</script>
+
+</body>
+</html>
