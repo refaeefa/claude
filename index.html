@@ -547,8 +547,8 @@
   .share-btn.copied { color: #10b981 !important; border-color: #10b981 !important; }
 
 
-  /* ===== CONTACT BUTTON ===== */
-  .contact-btn {
+  /* ===== CONTACT FORM ===== */
+  .contact-box {
     position: relative;
     z-index: 2;
     width: 100%;
@@ -557,76 +557,110 @@
     animation: entrance 1s ease-out 0.7s both;
   }
 
-  .contact-link {
+  .contact-box-inner {
+    background: rgba(61,43,31,0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(200,169,110,0.18);
+    border-radius: 16px;
+    padding: 1.3rem;
+    transition: border-color 0.3s;
+  }
+
+  .contact-box-inner:focus-within {
+    border-color: rgba(200,169,110,0.45);
+    box-shadow: 0 0 25px var(--glow-sand);
+  }
+
+  .contact-box-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--sand);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .contact-box-title svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .contact-field {
+    width: 100%;
+    background: rgba(15,8,4,0.4);
+    border: 1px solid rgba(200,169,110,0.12);
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+    color: var(--text-warm);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.9rem;
+    margin-bottom: 0.7rem;
+    outline: none;
+    transition: border-color 0.2s;
+    display: block;
+    resize: none;
+  }
+
+  .contact-field::placeholder { color: var(--text-muted); }
+  .contact-field:focus { border-color: rgba(200,169,110,0.4); }
+
+  .contact-submit {
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, var(--sand-dark), var(--sky-dusk));
+    color: white;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.8rem;
-    padding: 1rem 1.5rem;
-    border-radius: 14px;
-    text-decoration: none;
-    color: white;
-    font-weight: 700;
-    font-size: 1rem;
-    background: linear-gradient(135deg, #010101 0%, #2d2d2d 50%, #010101 100%);
-    border: 1px solid rgba(255,255,255,0.1);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
+    gap: 0.5rem;
   }
 
-  .contact-link::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(105,201,208,0.15), rgba(238,29,82,0.15));
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .contact-link:hover::before { opacity: 1; }
-
-  .contact-link:hover {
+  .contact-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 25px rgba(105,201,208,0.2), 0 0 25px rgba(238,29,82,0.2);
-    border-color: rgba(105,201,208,0.3);
+    box-shadow: 0 6px 20px var(--glow-dusk);
   }
 
-  .contact-link:active { transform: scale(0.98); }
+  .contact-submit:active { transform: scale(0.98); }
+  .contact-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-  .contact-tiktok-icon {
-    width: 28px;
-    height: 28px;
-    flex-shrink: 0;
+  .contact-status {
+    margin-top: 0.7rem;
+    font-size: 0.82rem;
+    text-align: center;
+    min-height: 1.2rem;
+    border-radius: 8px;
+    padding: 0.4rem;
+    display: none;
   }
 
-  .contact-text-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  .contact-status.success {
+    display: block;
+    color: #10b981;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.2);
   }
 
-  .contact-title {
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1;
+  .contact-status.error {
+    display: block;
+    color: #ef4444;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.2);
   }
 
-  .contact-sub {
-    font-size: 0.72rem;
-    opacity: 0.6;
-    font-weight: 400;
-    margin-top: 0.2rem;
-  }
-
-  .contact-pulse {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #ee1d52;
-    margin-right: auto;
-    animation: blink 1.5s ease-in-out infinite;
-    flex-shrink: 0;
+  .contact-status.sending {
+    display: block;
+    color: var(--sand);
+    background: rgba(200,169,110,0.08);
+    border: 1px solid rgba(200,169,110,0.15);
   }
 
 </style>
@@ -756,20 +790,49 @@
 
 
 
-      <!-- TikTok DM Contact Button -->
-      <div class="contact-btn">
-        <a class="contact-link" href="https://www.tiktok.com/@aboarish" target="_blank">
-          <svg class="contact-tiktok-icon" viewBox="0 0 24 24" fill="none">
-            <!-- TikTok icon with cyan/red glow colors -->
-            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.83 1.56V6.79a4.85 4.85 0 0 1-1.06-.1z" fill="#69c9d0"/>
-            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.83 1.56V6.79a4.85 4.85 0 0 1-1.06-.1z" fill="#ee1d52" opacity="0.5" transform="translate(1,1)"/>
-          </svg>
-          <div class="contact-text-wrap">
-            <span class="contact-title">تواصل معنا</span>
-            <span class="contact-sub">راسلنا على TikTok DM</span>
+      <!-- Contact Form -->
+      <div class="contact-box">
+        <div class="contact-box-inner">
+          <div class="contact-box-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            تواصل معنا
           </div>
-          <span class="contact-pulse"></span>
-        </a>
+
+          <input
+            class="contact-field"
+            type="text"
+            id="cf-name"
+            placeholder="اسمك"
+            maxlength="80"
+            autocomplete="off"
+          />
+          <input
+            class="contact-field"
+            type="email"
+            id="cf-email"
+            placeholder="إيميلك (اختياري)"
+            maxlength="120"
+            autocomplete="off"
+          />
+          <textarea
+            class="contact-field"
+            id="cf-msg"
+            placeholder="رسالتك..."
+            rows="4"
+            maxlength="1000"
+          ></textarea>
+
+          <button class="contact-submit" id="cf-btn" onclick="sendContactForm()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            إرسال الرسالة
+          </button>
+
+          <div class="contact-status" id="cf-status"></div>
+        </div>
       </div>
 
   <!-- Share Section -->
@@ -905,6 +968,71 @@
       setTimeout(() => { el.classList.remove('copied'); span.textContent = orig; }, 2000);
     });
   }
+
+
+  // ===== CONTACT FORM =====
+  async function sendContactForm() {
+    const name    = document.getElementById('cf-name').value.trim();
+    const email   = document.getElementById('cf-email').value.trim();
+    const message = document.getElementById('cf-msg').value.trim();
+    const btn     = document.getElementById('cf-btn');
+    const status  = document.getElementById('cf-status');
+
+    if (!name || !message) {
+      status.className = 'contact-status error';
+      status.textContent = '⚠️ الاسم والرسالة مطلوبان';
+      return;
+    }
+
+    btn.disabled = true;
+    status.className = 'contact-status sending';
+    status.textContent = '⏳ جارٍ الإرسال...';
+
+    const body = `الاسم: ${name}\nالإيميل: ${email || 'لم يُذكر'}\n\nالرسالة:\n${message}`;
+
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/e6478e4788da2e7c0c2abf5222310896', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: 'رسالة جديدة من أبوعريش — ' + name,
+          name: name,
+          email: email || 'no-reply@aboarish.page',
+          message: body,
+          _replyto: email || 'no-reply@aboarish.page',
+          _template: 'table'
+        })
+      });
+
+      const data = await res.json();
+      if (data.success === 'true' || data.success === true) {
+        status.className = 'contact-status success';
+        status.textContent = '✅ وصلت رسالتك! سنرد عليك قريباً 🌴';
+        document.getElementById('cf-name').value = '';
+        document.getElementById('cf-email').value = '';
+        document.getElementById('cf-msg').value = '';
+      } else {
+        throw new Error('failed');
+      }
+    } catch {
+      // Fallback: mailto hidden
+      const mailBody = encodeURIComponent(body);
+      const mailSub  = encodeURIComponent('رسالة من أبوعريش: ' + name);
+      window.location.href = `mailto:e6478e4788da2e7c0c2abf5222310896@formsubmit.co?subject=${mailSub}&body=${mailBody}`;
+      status.className = 'contact-status success';
+      status.textContent = '📧 فُتح تطبيق البريد — أرسل الرسالة منه';
+    }
+
+    btn.disabled = false;
+  }
+
+  // Allow Enter in name/email to jump to next field
+  document.getElementById('cf-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('cf-email').focus(); }
+  });
+  document.getElementById('cf-email').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('cf-msg').focus(); }
+  });
 
 </script>
 
