@@ -663,6 +663,52 @@
     border: 1px solid rgba(200,169,110,0.15);
   }
 
+
+  /* ===== CONTACT GUIDE ===== */
+  .contact-guide {
+    background: rgba(200,169,110,0.06);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-right: 3px solid var(--sand);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .guide-main {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--sand);
+    margin-bottom: 0.5rem;
+  }
+
+  .guide-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .guide-list li {
+    font-size: 0.78rem;
+    color: var(--text-warm);
+    line-height: 1.5;
+  }
+
+  .guide-note {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+  }
+
+  .guide-footer {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+    border-top: 1px solid rgba(200,169,110,0.15);
+    padding-top: 0.5rem;
+    margin-top: 0.4rem;
+  }
+
 </style>
 </head>
 <body>
@@ -800,27 +846,46 @@
             تواصل معنا
           </div>
 
+          <div class="contact-guide">
+            <p class="guide-main">📋 قبل الإرسال — اقرأ هذا:</p>
+            <ul class="guide-list">
+              <li>✅ اذكر <strong>اسمك الكامل</strong> وطريقة تواصل واضحة <span class="guide-note">(إيميل أو حساب سوشيال)</span></li>
+              <li>✅ وضّح <strong>طلبك بالتفصيل</strong> — ماذا تريد بالضبط؟</li>
+              <li>✅ إذا كان تعاوناً: اذكر <strong>طبيعة التعاون والهدف منه</strong></li>
+              <li>❌ رقم الجوال وحده <strong>لا يكفي</strong> للرد — أضف تفاصيل طلبك</li>
+            </ul>
+            <p class="guide-footer">الرسائل الجادة والواضحة فقط هي التي نردّ عليها 🌴</p>
+          </div>
+
           <input
             class="contact-field"
             type="text"
             id="cf-name"
-            placeholder="اسمك"
+            placeholder="اسمك الكامل *"
             maxlength="80"
+            autocomplete="off"
+          />
+          <input
+            class="contact-field"
+            type="text"
+            id="cf-contact"
+            placeholder="طريقة تواصلك: إيميل أو حساب سوشيال *"
+            maxlength="120"
             autocomplete="off"
           />
           <input
             class="contact-field"
             type="email"
             id="cf-email"
-            placeholder="إيميلك (اختياري)"
+            placeholder="إيميلك (لاستلام ردنا عليك — اختياري)"
             maxlength="120"
             autocomplete="off"
           />
           <textarea
             class="contact-field"
             id="cf-msg"
-            placeholder="رسالتك..."
-            rows="4"
+            placeholder="رسالتك بالتفصيل: ماذا تريد؟ وما الهدف من تواصلك؟..."
+            rows="5"
             maxlength="1000"
           ></textarea>
 
@@ -1002,7 +1067,7 @@
           subject: 'رسالة جديدة من أبوعريش — ' + name,
           from_name: name,
           email: email || 'visitor@aboarish.page',
-          message: `الاسم: ${name}\nالإيميل: ${email || 'لم يُذكر'}\n\nالرسالة:\n${message}`,
+          message: `الاسم: ${name}\nطريقة التواصل: ${document.getElementById('cf-contact').value.trim() || 'لم تُذكر'}\nالإيميل: ${email || 'لم يُذكر'}\n\nالرسالة:\n${message}`,
           botcheck: ''
         })
       });
@@ -1012,6 +1077,7 @@
         status.className = 'contact-status success';
         status.textContent = '✅ وصلت رسالتك! سنرد قريباً 🌴';
         document.getElementById('cf-name').value = '';
+        document.getElementById('cf-contact').value = '';
         document.getElementById('cf-email').value = '';
         document.getElementById('cf-msg').value = '';
       } else {
@@ -1027,6 +1093,9 @@
   }
 
   document.getElementById('cf-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('cf-contact').focus(); }
+  });
+  document.getElementById('cf-contact').addEventListener('keydown', e => {
     if (e.key === 'Enter') { e.preventDefault(); document.getElementById('cf-email').focus(); }
   });
   document.getElementById('cf-email').addEventListener('keydown', e => {
