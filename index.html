@@ -546,6 +546,89 @@
 
   .share-btn.copied { color: #10b981 !important; border-color: #10b981 !important; }
 
+
+  /* ===== CONTACT BUTTON ===== */
+  .contact-btn {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 1rem;
+    animation: entrance 1s ease-out 0.7s both;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1rem 1.5rem;
+    border-radius: 14px;
+    text-decoration: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #010101 0%, #2d2d2d 50%, #010101 100%);
+    border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .contact-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(105,201,208,0.15), rgba(238,29,82,0.15));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .contact-link:hover::before { opacity: 1; }
+
+  .contact-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 25px rgba(105,201,208,0.2), 0 0 25px rgba(238,29,82,0.2);
+    border-color: rgba(105,201,208,0.3);
+  }
+
+  .contact-link:active { transform: scale(0.98); }
+
+  .contact-tiktok-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+
+  .contact-text-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contact-title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .contact-sub {
+    font-size: 0.72rem;
+    opacity: 0.6;
+    font-weight: 400;
+    margin-top: 0.2rem;
+  }
+
+  .contact-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ee1d52;
+    margin-right: auto;
+    animation: blink 1.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
 </style>
 </head>
 <body>
@@ -671,6 +754,23 @@
 
   </div>
 
+
+
+      <!-- TikTok DM Contact Button -->
+      <div class="contact-btn">
+        <a class="contact-link" href="https://www.tiktok.com/@aboarish" target="_blank">
+          <svg class="contact-tiktok-icon" viewBox="0 0 24 24" fill="none">
+            <!-- TikTok icon with cyan/red glow colors -->
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.83 1.56V6.79a4.85 4.85 0 0 1-1.06-.1z" fill="#69c9d0"/>
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.22 8.22 0 0 0 4.83 1.56V6.79a4.85 4.85 0 0 1-1.06-.1z" fill="#ee1d52" opacity="0.5" transform="translate(1,1)"/>
+          </svg>
+          <div class="contact-text-wrap">
+            <span class="contact-title">تواصل معنا</span>
+            <span class="contact-sub">راسلنا على TikTok DM</span>
+          </div>
+          <span class="contact-pulse"></span>
+        </a>
+      </div>
 
   <!-- Share Section -->
   <div class="share-section">
