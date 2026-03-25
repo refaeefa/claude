@@ -454,6 +454,98 @@
     0%, 100% { opacity: 0; transform: scale(1); }
     50% { opacity: 0.7; transform: scale(2); }
   }
+
+  /* ===== SHARE SECTION ===== */
+  .share-section {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 1.8rem;
+    animation: entrance 1s ease-out 0.9s both;
+  }
+
+  .share-label {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .share-label::before,
+  .share-label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,169,110,0.25));
+  }
+  .share-label::before { right: 0; }
+  .share-label::after { left: 0; transform: scaleX(-1); }
+
+  .share-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+  }
+
+  .share-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 14px;
+    text-decoration: none;
+    border: 1px solid rgba(200,169,110,0.12);
+    background: rgba(61,43,31,0.55);
+    backdrop-filter: blur(8px);
+    color: var(--text-warm);
+    font-size: 0.68rem;
+    font-weight: 600;
+    min-width: 68px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+  }
+
+  .share-btn svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  .share-btn:hover {
+    transform: translateY(-3px);
+    border-color: currentColor;
+  }
+
+  .share-btn:active { transform: scale(0.95); }
+
+  .share-btn.wa  { color: #25d366; }
+  .share-btn.wa:hover  { background: rgba(37,211,102,0.12); box-shadow: 0 6px 20px rgba(37,211,102,0.2); }
+
+  .share-btn.tg  { color: #29b6f6; }
+  .share-btn.tg:hover  { background: rgba(41,182,246,0.12); box-shadow: 0 6px 20px rgba(41,182,246,0.2); }
+
+  .share-btn.tw  { color: #e7e7e7; }
+  .share-btn.tw:hover  { background: rgba(231,231,231,0.1); box-shadow: 0 6px 20px rgba(231,231,231,0.1); }
+
+  .share-btn.fb  { color: #1877f2; }
+  .share-btn.fb:hover  { background: rgba(24,119,242,0.12); box-shadow: 0 6px 20px rgba(24,119,242,0.2); }
+
+  .share-btn.em  { color: var(--sand); }
+  .share-btn.em:hover  { background: rgba(200,169,110,0.12); box-shadow: 0 6px 20px var(--glow-sand); }
+
+  .share-btn.cp  { color: var(--sky-dusk); }
+  .share-btn.cp:hover  { background: rgba(212,114,74,0.12); box-shadow: 0 6px 20px var(--glow-dusk); }
+
+  .share-btn.copied { color: #10b981 !important; border-color: #10b981 !important; }
+
 </style>
 </head>
 <body>
@@ -579,6 +671,45 @@
 
   </div>
 
+
+  <!-- Share Section -->
+  <div class="share-section">
+    <div class="share-label">شارك الصفحة</div>
+    <div class="share-grid">
+
+      <a class="share-btn wa" href="#" onclick="shareWA(); return false;" title="واتساب">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.532 5.845L.057 23.5l5.797-1.521A11.933 11.933 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.646-.497-5.168-1.367l-.37-.22-3.44.902.919-3.352-.241-.386A9.937 9.937 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        <span>واتساب</span>
+      </a>
+
+      <a class="share-btn tg" href="#" onclick="shareTG(); return false;" title="تيليقرام">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        <span>تيليقرام</span>
+      </a>
+
+      <a class="share-btn tw" href="#" onclick="shareTW(); return false;" title="تويتر">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.632 5.903-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        <span>تويتر</span>
+      </a>
+
+      <a class="share-btn fb" href="#" onclick="shareFB(); return false;" title="فيسبوك">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        <span>فيسبوك</span>
+      </a>
+
+      <a class="share-btn em" href="#" onclick="shareEmail(); return false;" title="إيميل">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        <span>إيميل</span>
+      </a>
+
+      <a class="share-btn cp" href="#" onclick="copyLink(this); return false;" title="نسخ الرابط">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+        <span>نسخ الرابط</span>
+      </a>
+
+    </div>
+  </div>
+
   <!-- Footer -->
   <div class="footer">
     صُنع بحنين 🌴 · أبوعريش ٢٠٢٦
@@ -646,6 +777,35 @@
     card.addEventListener('touchstart', () => card.style.transform = 'scale(0.98)');
     card.addEventListener('touchend', () => card.style.transform = '');
   });
+
+  const PAGE_URL = 'https://aboarish--fahadlab.netlify.app';
+  const PAGE_TEXT = 'أبوعريش — متحف الزمن الجميل الرقمي 🌴 صور تنطق بالحنين • تحريك AI';
+
+  function shareWA() {
+    window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(PAGE_TEXT + '\n' + PAGE_URL), '_blank');
+  }
+  function shareTG() {
+    window.open('https://t.me/share/url?url=' + encodeURIComponent(PAGE_URL) + '&text=' + encodeURIComponent(PAGE_TEXT), '_blank');
+  }
+  function shareTW() {
+    window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(PAGE_TEXT) + '&url=' + encodeURIComponent(PAGE_URL), '_blank');
+  }
+  function shareFB() {
+    window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(PAGE_URL), '_blank');
+  }
+  function shareEmail() {
+    window.location.href = 'mailto:?subject=' + encodeURIComponent('أبوعريش — متحف الزمن الجميل الرقمي') + '&body=' + encodeURIComponent(PAGE_TEXT + '\n\n' + PAGE_URL);
+  }
+  function copyLink(el) {
+    navigator.clipboard.writeText(PAGE_URL).then(() => {
+      el.classList.add('copied');
+      const span = el.querySelector('span');
+      const orig = span.textContent;
+      span.textContent = 'تم النسخ ✓';
+      setTimeout(() => { el.classList.remove('copied'); span.textContent = orig; }, 2000);
+    });
+  }
+
 </script>
 
 </body>
