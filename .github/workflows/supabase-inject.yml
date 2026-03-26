@@ -1,0 +1,29 @@
+name: Inject Supabase & Deploy
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  inject:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Inject Supabase credentials
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          sed -i "s|%%SUPABASE_URL%%|${SUPABASE_URL}|g" index.html
+          sed -i "s|%%SUPABASE_ANON_KEY%%|${SUPABASE_ANON_KEY}|g" index.html
+          echo "✅ Credentials injected"
+
+      - name: Commit injected file
+        run: |
+          git config user.email "fahd@fahdacademy.org"
+          git config user.name "Fahad Refai"
+          git add index.html
+          git diff --staged --quiet || git commit -m "ci: inject supabase credentials"
+          git push
