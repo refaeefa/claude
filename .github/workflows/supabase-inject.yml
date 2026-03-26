@@ -5,6 +5,9 @@ on:
     branches-ignore:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   inject:
     runs-on: ubuntu-latest
@@ -12,6 +15,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.ref }}
 
       - name: Inject Supabase credentials
         env:
@@ -23,9 +27,11 @@ jobs:
           echo "✅ Credentials injected"
 
       - name: Commit injected file
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.email "fahd@fahdacademy.org"
-          git config user.name "Fahad Refai"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
           git add index.html
-          git diff --staged --quiet || git commit -m "ci: inject supabase credentials"
+          git diff --staged --quiet || git commit -m "ci: inject supabase credentials [skip ci]"
           git push
