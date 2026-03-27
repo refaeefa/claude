@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منظم مجموعات المشاريع — fahdacademy.org</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+:root {
+  --bg-primary:    #0a0e1a;
+  --bg-card:       #111827;
+  --bg-elevated:   #1a2235;
+  --accent-blue:   #3b82f6;
+  --accent-green:  #10b981;
+  --accent-yellow: #f59e0b;
+  --accent-red:    #ef4444;
+  --accent-purple: #8b5cf6;
+  --text-primary:  #f1f5f9;
+  --text-secondary:#94a3b8;
+  --border:        #2d3748;
+  --glow:          0 0 20px rgba(59,130,246,0.3);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  direction: rtl;
+}
+
+/* ─── HEADER ─── */
+.page-header {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.brand { display: flex; align-items: center; gap: .75rem; }
+.brand-icon { font-size: 1.8rem; }
+.brand-name { font-weight: 900; color: var(--accent-blue); font-size: 1rem; }
+.brand-sub { color: var(--text-secondary); font-size: .75rem; }
+.page-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); }
+.page-meta { color: var(--text-secondary); font-size: .75rem; }
+
+/* ─── LAYOUT ─── */
+.main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+@media (max-width: 900px) { .main { grid-template-columns: 1fr; } }
+
+/* ─── PANEL ─── */
+.panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.panel-header {
+  background: var(--bg-elevated);
+  padding: .9rem 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  border-bottom: 1px solid var(--border);
+}
+.panel-header h2 { font-size: 1rem; font-weight: 700; }
+.panel-body { padding: 1.3rem; }
+
+/* ─── SECTION TABS ─── */
+.section-tabs {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1rem;
+}
+.tab-btn {
+  flex: 1;
+  padding: .55rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: 'Cairo', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  font-size: .9rem;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+  color: white;
+  border-color: var(--accent-blue);
+  box-shadow: var(--glow);
+}
+
+/* ─── UPLOAD ZONE ─── */
+.upload-zone {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  margin-bottom: 1rem;
+  background: var(--bg-elevated);
+}
+.upload-zone:hover { border-color: var(--accent-blue); background: rgba(59,130,246,0.05); }
+.upload-zone.drag-over { border-color: var(--accent-green); background: rgba(16,185,129,0.05); }
+.upload-icon { font-size: 2rem; margin-bottom: .4rem; }
+.upload-text { color: var(--text-secondary); font-size: .85rem; }
+.upload-link { color: var(--accent-blue); text-decoration: underline; cursor: pointer; }
+#fileInput { display: none; }
+
+/* ─── TRAINEES LIST ─── */
+.list-controls {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: .75rem;
+  align-items: center;
+}
+.search-input {
+  flex: 1;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .5rem .9rem;
+  color: var(--text-primary);
+  font-family: 'Cairo', sans-serif;
+  font-size: .85rem;
+}
+.search-input:focus { outline: none; border-color: var(--accent-blue); }
+.select-all-btn {
+  padding: .45rem .8rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-family: 'Cairo', sans-serif;
+  font-size: .8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .2s;
+}
+.select-all-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+
+.trainees-list {
+  max-height: 380px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.trainees-list::-webkit-scrollbar { width: 5px; }
+.trainees-list::-webkit-scrollbar-track { background: var(--bg-card); }
+.trainees-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+.trainee-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .7rem 1rem;
+  border-bottom: 1px solid rgba(45,55,72,0.5);
+  transition: background .15s;
+  cursor: pointer;
+}
+.trainee-item:last-child { border-bottom: none; }
+.trainee-item:hover { background: var(--bg-elevated); }
+.trainee-item.assigned { opacity: .45; pointer-events: none; }
+.trainee-item.selected { background: rgba(59,130,246,0.08); }
+
+.trainee-checkbox {
+  width: 18px; height: 18px;
+  accent-color: var(--accent-blue);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.trainee-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .78rem;
+  color: var(--accent-blue);
+  background: rgba(59,130,246,0.1);
+  padding: .1rem .4rem;
+  border-radius: 5px;
+  min-width: 42px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.trainee-name { flex: 1; font-size: .9rem; }
+.assigned-badge {
+  font-size: .7rem;
+  background: rgba(16,185,129,0.15);
+  color: var(--accent-green);
+  padding: .1rem .5rem;
+  border-radius: 20px;
+}
+
+/* ─── ASSIGN BAR ─── */
+.assign-bar {
+  margin-top: 1rem;
+  display: flex;
+  gap: .6rem;
+  align-items: center;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .75rem 1rem;
+}
+.assign-bar label { color: var(--text-secondary); font-size: .85rem; white-space: nowrap; }
+.group-num-input {
+  width: 60px;
+  padding: .4rem .5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.group-num-input:focus { outline: none; border-color: var(--accent-blue); }
+.assign-btn {
+  flex: 1;
+  padding: .55rem 1rem;
+  background: linear-gradient(135deg, var(--accent-green), #059669);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: .9rem;
+  transition: all .2s;
+}
+.assign-btn:hover { transform: translateY(-1px); box-shadow: 0 0 15px rgba(16,185,129,0.4); }
+.assign-btn:disabled { opacity: .4; pointer-events: none; }
+
+.selected-count {
+  font-size: .8rem;
+  color: var(--accent-yellow);
+  font-weight: 600;
+}
+
+/* ─── GROUPS PANEL ─── */
+.groups-toolbar {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.clear-btn {
+  padding: .45rem .9rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent-red);
+  background: rgba(239,68,68,0.08);
+  color: var(--accent-red);
+  font-family: 'Cairo', sans-serif;
+  font-size: .82rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+.clear-btn:hover { background: rgba(239,68,68,0.18); }
+.export-btn {
+  padding: .45rem .9rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent-blue);
+  background: rgba(59,130,246,0.08);
+  color: var(--accent-blue);
+  font-family: 'Cairo', sans-serif;
+  font-size: .82rem;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+.export-btn:hover { background: rgba(59,130,246,0.18); }
+
+.groups-container {
+  max-height: 500px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+.groups-container::-webkit-scrollbar { width: 5px; }
+.groups-container::-webkit-scrollbar-track { background: var(--bg-card); }
+.groups-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+.group-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.group-card:hover { border-color: var(--accent-blue); }
+.group-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .65rem 1rem;
+  background: rgba(0,0,0,.2);
+  border-bottom: 1px solid var(--border);
+}
+.group-title {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-weight: 700;
+}
+.group-num-badge {
+  background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+  color: white;
+  padding: .15rem .6rem;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .85rem;
+  font-weight: 700;
+}
+.group-section-tag {
+  font-size: .75rem;
+  background: rgba(139,92,246,0.15);
+  color: var(--accent-purple);
+  padding: .1rem .5rem;
+  border-radius: 20px;
+}
+.group-count {
+  font-size: .78rem;
+  color: var(--text-secondary);
+}
+.remove-group-btn {
+  background: none;
+  border: none;
+  color: var(--accent-red);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: .1rem .3rem;
+  border-radius: 4px;
+  transition: background .15s;
+}
+.remove-group-btn:hover { background: rgba(239,68,68,0.1); }
+
+.group-members {
+  padding: .6rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+.member-row {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .85rem;
+}
+.member-row .trainee-num { font-size: .75rem; }
+.remove-member-btn {
+  margin-right: auto;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: .8rem;
+  padding: .1rem .3rem;
+  border-radius: 4px;
+  transition: color .15s;
+  opacity: 0;
+}
+.member-row:hover .remove-member-btn { opacity: 1; }
+.remove-member-btn:hover { color: var(--accent-red); }
+
+/* ─── EMPTY STATE ─── */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+}
+.empty-icon { font-size: 3rem; margin-bottom: .75rem; }
+.empty-text { font-size: .9rem; }
+
+/* ─── SUMMARY BAR ─── */
+.summary-bar {
+  background: var(--bg-elevated);
+  border-top: 1px solid var(--border);
+  padding: .75rem 2rem;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .85rem;
+}
+.summary-label { color: var(--text-secondary); }
+.summary-val { font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+.summary-val.blue { color: var(--accent-blue); }
+.summary-val.green { color: var(--accent-green); }
+.summary-val.yellow { color: var(--accent-yellow); }
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .8rem 1.5rem;
+  font-size: .9rem;
+  font-weight: 600;
+  transition: transform .3s ease;
+  z-index: 999;
+  box-shadow: 0 8px 30px rgba(0,0,0,.5);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { border-color: var(--accent-green); color: var(--accent-green); }
+.toast.error { border-color: var(--accent-red); color: var(--accent-red); }
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  width: min(500px, 90vw);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal h3 { font-size: 1.1rem; margin-bottom: 1rem; }
+.modal-close {
+  float: left;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+.modal textarea {
+  width: 100%;
+  height: 200px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .75rem;
+  color: var(--text-primary);
+  font-family: 'Cairo', sans-serif;
+  font-size: .85rem;
+  resize: vertical;
+  direction: rtl;
+}
+.modal textarea:focus { outline: none; border-color: var(--accent-blue); }
+.modal-hint { font-size: .78rem; color: var(--text-secondary); margin-top: .4rem; }
+.modal-actions { display: flex; gap: .5rem; margin-top: 1rem; justify-content: flex-end; }
+.btn-primary {
+  padding: .55rem 1.2rem;
+  background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: .9rem;
+}
+.btn-secondary {
+  padding: .55rem 1.2rem;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: .9rem;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  color: var(--text-secondary);
+  font-size: .8rem;
+  border-top: 1px solid var(--border);
+}
+footer a { color: var(--accent-blue); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="page-header">
+  <div class="brand">
+    <span class="brand-icon">⚡</span>
+    <div>
+      <div class="brand-name">fahdacademy.org</div>
+      <div class="brand-sub">المدرب فهد رفاعي</div>
+    </div>
+  </div>
+  <div>
+    <div class="page-title">🗂️ منظم مجموعات المشاريع</div>
+    <div class="page-meta">تقسيم المتدربين لمجموعات العمل التطبيقي</div>
+  </div>
+</header>
+
+<!-- ─── SUMMARY BAR ─── -->
+<div class="summary-bar">
+  <div class="summary-item">
+    <span class="summary-label">إجمالي المتدربين:</span>
+    <span class="summary-val blue" id="totalCount">0</span>
+  </div>
+  <div class="summary-item">
+    <span class="summary-label">تم التوزيع:</span>
+    <span class="summary-val green" id="assignedCount">0</span>
+  </div>
+  <div class="summary-item">
+    <span class="summary-label">المتبقون:</span>
+    <span class="summary-val yellow" id="remainingCount">0</span>
+  </div>
+  <div class="summary-item">
+    <span class="summary-label">عدد المجموعات:</span>
+    <span class="summary-val blue" id="groupsCount">0</span>
+  </div>
+</div>
+
+<!-- ─── MAIN GRID ─── -->
+<div class="main">
+
+  <!-- ── LEFT: TRAINEES PANEL ── -->
+  <div class="panel">
+    <div class="panel-header">
+      <span>👥</span>
+      <h2>قائمة المتدربين</h2>
+    </div>
+    <div class="panel-body">
+
+      <!-- Section Tabs -->
+      <div class="section-tabs">
+        <button class="tab-btn active" onclick="switchSection(0)" id="tab0">الشعبة الأولى</button>
+        <button class="tab-btn" onclick="switchSection(1)" id="tab1">الشعبة الثانية</button>
+      </div>
+
+      <!-- Upload Zone -->
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()"
+           ondragover="event.preventDefault();this.classList.add('drag-over')"
+           ondragleave="this.classList.remove('drag-over')"
+           ondrop="handleDrop(event)">
+        <div class="upload-icon">📂</div>
+        <div class="upload-text">
+          اسحب ملف Excel هنا أو <span class="upload-link">اختر ملفاً</span>
+          <br><small style="color:var(--text-secondary);font-size:.75rem">العمود الأول: رقم المتدرب — العمود الثاني: الاسم</small>
+        </div>
+        <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="handleFileUpload(event)">
+      </div>
+
+      <!-- Or paste manually -->
+      <div style="text-align:center;margin-bottom:.75rem;">
+        <button class="select-all-btn" onclick="openPasteModal()" style="padding:.4rem 1rem;width:100%;">
+          ✏️ أو أدخل الأسماء يدوياً
+        </button>
+      </div>
+
+      <!-- List Controls -->
+      <div class="list-controls">
+        <input type="text" class="search-input" placeholder="🔍 ابحث عن متدرب..." oninput="filterList(this.value)" id="searchInput">
+        <button class="select-all-btn" onclick="toggleSelectAll()">تحديد الكل</button>
+      </div>
+
+      <!-- List -->
+      <div class="trainees-list" id="traineesList">
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <div class="empty-text">ارفع ملف Excel أو أدخل الأسماء يدوياً</div>
+        </div>
+      </div>
+
+      <!-- Assign Bar -->
+      <div class="assign-bar">
+        <label>أضف المحددين إلى مجموعة:</label>
+        <input type="number" class="group-num-input" id="groupNumInput" value="1" min="1" max="99">
+        <button class="assign-btn" onclick="assignSelected()" id="assignBtn">
+          ✅ إضافة
+        </button>
+        <span class="selected-count" id="selectedCount">0 محدد</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── RIGHT: GROUPS PANEL ── -->
+  <div class="panel">
+    <div class="panel-header">
+      <span>📦</span>
+      <h2>المجموعات</h2>
+    </div>
+    <div class="panel-body">
+
+      <div class="groups-toolbar">
+        <button class="export-btn" onclick="exportExcel()">📥 تصدير Excel</button>
+        <button class="export-btn" onclick="exportText()">📄 تصدير نص</button>
+        <button class="export-btn" onclick="printGroups()">🖨️ طباعة</button>
+        <button class="clear-btn" onclick="clearAllGroups()">🗑️ مسح الكل</button>
+      </div>
+
+      <div class="groups-container" id="groupsContainer">
+        <div class="empty-state">
+          <div class="empty-icon">🗂️</div>
+          <div class="empty-text">لا توجد مجموعات بعد<br>حدد متدربين وأضفهم لمجموعة</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── PASTE MODAL ─── -->
+<div class="modal-overlay" id="pasteModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closePasteModal()">✕</button>
+    <h3>✏️ إدخال أسماء المتدربين يدوياً</h3>
+    <textarea id="pasteArea" placeholder="الصق هنا من Excel أو اكتب يدوياً&#10;كل سطر: رقم المتدرب [تاب أو فاصلة] الاسم&#10;&#10;مثال:&#10;2301001	محمد أحمد العمري&#10;2301002	عبدالله سالم القحطاني&#10;2301003	فهد علي الشهري"></textarea>
+    <div class="modal-hint">💡 يمكنك نسخ عمودين مباشرة من Excel (رقم + اسم)</div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closePasteModal()">إلغاء</button>
+      <button class="btn-primary" onclick="parsePastedData()">استيراد ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PRINT OVERLAY ─── -->
+<div class="modal-overlay" id="printOverlay">
+  <div class="modal" style="width:min(700px,95vw);max-height:85vh">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <h3 style="margin:0">🖨️ معاينة الطباعة</h3>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn-primary" onclick="doPrint()">طباعة ✓</button>
+        <button class="btn-secondary" onclick="closePrintOverlay()">إغلاق</button>
+      </div>
+    </div>
+    <div id="printContent" style="background:white;border-radius:8px;padding:1rem;overflow-y:auto;max-height:65vh"></div>
+  </div>
+</div>
+
+<style>
+@media print {
+  body > *:not(#printOverlay) { display: none !important; }
+  #printOverlay { position: static !important; background: none !important; display: block !important; }
+  #printOverlay .modal { box-shadow: none; border: none; width: 100%; max-height: none; padding: 0; }
+  #printOverlay > div > div:first-child { display: none !important; }
+  #printContent { max-height: none !important; overflow: visible !important; }
+}
+</style>
+
+<footer>المدرب فهد رفاعي — <a href="https://fahdacademy.org" target="_blank">fahdacademy.org</a></footer>
+
+<script>
+// ─── STATE ───────────────────────────────────────
+const state = {
+  sections: [
+    { name: 'الشعبة الأولى', trainees: [] },
+    { name: 'الشعبة الثانية', trainees: [] }
+  ],
+  activeSection: 0,
+  groups: [],        // [{id, sectionIdx, members:[{num,name}]}]
+  nextGroupId: 1,
+  searchQuery: ''
+};
+
+// ─── SECTION SWITCHING ───────────────────────────
+function switchSection(idx) {
+  state.activeSection = idx;
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===idx));
+  document.getElementById('searchInput').value = '';
+  state.searchQuery = '';
+  renderTrainees();
+}
+
+// ─── FILE UPLOAD ─────────────────────────────────
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('uploadZone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) processFile(file);
+}
+function handleFileUpload(e) {
+  const file = e.target.files[0];
+  if (file) processFile(file);
+  e.target.value = '';
+}
+function processFile(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const wb = XLSX.read(e.target.result, { type: 'array' });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+      importRows(rows);
+    } catch(err) {
+      showToast('تعذّر قراءة الملف. تأكد من صيغة Excel.', 'error');
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+function importRows(rows) {
+  // Auto-detect: if 3+ columns, use col[1]=num, col[2]=name; else col[0]=num, col[1]=name
+  const hasSerial = rows.some(r => r && r.length >= 3 && !isNaN(Number(r[0])) && String(r[1]).trim().length > 3);
+  const numCol  = hasSerial ? 1 : 0;
+  const nameCol = hasSerial ? 2 : 1;
+
+  const trainees = [];
+  rows.forEach(row => {
+    if (!row || row.length <= nameCol) return;
+    const num  = String(row[numCol]  ?? '').trim();
+    const name = String(row[nameCol] ?? '').trim();
+    // Skip header rows (non-numeric id or keywords)
+    if (!num || !name) return;
+    if (['رقم', 'اسم', 'م', 'المتدرب', 'رقم المتدرب', 'الاسم'].includes(num)) return;
+    trainees.push({ num, name, assigned: false, groupId: null });
+  });
+  if (!trainees.length) { showToast('لم يُعثر على بيانات في الملف', 'error'); return; }
+  state.sections[state.activeSection].trainees = trainees;
+  renderTrainees();
+  updateSummary();
+  showToast(`✅ تم استيراد ${trainees.length} متدرب بنجاح`, 'success');
+}
+
+// ─── PASTE MODAL ────────────────────────────────
+function openPasteModal() {
+  document.getElementById('pasteModal').classList.add('open');
+  setTimeout(() => document.getElementById('pasteArea').focus(), 100);
+}
+function closePasteModal() {
+  document.getElementById('pasteModal').classList.remove('open');
+}
+function parsePastedData() {
+  const raw = document.getElementById('pasteArea').value.trim();
+  if (!raw) { showToast('لا يوجد نص للاستيراد', 'error'); return; }
+  const rows = raw.split('\n').map(line => {
+    const parts = line.split(/[\t,،]/);
+    return parts.map(p => p.trim());
+  }).filter(r => r.length >= 2);
+  importRows(rows);
+  document.getElementById('pasteArea').value = '';
+  closePasteModal();
+}
+
+// ─── RENDER TRAINEES ─────────────────────────────
+function filterList(q) {
+  state.searchQuery = q;
+  renderTrainees();
+}
+
+function renderTrainees() {
+  const { trainees } = state.sections[state.activeSection];
+  const q = state.searchQuery.toLowerCase();
+  const filtered = trainees.filter(t =>
+    !q || t.name.includes(q) || t.num.includes(q)
+  );
+
+  const el = document.getElementById('traineesList');
+  if (!filtered.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">${trainees.length ? 'لا نتائج مطابقة' : 'ارفع ملف Excel أو أدخل الأسماء يدوياً'}</div></div>`;
+    updateSelectedCount();
+    return;
+  }
+
+  el.innerHTML = filtered.map(t => {
+    const grp = state.groups.find(g => g.id === t.groupId);
+    return `
+    <div class="trainee-item ${t.assigned ? 'assigned' : ''} ${t.selected ? 'selected' : ''}"
+         onclick="toggleSelect('${escId(t.num)}')" data-id="${escId(t.num)}">
+      <input type="checkbox" class="trainee-checkbox" ${t.selected ? 'checked' : ''} ${t.assigned ? 'disabled' : ''}
+             onclick="event.stopPropagation();toggleSelect('${escId(t.num)}')">
+      <span class="trainee-num">${t.num}</span>
+      <span class="trainee-name">${t.name}</span>
+      ${t.assigned ? `<span class="assigned-badge">مجموعة ${grp ? grp.displayNum : ''}</span>` : ''}
+    </div>`;
+  }).join('');
+
+  updateSelectedCount();
+}
+
+function escId(s) { return s.replace(/'/g, "\\'"); }
+
+function toggleSelect(num) {
+  const sec = state.sections[state.activeSection];
+  const t = sec.trainees.find(x => x.num === num);
+  if (!t || t.assigned) return;
+  t.selected = !t.selected;
+  renderTrainees();
+}
+
+function toggleSelectAll() {
+  const { trainees } = state.sections[state.activeSection];
+  const unassigned = trainees.filter(t => !t.assigned);
+  const allSelected = unassigned.every(t => t.selected);
+  unassigned.forEach(t => t.selected = !allSelected);
+  renderTrainees();
+}
+
+function updateSelectedCount() {
+  const { trainees } = state.sections[state.activeSection];
+  const count = trainees.filter(t => t.selected && !t.assigned).length;
+  document.getElementById('selectedCount').textContent = count + ' محدد';
+  document.getElementById('assignBtn').disabled = count === 0;
+}
+
+// ─── ASSIGN TO GROUP ─────────────────────────────
+function assignSelected() {
+  const numInput = document.getElementById('groupNumInput');
+  const displayNum = parseInt(numInput.value);
+  if (!displayNum || displayNum < 1) { showToast('أدخل رقم مجموعة صحيح', 'error'); return; }
+
+  const sec = state.sections[state.activeSection];
+  const selected = sec.trainees.filter(t => t.selected && !t.assigned);
+  if (!selected.length) { showToast('لم تحدد أي متدرب', 'error'); return; }
+
+  // Find or create group
+  let group = state.groups.find(g => g.displayNum === displayNum && g.sectionIdx === state.activeSection);
+  if (!group) {
+    group = {
+      id: state.nextGroupId++,
+      displayNum,
+      sectionIdx: state.activeSection,
+      members: []
+    };
+    state.groups.push(group);
+    state.groups.sort((a,b) => a.sectionIdx - b.sectionIdx || a.displayNum - b.displayNum);
+  }
+
+  selected.forEach(t => {
+    t.assigned = true;
+    t.selected = false;
+    t.groupId = group.id;
+    group.members.push({ num: t.num, name: t.name });
+  });
+
+  renderTrainees();
+  renderGroups();
+  updateSummary();
+  showToast(`✅ تمت إضافة ${selected.length} متدرب للمجموعة ${displayNum}`, 'success');
+  numInput.value = displayNum + 1;
+}
+
+// ─── RENDER GROUPS ───────────────────────────────
+function renderGroups() {
+  const el = document.getElementById('groupsContainer');
+  if (!state.groups.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🗂️</div><div class="empty-text">لا توجد مجموعات بعد<br>حدد متدربين وأضفهم لمجموعة</div></div>`;
+    return;
+  }
+
+  el.innerHTML = state.groups.map(g => `
+    <div class="group-card" id="gc-${g.id}">
+      <div class="group-card-header">
+        <div class="group-title">
+          <span class="group-num-badge">المجموعة ${g.displayNum}</span>
+          <span class="group-section-tag">${state.sections[g.sectionIdx].name}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <span class="group-count">${g.members.length} أعضاء</span>
+          <button class="remove-group-btn" onclick="removeGroup(${g.id})" title="حذف المجموعة">✕</button>
+        </div>
+      </div>
+      <div class="group-members">
+        ${g.members.map(m => `
+          <div class="member-row">
+            <span class="trainee-num">${m.num}</span>
+            <span>${m.name}</span>
+            <button class="remove-member-btn" onclick="removeMember(${g.id},'${escId(m.num)}')" title="إزالة من المجموعة">✕</button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function removeGroup(groupId) {
+  const g = state.groups.find(x => x.id === groupId);
+  if (!g) return;
+  // Unassign members
+  g.members.forEach(m => {
+    state.sections.forEach(sec => {
+      const t = sec.trainees.find(x => x.num === m.num);
+      if (t) { t.assigned = false; t.groupId = null; t.selected = false; }
+    });
+  });
+  state.groups = state.groups.filter(x => x.id !== groupId);
+  renderTrainees();
+  renderGroups();
+  updateSummary();
+  showToast('تم حذف المجموعة وإعادة المتدربين للقائمة', 'success');
+}
+
+function removeMember(groupId, num) {
+  const g = state.groups.find(x => x.id === groupId);
+  if (!g) return;
+  g.members = g.members.filter(m => m.num !== num);
+  // Unassign trainee
+  state.sections.forEach(sec => {
+    const t = sec.trainees.find(x => x.num === num);
+    if (t) { t.assigned = false; t.groupId = null; t.selected = false; }
+  });
+  if (!g.members.length) {
+    state.groups = state.groups.filter(x => x.id !== groupId);
+  }
+  renderTrainees();
+  renderGroups();
+  updateSummary();
+}
+
+function clearAllGroups() {
+  if (!confirm('هل أنت متأكد من مسح جميع المجموعات؟')) return;
+  state.groups = [];
+  state.sections.forEach(sec => {
+    sec.trainees.forEach(t => { t.assigned = false; t.groupId = null; t.selected = false; });
+  });
+  renderTrainees();
+  renderGroups();
+  updateSummary();
+  showToast('تم مسح جميع المجموعات', 'success');
+}
+
+// ─── SUMMARY ─────────────────────────────────────
+function updateSummary() {
+  const allTrainees = state.sections.flatMap(s => s.trainees);
+  const total = allTrainees.length;
+  const assigned = allTrainees.filter(t => t.assigned).length;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('assignedCount').textContent = assigned;
+  document.getElementById('remainingCount').textContent = total - assigned;
+  document.getElementById('groupsCount').textContent = state.groups.length;
+}
+
+// ─── EXPORT ──────────────────────────────────────
+// ── universal download helper ──
+function triggerDownload(dataUrl, filename) {
+  try {
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch(e) {
+    window.location.href = dataUrl;
+  }
+}
+
+function exportExcel() {
+  if (!state.groups.length) { showToast('لا توجد مجموعات لتصديرها', 'error'); return; }
+  const wb = XLSX.utils.book_new();
+
+  // Sheet 1: All groups flat
+  const rows = [['رقم المجموعة', 'الشعبة', 'رقم المتدرب', 'اسم المتدرب']];
+  state.groups.forEach(g => {
+    g.members.forEach(m => {
+      rows.push([g.displayNum, state.sections[g.sectionIdx].name, m.num, m.name]);
+    });
+  });
+  const ws1 = XLSX.utils.aoa_to_sheet(rows);
+  ws1['!cols'] = [{wch:14},{wch:16},{wch:14},{wch:30}];
+  XLSX.utils.book_append_sheet(wb, ws1, 'توزيع المجموعات');
+
+  // Sheet 2: By section
+  state.sections.forEach((sec, idx) => {
+    const secGroups = state.groups.filter(g => g.sectionIdx === idx);
+    if (!secGroups.length) return;
+    const srows = [['رقم المجموعة', 'رقم المتدرب', 'الاسم']];
+    secGroups.forEach(g => {
+      g.members.forEach(m => srows.push([g.displayNum, m.num, m.name]));
+    });
+    const ws = XLSX.utils.aoa_to_sheet(srows);
+    ws['!cols'] = [{wch:14},{wch:14},{wch:30}];
+    XLSX.utils.book_append_sheet(wb, ws, sec.name);
+  });
+
+  const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'base64' });
+  const dataUrl = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' + wbout;
+  triggerDownload(dataUrl, 'مجموعات_المشاريع.xlsx');
+  showToast('✅ تم تصدير ملف Excel', 'success');
+}
+
+function exportText() {
+  if (!state.groups.length) { showToast('لا توجد مجموعات لتصديرها', 'error'); return; }
+  let txt = 'توزيع مجموعات المشروع التطبيقي\nالمدرب فهد رفاعي — fahdacademy.org\n';
+  txt += '========================================\n\n';
+
+  let lastSection = null;
+  state.groups.forEach(g => {
+    if (lastSection !== g.sectionIdx) {
+      txt += `\n>> ${state.sections[g.sectionIdx].name}\n--------------------------------\n`;
+      lastSection = g.sectionIdx;
+    }
+    txt += `\nمجموعة (${g.displayNum}):\n`;
+    g.members.forEach((m, i) => {
+      txt += `  ${i+1}. [${m.num}] ${m.name}\n`;
+    });
+  });
+
+  const b64 = btoa(unescape(encodeURIComponent(txt)));
+  const dataUrl = 'data:text/plain;charset=utf-8;base64,' + b64;
+  triggerDownload(dataUrl, 'مجموعات_المشاريع.txt');
+  showToast('✅ تم تصدير الملف النصي', 'success');
+}
+
+function printGroups() {
+  if (!state.groups.length) { showToast('لا توجد مجموعات للطباعة', 'error'); return; }
+
+  let content = `<div style="font-family:Arial,sans-serif;direction:rtl;padding:20px;color:#111">
+    <h2 style="border-bottom:2px solid #1a56db;padding-bottom:8px;color:#1a56db">
+      توزيع مجموعات المشروع التطبيقي
+      <br><small style="font-size:12px;color:#6b7280;font-weight:normal">المدرب فهد رفاعي — fahdacademy.org</small>
+    </h2>`;
+
+  let lastSection = null;
+  state.groups.forEach(g => {
+    if (lastSection !== g.sectionIdx) {
+      if (lastSection !== null) content += '</div>';
+      content += `<div><div style="background:#e0e7ff;padding:6px 12px;border-radius:4px;font-weight:bold;margin:16px 0 8px;color:#3730a3">📚 ${state.sections[g.sectionIdx].name}</div>`;
+      lastSection = g.sectionIdx;
+    }
+    content += `<h4 style="margin:10px 0 4px;color:#374151">المجموعة (${g.displayNum}) — ${g.members.length} أعضاء</h4>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:12px">
+    <tr><th style="border:1px solid #ddd;padding:5px 10px;background:#f3f4f6">#</th>
+        <th style="border:1px solid #ddd;padding:5px 10px;background:#f3f4f6">رقم المتدرب</th>
+        <th style="border:1px solid #ddd;padding:5px 10px;background:#f3f4f6">الاسم</th></tr>`;
+    g.members.forEach((m, i) => {
+      content += `<tr><td style="border:1px solid #ddd;padding:5px 10px;text-align:center">${i+1}</td>
+                      <td style="border:1px solid #ddd;padding:5px 10px;text-align:center">${m.num}</td>
+                      <td style="border:1px solid #ddd;padding:5px 10px">${m.name}</td></tr>`;
+    });
+    content += '</table>';
+  });
+  content += '</div></div>';
+
+  document.getElementById('printContent').innerHTML = content;
+  document.getElementById('printOverlay').classList.add('open');
+}
+function doPrint() { window.print(); }
+function closePrintOverlay() { document.getElementById('printOverlay').classList.remove('open'); }
+
+// ─── TOAST ───────────────────────────────────────
+let toastTimer;
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ─── INIT ─────────────────────────────────────────
+updateSummary();
+renderGroups();
+</script>
+</body>
+</html>
