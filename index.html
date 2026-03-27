@@ -1,124 +1,163 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>اختبار Supabase</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0f172a;
-      color: #f1f5f9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
-    }
-    .card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 16px;
-      padding: 2rem;
-      width: 100%;
-      max-width: 480px;
-      text-align: center;
-    }
-    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #38bdf8; }
-    p  { font-size: 0.9rem; color: #94a3b8; margin-bottom: 1.5rem; }
-    input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      border: 1px solid #334155;
-      background: #0f172a;
-      color: #f1f5f9;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      font-family: inherit;
-    }
-    button {
-      width: 100%;
-      padding: 0.75rem;
-      border-radius: 8px;
-      border: none;
-      background: #38bdf8;
-      color: #0f172a;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-bottom: 0.75rem;
-      transition: opacity 0.2s;
-    }
-    button:hover { opacity: 0.85; }
-    #status {
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      min-height: 2rem;
-    }
-    .success { background: rgba(16,185,129,0.15); color: #10b981; }
-    .error   { background: rgba(239,68,68,0.15);  color: #ef4444; }
-    .info    { background: rgba(56,189,248,0.15);  color: #38bdf8; }
-    #messages { margin-top: 1.5rem; text-align: right; }
-    .msg-item {
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 0.6rem 1rem;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عداد النقاط</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: #f1f5f9;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .card {
+    background: #1e293b;
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+  }
+  h1 { font-size: 1.5rem; color: #38bdf8; margin-bottom: 0.3rem; }
+  p  { font-size: 0.85rem; color: #64748b; margin-bottom: 2rem; }
+  .score {
+    font-size: 5rem;
+    font-weight: 900;
+    color: #f1f5f9;
+    line-height: 1;
+    margin-bottom: 2rem;
+    transition: transform 0.15s;
+  }
+  .score.bump { transform: scale(1.2); }
+  .btns { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+  button {
+    flex: 1;
+    padding: 0.9rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+  }
+  button:hover  { opacity: 0.85; }
+  button:active { transform: scale(0.95); }
+  .btn-plus  { background: #22c55e; color: #fff; }
+  .btn-minus { background: #ef4444; color: #fff; }
+  .btn-reset {
+    width: 100%;
+    padding: 0.7rem;
+    background: #334155;
+    color: #94a3b8;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-reset:hover { background: #475569; }
+  .log {
+    margin-top: 1.5rem;
+    text-align: right;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  .log-item {
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 0.4rem 0.75rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.8rem;
+    color: #64748b;
+  }
+  .log-item span { float: left; }
+  #status {
+    font-size: 0.75rem;
+    color: #475569;
+    margin-top: 1rem;
+  }
+</style>
 </head>
 <body>
-  <div class="card">
-    <h1>🧪 اختبار Supabase</h1>
-    <p>أرسل رسالة وتُحفظ في قاعدة البيانات</p>
-    <input type="text" id="msgInput" placeholder="اكتب رسالة...">
-    <button onclick="sendMessage()">إرسال وحفظ</button>
-    <button onclick="loadMessages()" style="background:#1e293b; color:#38bdf8; border:1px solid #38bdf8;">تحميل الرسائل</button>
-    <div id="status"></div>
-    <div id="messages"></div>
+<div class="card">
+  <h1>🎯 عداد النقاط</h1>
+  <p>اضغط + أو − وتُحفظ النقاط تلقائياً</p>
+  <div class="score" id="score">0</div>
+  <div class="btns">
+    <button class="btn-minus" onclick="change(-1)">−</button>
+    <button class="btn-plus"  onclick="change(+1)">+</button>
   </div>
+  <button class="btn-reset" onclick="resetScore()">↺ إعادة تعيين</button>
+  <div class="log" id="log"></div>
+  <div id="status">جاري الاتصال...</div>
+</div>
 
-  <script>
-    const SUPABASE_URL = 'https://khawtlyngpgoxwwfyfwx.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_sp7aNwxwQBtOWUr_1M1xzA_KXbOJhxh';
-    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<script>
+  const _sb = supabase.createClient(
+    '%%SUPABASE_URL%%',
+    '%%SUPABASE_ANON_KEY%%'
+  );
 
-    function setStatus(msg, type) {
-      const el = document.getElementById('status');
-      el.textContent = msg;
-      el.className = type;
+  let current = 0;
+
+  async function init() {
+    const { data, error } = await _sb
+      .from('scores')
+      .select('value')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (!error && data) {
+      current = data.value;
+      document.getElementById('score').textContent = current;
     }
+    loadLog();
+    document.getElementById('status').textContent = '✅ متصل بقاعدة البيانات';
+  }
 
-    async function sendMessage() {
-      const text = document.getElementById('msgInput').value.trim();
-      if (!text) return setStatus('⚠️ اكتب رسالة أولاً', 'info');
-      setStatus('⏳ جاري الحفظ...', 'info');
-      const { error } = await client.from('messages').insert({ content: text });
-      if (error) {
-        setStatus('❌ خطأ: ' + error.message, 'error');
-      } else {
-        setStatus('✅ تم الحفظ بنجاح!', 'success');
-        document.getElementById('msgInput').value = '';
-        loadMessages();
-      }
-    }
+  async function change(delta) {
+    current += delta;
+    const el = document.getElementById('score');
+    el.textContent = current;
+    el.classList.add('bump');
+    setTimeout(() => el.classList.remove('bump'), 150);
 
-    async function loadMessages() {
-      setStatus('⏳ جاري التحميل...', 'info');
-      const { data, error } = await client.from('messages').select('*').order('created_at', { ascending: false }).limit(10);
-      if (error) return setStatus('❌ ' + error.message, 'error');
-      setStatus('✅ ' + data.length + ' رسائل', 'success');
-      const el = document.getElementById('messages');
-      el.innerHTML = data.map(m => `<div class="msg-item">💬 ${m.content}</div>`).join('');
-    }
-  </script>
+    await _sb.from('scores').insert({ value: current, delta });
+    loadLog();
+  }
+
+  async function resetScore() {
+    current = 0;
+    document.getElementById('score').textContent = 0;
+    await _sb.from('scores').insert({ value: 0, delta: 0, note: 'reset' });
+    loadLog();
+  }
+
+  async function loadLog() {
+    const { data } = await _sb
+      .from('scores')
+      .select('value, delta, created_at')
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    if (!data) return;
+    document.getElementById('log').innerHTML = data.map(r => {
+      const d = r.delta > 0 ? `+${r.delta}` : r.delta === 0 ? '↺' : r.delta;
+      const t = new Date(r.created_at).toLocaleTimeString('ar');
+      return `<div class="log-item">${d} → النقاط: ${r.value} <span>${t}</span></div>`;
+    }).join('');
+  }
+
+  init();
+</script>
 </body>
 </html>
