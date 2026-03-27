@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام تقييم المشاريع — فهد رفاعي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root {
+  --bg-primary:    #0a0e1a;
+  --bg-card:       #111827;
+  --bg-elevated:   #1a2235;
+  --accent-blue:   #3b82f6;
+  --accent-green:  #10b981;
+  --accent-yellow: #f59e0b;
+  --accent-red:    #ef4444;
+  --accent-teal:   #0d9488;
+  --text-primary:  #f1f5f9;
+  --text-secondary:#94a3b8;
+  --border:        #2d3748;
+  --glow:          0 0 20px rgba(59,130,246,0.3);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Cairo',sans-serif;
+  background:var(--bg-primary);
+  color:var(--text-primary);
+  min-height:100vh;
+  direction:rtl;
+}
+
+/* HEADER */
+.page-header {
+  background:linear-gradient(135deg,#0d1b3e,#111827);
+  border-bottom:1px solid var(--border);
+  padding:1rem 2rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+.brand { display:flex; align-items:center; gap:.75rem; }
+.brand-icon { font-size:1.8rem; }
+.brand-name { font-size:1rem; font-weight:700; color:var(--accent-blue); }
+.brand-sub  { font-size:.75rem; color:var(--text-secondary); }
+.header-title { font-size:1.2rem; font-weight:900; }
+.header-badge {
+  background:rgba(13,148,136,.15);
+  color:var(--accent-teal);
+  border:1px solid rgba(13,148,136,.3);
+  padding:.3rem .9rem;
+  border-radius:20px;
+  font-size:.8rem;
+  font-weight:700;
+}
+
+/* LAYOUT */
+.container { max-width:1100px; margin:0 auto; padding:2rem 1.5rem; }
+
+/* UPLOAD ZONE */
+.upload-zone {
+  border:2px dashed var(--border);
+  border-radius:16px;
+  padding:3rem;
+  text-align:center;
+  cursor:pointer;
+  transition:all .3s;
+  background:var(--bg-card);
+  margin-bottom:2rem;
+}
+.upload-zone:hover, .upload-zone.dragover {
+  border-color:var(--accent-blue);
+  background:rgba(59,130,246,.05);
+  box-shadow:var(--glow);
+}
+.upload-icon { font-size:3.5rem; margin-bottom:1rem; }
+.upload-title { font-size:1.2rem; font-weight:700; margin-bottom:.5rem; }
+.upload-hint { color:var(--text-secondary); font-size:.9rem; }
+#fileInput { display:none; }
+.btn-upload {
+  display:inline-block;
+  margin-top:1rem;
+  background:linear-gradient(135deg,var(--accent-blue),#1d4ed8);
+  color:#fff;
+  border:none;
+  padding:.7rem 2rem;
+  border-radius:8px;
+  font-family:'Cairo',sans-serif;
+  font-weight:700;
+  cursor:pointer;
+  font-size:1rem;
+  transition:all .2s;
+}
+.btn-upload:hover { transform:translateY(-2px); box-shadow:var(--glow); }
+
+/* SECTION SELECTOR */
+.section-bar {
+  display:flex;
+  gap:.75rem;
+  flex-wrap:wrap;
+  margin-bottom:1.5rem;
+}
+.section-btn {
+  padding:.5rem 1.2rem;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:var(--bg-card);
+  color:var(--text-secondary);
+  cursor:pointer;
+  font-family:'Cairo',sans-serif;
+  font-size:.9rem;
+  transition:all .2s;
+}
+.section-btn.active {
+  background:var(--accent-teal);
+  border-color:var(--accent-teal);
+  color:#fff;
+  font-weight:700;
+}
+.section-btn:hover:not(.active) { border-color:var(--accent-blue); color:var(--text-primary); }
+
+/* PROGRESS */
+.progress-bar-wrap {
+  background:var(--bg-elevated);
+  border-radius:20px;
+  height:10px;
+  margin-bottom:1.5rem;
+  overflow:hidden;
+}
+.progress-bar-fill {
+  height:100%;
+  background:linear-gradient(90deg,var(--accent-teal),var(--accent-blue));
+  border-radius:20px;
+  transition:width .4s ease;
+}
+.progress-label {
+  display:flex;
+  justify-content:space-between;
+  font-size:.8rem;
+  color:var(--text-secondary);
+  margin-bottom:.5rem;
+}
+
+/* TRAINEE CARD — EVALUATION MODE */
+.trainee-card {
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:1.5rem;
+  margin-bottom:1rem;
+  transition:all .3s;
+}
+.trainee-card.evaluated { border-color:var(--accent-green); }
+.trainee-card.active-eval { border-color:var(--accent-blue); box-shadow:var(--glow); }
+.trainee-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:1rem;
+}
+.trainee-info { display:flex; align-items:center; gap:.75rem; }
+.trainee-num {
+  width:42px; height:42px;
+  border-radius:50%;
+  background:var(--bg-elevated);
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700;
+  color:var(--accent-blue);
+  font-size:.95rem;
+  flex-shrink:0;
+}
+.trainee-name { font-size:1.05rem; font-weight:700; }
+.trainee-id   { font-size:.8rem; color:var(--text-secondary); font-family:'JetBrains Mono',monospace; }
+
+/* CRITERIA ROW */
+.criteria-grid {
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:.5rem;
+  align-items:center;
+}
+.criteria-row {
+  display:contents;
+}
+.criteria-label {
+  font-size:.9rem;
+  color:var(--text-secondary);
+  padding:.4rem 0;
+}
+.criteria-label span.max {
+  font-size:.75rem;
+  background:rgba(59,130,246,.1);
+  color:var(--accent-blue);
+  padding:.1rem .5rem;
+  border-radius:10px;
+  margin-right:.5rem;
+}
+.score-input {
+  width:75px;
+  background:var(--bg-elevated);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:.4rem .6rem;
+  color:var(--text-primary);
+  font-family:'Cairo',sans-serif;
+  font-weight:700;
+  text-align:center;
+  font-size:1rem;
+  transition:border-color .2s;
+}
+.score-input:focus { outline:none; border-color:var(--accent-blue); }
+.score-input.error { border-color:var(--accent-red); }
+
+/* TOTAL */
+.total-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:1rem;
+  padding-top:1rem;
+  border-top:1px solid var(--border);
+}
+.total-label { font-weight:700; font-size:1rem; }
+.total-score {
+  font-size:1.4rem;
+  font-weight:900;
+  font-family:'JetBrains Mono',monospace;
+  color:var(--accent-green);
+}
+.total-score.low  { color:var(--accent-red); }
+.total-score.mid  { color:var(--accent-yellow); }
+
+/* NOTES */
+.notes-field {
+  width:100%;
+  margin-top:.75rem;
+  background:var(--bg-elevated);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:.6rem 1rem;
+  color:var(--text-primary);
+  font-family:'Cairo',sans-serif;
+  font-size:.85rem;
+  resize:vertical;
+  min-height:60px;
+  transition:border-color .2s;
+}
+.notes-field:focus { outline:none; border-color:var(--accent-blue); }
+
+/* ACTION BUTTONS */
+.card-actions { display:flex; gap:.75rem; margin-top:1rem; flex-wrap:wrap; }
+.btn { padding:.55rem 1.4rem; border-radius:8px; border:none; font-family:'Cairo',sans-serif; font-weight:700; cursor:pointer; font-size:.9rem; transition:all .2s; }
+.btn-save { background:var(--accent-green); color:#fff; }
+.btn-save:hover { opacity:.85; }
+.btn-next { background:linear-gradient(135deg,var(--accent-blue),#1d4ed8); color:#fff; }
+.btn-next:hover { transform:translateY(-1px); box-shadow:var(--glow); }
+.btn-clear { background:var(--bg-elevated); color:var(--text-secondary); border:1px solid var(--border); }
+.btn-clear:hover { border-color:var(--accent-red); color:var(--accent-red); }
+
+.eval-badge {
+  padding:.25rem .75rem;
+  border-radius:20px;
+  font-size:.78rem;
+  font-weight:700;
+}
+.eval-badge.done { background:rgba(16,185,129,.15); color:var(--accent-green); }
+.eval-badge.pending { background:rgba(245,158,11,.1); color:var(--accent-yellow); }
+
+/* SUMMARY TABLE */
+.summary-section { margin-top:2rem; }
+.summary-title {
+  font-size:1.2rem;
+  font-weight:900;
+  margin-bottom:1rem;
+  display:flex; align-items:center; gap:.5rem;
+}
+.table-wrap {
+  overflow-x:auto;
+  border-radius:12px;
+  border:1px solid var(--border);
+}
+table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:.88rem;
+}
+thead th {
+  background:var(--bg-elevated);
+  padding:.75rem 1rem;
+  font-weight:700;
+  color:var(--text-secondary);
+  text-align:right;
+  border-bottom:1px solid var(--border);
+}
+tbody tr { transition:background .2s; }
+tbody tr:hover { background:rgba(255,255,255,.02); }
+tbody td {
+  padding:.7rem 1rem;
+  border-bottom:1px solid rgba(45,55,72,.5);
+  color:var(--text-primary);
+}
+.grade-cell {
+  font-weight:700;
+  font-family:'JetBrains Mono',monospace;
+}
+.grade-a { color:var(--accent-green); }
+.grade-b { color:var(--accent-blue); }
+.grade-c { color:var(--accent-yellow); }
+.grade-d { color:var(--accent-red); }
+
+/* EXPORT BUTTONS */
+.export-bar {
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  margin-top:1.5rem;
+}
+.btn-export {
+  display:flex; align-items:center; gap:.5rem;
+  padding:.7rem 1.5rem;
+  border-radius:10px;
+  border:none;
+  font-family:'Cairo',sans-serif;
+  font-weight:700;
+  cursor:pointer;
+  font-size:.9rem;
+  transition:all .2s;
+}
+.btn-excel { background:rgba(16,185,129,.15); color:var(--accent-green); border:1px solid rgba(16,185,129,.3); }
+.btn-excel:hover { background:rgba(16,185,129,.25); }
+.btn-print { background:rgba(59,130,246,.15); color:var(--accent-blue); border:1px solid rgba(59,130,246,.3); }
+.btn-print:hover { background:rgba(59,130,246,.25); }
+
+/* STATS BAR */
+.stats-bar {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:1rem;
+  margin-bottom:2rem;
+}
+.stat-card {
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1rem 1.2rem;
+  text-align:center;
+}
+.stat-value { font-size:1.8rem; font-weight:900; font-family:'JetBrains Mono',monospace; }
+.stat-label { font-size:.8rem; color:var(--text-secondary); margin-top:.25rem; }
+
+/* HIDDEN STATES */
+.hidden { display:none !important; }
+
+/* FOOTER */
+footer {
+  text-align:center;
+  padding:1.5rem;
+  color:var(--text-secondary);
+  font-size:.8rem;
+  border-top:1px solid var(--border);
+  margin-top:3rem;
+}
+footer a { color:var(--accent-blue); text-decoration:none; }
+
+/* TOAST */
+.toast {
+  position:fixed;
+  bottom:2rem;
+  left:50%;
+  transform:translateX(-50%) translateY(100px);
+  background:var(--accent-green);
+  color:#fff;
+  padding:.75rem 1.5rem;
+  border-radius:10px;
+  font-weight:700;
+  font-size:.9rem;
+  transition:transform .3s;
+  z-index:999;
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+@media(max-width:600px) {
+  .page-header { flex-wrap:wrap; gap:.5rem; }
+  .criteria-grid { grid-template-columns:1fr auto; }
+  .export-bar { flex-direction:column; }
+}
+
+@media print {
+  .page-header, .upload-zone, .section-bar, .progress-bar-wrap,
+  .progress-label, .card-actions, .export-bar, .trainee-card { display:none !important; }
+  .summary-section { display:block !important; }
+  body { background:#fff; color:#000; }
+  table { font-size:11px; }
+  thead th { background:#e2e8f0; color:#333; }
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="brand">
+    <div class="brand-icon">⚡</div>
+    <div>
+      <div class="brand-name">fahdacademy.org</div>
+      <div class="brand-sub">المدرب فهد رفاعي</div>
+    </div>
+  </div>
+  <div class="header-title">🏆 نظام تقييم المشاريع</div>
+  <div style="display:flex;gap:.5rem;align-items:center;">
+    <button onclick="resetAllData()" style="background:rgba(239,68,68,.12);color:var(--accent-red);border:1px solid rgba(239,68,68,.25);padding:.3rem .8rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;" title="مسح جميع البيانات والبدء من جديد">🗑️ مسح الكل</button>
+    <div style="display:flex;align-items:center;gap:.5rem;">
+      <div id="serverDot" style="width:10px;height:10px;border-radius:50%;background:var(--accent-yellow);transition:background .4s;" title="جاري التحقق..."></div>
+      <div class="header-badge" id="statusBadge">في انتظار الملف</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- UPLOAD -->
+  <div class="upload-zone" id="uploadZone">
+    <div class="upload-icon">📊</div>
+    <div class="upload-title">ارفع ملف الإكسل</div>
+    <div class="upload-hint">الأعمدة المطلوبة: رقم الهوية • الاسم • الشعبة</div>
+    <button class="btn-upload" onclick="document.getElementById('fileInput').click()">📂 اختر الملف</button>
+    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv">
+  </div>
+
+  <!-- MAIN CONTENT (hidden until file loaded) -->
+  <div id="mainContent" class="hidden">
+
+    <!-- SECTION TABS -->
+    <div id="sectionBar" class="section-bar"></div>
+
+    <!-- PROGRESS -->
+    <div class="progress-label">
+      <span id="progressText">0 من 0 تم تقييمهم</span>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar" id="statsBar">
+      <div class="stat-card">
+        <div class="stat-value" id="statTotal" style="color:var(--accent-blue)">0</div>
+        <div class="stat-label">إجمالي المتدربين</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statDone" style="color:var(--accent-green)">0</div>
+        <div class="stat-label">تم تقييمهم</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statAvg" style="color:var(--accent-yellow)">—</div>
+        <div class="stat-label">متوسط الدرجات</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statTop" style="color:var(--accent-green)">—</div>
+        <div class="stat-label">أعلى درجة</div>
+      </div>
+    </div>
+
+    <!-- TRAINEE LIST -->
+    <div id="traineeList"></div>
+
+    <!-- SUMMARY TABLE -->
+    <div class="summary-section" id="summarySection">
+      <div class="summary-title">📋 تقرير الشعبة — <span id="summaryTitle"></span></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>رقم الهوية</th>
+              <th>الاسم</th>
+              <th>ب١ /5</th>
+              <th>ب٢ /3</th>
+              <th>ب٣ /6</th>
+              <th>ب٤ /3</th>
+              <th>ب٥ /3</th>
+              <th>المجموع /20</th>
+              <th>الحالة</th>
+              <th>ملاحظات</th>
+            </tr>
+          </thead>
+          <tbody id="summaryBody"></tbody>
+        </table>
+      </div>
+      <div class="export-bar">
+        <button class="btn-export btn-excel" onclick="exportExcel()">📥 تصدير Excel</button>
+        <button class="btn-export btn-print" onclick="window.print()">🖨️ طباعة التقرير</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>المدرب فهد رفاعي — <a href="https://fahdacademy.org" target="_blank">fahdacademy.org</a> | نظام تقييم المشاريع 2025</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── CRITERIA ─────────────────────────────────────────────────────────────────
+const CRITERIA = [
+  { id:'c1', label:'استيفاء شروط العرض التقديمي الناجح', max:5  },
+  { id:'c2', label:'التصميم الجذاب للعرض',               max:3  },
+  { id:'c3', label:'استيفاء عناصر ومكونات خطة الأعمال', max:6  },
+  { id:'c4', label:'جذب انتباه الحضور وتشويقهم',         max:3  },
+  { id:'c5', label:'الانتهاء بالوقت المحدد',             max:3  },
+];
+const MAX_TOTAL = 20;
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let trainees   = [];
+let sections   = [];
+let curSection = '';
+let scores     = {};
+const STORAGE_KEY = 'fahd_eval_scores_v1';
+const API_BASE    = 'http://76.13.53.38:5051';
+let   saveTimer   = null;
+let   serverOnline = false;
+
+// ─── SERVER API ─────────────────────────────────────────────────────────────────────────────
+async function checkServer() {
+  try {
+    const r = await fetch(`${API_BASE}/health`, {signal: AbortSignal.timeout(3000)});
+    serverOnline = r.ok;
+  } catch { serverOnline = false; }
+  updateServerIndicator();
+}
+
+function updateServerIndicator() {
+  const el = document.getElementById('serverDot');
+  if (!el) return;
+  el.style.background = serverOnline ? 'var(--accent-green)' : 'var(--accent-yellow)';
+  el.title = serverOnline ? '✅ متصل بالسيرفر' : '⚠️ وضع محلي (localStorage)';
+}
+
+async function persistScores() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(scores)); } catch(e) {}
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    if (!serverOnline) return;
+    try {
+      await fetch(`${API_BASE}/save`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(scores),
+        signal: AbortSignal.timeout(5000)
+      });
+    } catch { serverOnline = false; updateServerIndicator(); }
+  }, 800);
+}
+
+async function loadPersistedScores() {
+  if (serverOnline) {
+    try {
+      const r = await fetch(`${API_BASE}/load`, {signal: AbortSignal.timeout(4000)});
+      if (r.ok) return await r.json();
+    } catch { serverOnline = false; updateServerIndicator(); }
+  }
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+}
+
+async function clearPersistedScores() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  if (serverOnline) {
+    try {
+      await fetch(`${API_BASE}/save`, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:'{}', signal: AbortSignal.timeout(4000)
+      });
+    } catch {}
+  }
+}
+
+checkServer();
+setInterval(checkServer, 60000);
+function loadPersistedScores() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { return {}; }
+}
+function clearPersistedScores() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+}
+
+// ─── UPLOAD ───────────────────────────────────────────────────────────────────
+const uploadZone = document.getElementById('uploadZone');
+const fileInput  = document.getElementById('fileInput');
+
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', ()=> uploadZone.classList.remove('dragover'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.classList.remove('dragover');
+  handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
+uploadZone.addEventListener('click', e => { if(e.target===uploadZone||e.target.classList.contains('upload-icon')||e.target.classList.contains('upload-title')||e.target.classList.contains('upload-hint')) fileInput.click(); });
+
+function handleFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const wb = XLSX.read(e.target.result, {type:'array'});
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const data = XLSX.utils.sheet_to_json(ws, {defval:''});
+    parseTrainees(data);
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+async function parseTrainees(data) {
+  // Try to auto-detect columns
+  if (data.length === 0) { showToast('الملف فارغ!','red'); return; }
+  const keys = Object.keys(data[0]);
+
+  // Smart column detection
+  const findCol = (hints) => keys.find(k => hints.some(h => k.includes(h)));
+
+  const idCol   = findCol(['هوية','رقم','ID','id','رقم_الهوية','الرقم','Id']);
+  const nameCol = findCol(['اسم','الاسم','name','Name','الطالب']);
+  const secCol  = findCol(['شعبة','الشعبة','section','Section','فصل','مجموعة']);
+
+  if (!nameCol) { showToast('تعذّر العثور على عمود الاسم. تأكد من العناوين.','red'); return; }
+
+  trainees = data.map((row, i) => ({
+    idx:      i+1,
+    id:       idCol  ? String(row[idCol]).trim()  : String(i+1),
+    name:     String(row[nameCol]).trim(),
+    section:  secCol ? String(row[secCol]).trim() : 'الشعبة الأولى',
+  })).filter(t => t.name);
+
+  sections = [...new Set(trainees.map(t => t.section))];
+
+  // استرجاع التقييمات المحفوظة مسبقاً من localStorage
+  const persisted = await loadPersistedScores();
+  let restoredCount = 0;
+  trainees.forEach(t => {
+    if (persisted[t.id]) {
+      scores[t.id] = persisted[t.id];
+      if (persisted[t.id].saved) restoredCount++;
+    } else {
+      scores[t.id] = {c1:'',c2:'',c3:'',c4:'',c5:'',notes:'',saved:false};
+    }
+  });
+
+  // UI
+  uploadZone.classList.add('hidden');
+  document.getElementById('mainContent').classList.remove('hidden');
+  document.getElementById('statusBadge').textContent = `${trainees.length} متدرب`;
+
+  buildSectionTabs();
+  switchSection(sections[0]);
+
+  if (restoredCount > 0) {
+    showToast(`🔄 تم استرجاع ${restoredCount} تقييم محفوظ مسبقاً`);
+  } else {
+    showToast(`✅ تم تحميل ${trainees.length} متدرب`);
+  }
+}
+
+// ─── SECTION TABS ─────────────────────────────────────────────────────────────
+function buildSectionTabs() {
+  const bar = document.getElementById('sectionBar');
+  bar.innerHTML = '';
+  sections.forEach(sec => {
+    const btn = document.createElement('button');
+    btn.className = 'section-btn';
+    btn.textContent = sec;
+    btn.onclick = () => switchSection(sec);
+    bar.appendChild(btn);
+  });
+  // Add "All" tab
+  const allBtn = document.createElement('button');
+  allBtn.className = 'section-btn';
+  allBtn.textContent = '📋 كل الشعب';
+  allBtn.onclick = () => switchSection('__all__');
+  bar.appendChild(allBtn);
+}
+
+function switchSection(sec) {
+  curSection = sec;
+  document.querySelectorAll('.section-btn').forEach((btn,i) => {
+    const isAll = sec==='__all__' && btn.textContent==='📋 كل الشعب';
+    const match = btn.textContent === sec;
+    btn.classList.toggle('active', match || isAll);
+  });
+
+  const filtered = sec==='__all__' ? trainees : trainees.filter(t => t.section===sec);
+  renderTrainees(filtered);
+  updateSummary(filtered, sec==='__all__' ? 'جميع الشعب' : sec);
+  updateStats();
+  updateProgress(filtered);
+}
+
+// ─── RENDER TRAINEES ──────────────────────────────────────────────────────────
+function renderTrainees(list) {
+  const container = document.getElementById('traineeList');
+  container.innerHTML = '';
+  list.forEach(t => container.appendChild(buildCard(t)));
+}
+
+function buildCard(t) {
+  const s = scores[t.id];
+  const total = calcTotal(t.id);
+  const isSaved = s.saved;
+
+  const card = document.createElement('div');
+  card.className = `trainee-card ${isSaved ? 'evaluated' : ''}`;
+  card.id = `card-${t.id}`;
+
+  // Badge
+  const badge = isSaved
+    ? `<span class="eval-badge done">✅ تم التقييم</span>`
+    : `<span class="eval-badge pending">⏳ لم يُقيَّم</span>`;
+
+  // Criteria rows
+  const rows = CRITERIA.map(c => `
+    <div class="criteria-label">
+      <span class="max">${c.max}</span>${c.label}
+    </div>
+    <input type="number" class="score-input" id="sc-${t.id}-${c.id}"
+      value="${s[c.id]}" min="0" max="${c.max}" placeholder="0"
+      oninput="onScoreChange('${t.id}')"
+      onblur="validateField('${t.id}','${c.id}',${c.max})">
+  `).join('');
+
+  // Total color
+  const pct = total / MAX_TOTAL * 100;
+  const totalClass = pct>=75?'':'pct>=50?mid:low';
+  const tColor = pct>=75 ? 'var(--accent-green)' : pct>=50 ? 'var(--accent-yellow)' : 'var(--accent-red)';
+
+  card.innerHTML = `
+    <div class="trainee-header">
+      <div class="trainee-info">
+        <div class="trainee-num">${t.idx}</div>
+        <div>
+          <div class="trainee-name">${t.name}</div>
+          <div class="trainee-id">🪪 ${t.id} &nbsp;|&nbsp; 📚 ${t.section}</div>
+        </div>
+      </div>
+      ${badge}
+    </div>
+    <div class="criteria-grid">${rows}</div>
+    <div class="total-row">
+      <span class="total-label">المجموع الكلي</span>
+      <span class="total-score" id="total-${t.id}" style="color:${tColor}">${total} / ${MAX_TOTAL}</span>
+    </div>
+    <textarea class="notes-field" id="notes-${t.id}" placeholder="ملاحظات (اختياري)..."
+      oninput="scores['${t.id}'].notes=this.value;persistScores()">${s.notes}</textarea>
+    <div class="card-actions">
+      <button class="btn btn-save" onclick="saveCard('${t.id}')">💾 حفظ</button>
+      <button class="btn btn-next" onclick="nextCard('${t.id}')">التالي ←</button>
+      <button class="btn btn-clear" onclick="clearCard('${t.id}')">مسح</button>
+    </div>
+  `;
+  return card;
+}
+
+function onScoreChange(tid) {
+  const total = calcTotal(tid);
+  const pct = total / MAX_TOTAL * 100;
+  const tColor = pct>=75 ? 'var(--accent-green)' : pct>=50 ? 'var(--accent-yellow)' : 'var(--accent-red)';
+  const el = document.getElementById(`total-${tid}`);
+  if (el) { el.textContent = `${total} / ${MAX_TOTAL}`; el.style.color = tColor; }
+  CRITERIA.forEach(c => {
+    const inp = document.getElementById(`sc-${tid}-${c.id}`);
+    if (inp) scores[tid][c.id] = inp.value === '' ? '' : Number(inp.value);
+  });
+  persistScores(); // حفظ فوري
+}
+
+function validateField(tid, cid, max) {
+  const inp = document.getElementById(`sc-${tid}-${cid}`);
+  if (!inp) return;
+  let v = Number(inp.value);
+  if (isNaN(v) || inp.value==='') { inp.value=''; return; }
+  if (v < 0) v = 0;
+  if (v > max) v = max;
+  inp.value = v;
+  scores[tid][cid] = v;
+  onScoreChange(tid);
+}
+
+function calcTotal(tid) {
+  return CRITERIA.reduce((sum,c) => {
+    const v = Number(scores[tid][c.id]);
+    return sum + (isNaN(v)?0:v);
+  }, 0);
+}
+
+function saveCard(tid) {
+  // Validate
+  let ok = true;
+  CRITERIA.forEach(c => {
+    const inp = document.getElementById(`sc-${tid}-${c.id}`);
+    if (!inp) return;
+    const v = inp.value;
+    if (v==='' || isNaN(Number(v))) { inp.classList.add('error'); ok=false; }
+    else inp.classList.remove('error');
+  });
+  if (!ok) { showToast('⚠️ أكمل جميع الحقول أولاً','red'); return; }
+
+  scores[tid].saved = true;
+  persistScores(); // حفظ فوري
+  const card = document.getElementById(`card-${tid}`);
+  if (card) {
+    card.classList.add('evaluated');
+    const badge = card.querySelector('.eval-badge');
+    if (badge) { badge.className='eval-badge done'; badge.textContent='✅ تم التقييم'; }
+  }
+
+  const filtered = curSection==='__all__' ? trainees : trainees.filter(t=>t.section===curSection);
+  updateProgress(filtered);
+  updateStats();
+  updateSummary(filtered, curSection==='__all__'?'جميع الشعب':curSection);
+  showToast(`✅ تم حفظ تقييم ${trainees.find(t=>t.id===tid)?.name}`);
+}
+
+function clearCard(tid) {
+  CRITERIA.forEach(c => {
+    scores[tid][c.id] = '';
+    const inp = document.getElementById(`sc-${tid}-${c.id}`);
+    if (inp) { inp.value=''; inp.classList.remove('error'); }
+  });
+  scores[tid].notes = '';
+  scores[tid].saved = false;
+  persistScores(); // حفظ فوري
+  const notesEl = document.getElementById(`notes-${tid}`);
+  if (notesEl) notesEl.value='';
+  onScoreChange(tid);
+  const card = document.getElementById(`card-${tid}`);
+  if (card) {
+    card.classList.remove('evaluated');
+    const badge = card.querySelector('.eval-badge');
+    if (badge) { badge.className='eval-badge pending'; badge.textContent='⏳ لم يُقيَّم'; }
+  }
+  const filtered = curSection==='__all__' ? trainees : trainees.filter(t=>t.section===curSection);
+  updateProgress(filtered);
+  updateStats();
+  updateSummary(filtered, curSection==='__all__'?'جميع الشعب':curSection);
+}
+
+function nextCard(tid) {
+  saveCard(tid);
+  const list = curSection==='__all__' ? trainees : trainees.filter(t=>t.section===curSection);
+  const idx = list.findIndex(t=>t.id===tid);
+  if (idx>=0 && idx<list.length-1) {
+    const nextId = list[idx+1].id;
+    const nextCard = document.getElementById(`card-${nextId}`);
+    if (nextCard) nextCard.scrollIntoView({behavior:'smooth', block:'center'});
+  } else {
+    showToast('🎉 انتهيت من تقييم جميع المتدربين!');
+  }
+}
+
+// ─── PROGRESS ─────────────────────────────────────────────────────────────────
+function updateProgress(list) {
+  const done = list.filter(t => scores[t.id]?.saved).length;
+  const total = list.length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressText').textContent = `${done} من ${total} تم تقييمهم`;
+  document.getElementById('progressPct').textContent = pct+'%';
+}
+
+// ─── STATS ────────────────────────────────────────────────────────────────────
+function updateStats() {
+  const saved = trainees.filter(t=>scores[t.id]?.saved);
+  document.getElementById('statTotal').textContent = trainees.length;
+  document.getElementById('statDone').textContent  = saved.length;
+  if (saved.length) {
+    const totals = saved.map(t=>calcTotal(t.id));
+    const avg = (totals.reduce((a,b)=>a+b,0)/totals.length).toFixed(1);
+    const top = Math.max(...totals);
+    document.getElementById('statAvg').textContent = avg;
+    document.getElementById('statTop').textContent = top;
+  } else {
+    document.getElementById('statAvg').textContent = '—';
+    document.getElementById('statTop').textContent = '—';
+  }
+}
+
+// ─── SUMMARY TABLE ────────────────────────────────────────────────────────────
+function updateSummary(list, title) {
+  document.getElementById('summaryTitle').textContent = title;
+  const tbody = document.getElementById('summaryBody');
+  tbody.innerHTML = '';
+  list.forEach((t,i) => {
+    const s = scores[t.id];
+    const total = calcTotal(t.id);
+    const pct = total/MAX_TOTAL*100;
+    const gradeClass = pct>=85?'grade-a':pct>=70?'grade-b':pct>=55?'grade-c':'grade-d';
+    const gradeLabel = pct>=85?'ممتاز':pct>=70?'جيد':pct>=55?'مقبول':'راسب';
+    const savedMark = s.saved ? '' : '(غير محفوظ)';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:.8rem">${t.id}</td>
+      <td style="font-weight:700">${t.name}</td>
+      <td>${s.c1!==''?s.c1:'—'}</td>
+      <td>${s.c2!==''?s.c2:'—'}</td>
+      <td>${s.c3!==''?s.c3:'—'}</td>
+      <td>${s.c4!==''?s.c4:'—'}</td>
+      <td>${s.c5!==''?s.c5:'—'}</td>
+      <td class="grade-cell ${gradeClass}">${s.saved?total:'—'}</td>
+      <td class="grade-cell ${gradeClass}">${s.saved?gradeLabel:'—'} ${savedMark}</td>
+      <td style="font-size:.8rem;color:var(--text-secondary)">${s.notes||'—'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ─── EXPORT EXCEL ─────────────────────────────────────────────────────────────
+function exportExcel() {
+  const wb = XLSX.utils.book_new();
+
+  sections.forEach(sec => {
+    const list = trainees.filter(t=>t.section===sec);
+    const rows = [
+      ['#','رقم الهوية','الاسم','الشعبة',
+       'ب١ (5)','ب٢ (3)','ب٣ (6)','ب٤ (3)','ب٥ (3)','المجموع /20','التقدير','ملاحظات']
+    ];
+    list.forEach((t,i) => {
+      const s = scores[t.id];
+      const total = calcTotal(t.id);
+      const pct = total/MAX_TOTAL*100;
+      const grade = pct>=85?'ممتاز':pct>=70?'جيد':pct>=55?'مقبول':'راسب';
+      rows.push([
+        i+1, t.id, t.name, t.section,
+        s.c1, s.c2, s.c3, s.c4, s.c5,
+        s.saved?total:'',
+        s.saved?grade:'',
+        s.notes
+      ]);
+    });
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols'] = [{wch:4},{wch:14},{wch:22},{wch:12},{wch:8},{wch:8},{wch:8},{wch:8},{wch:8},{wch:12},{wch:8},{wch:20}];
+    XLSX.utils.book_append_sheet(wb, ws, sec.substring(0,30));
+  });
+
+  XLSX.writeFile(wb, `تقييم_المشاريع_${new Date().toLocaleDateString('ar')}.xlsx`);
+  showToast('📥 تم تصدير ملف Excel');
+}
+
+// ─── RESET ALL ────────────────────────────────────────────────────────────────
+async function resetAllData() {
+  if (!confirm('سيتم مسح جميع التقييمات المحفوظة. هل أنت متأكد؟')) return;
+  await clearPersistedScores();
+  scores = {};
+  trainees = [];
+  sections = [];
+  curSection = '';
+  document.getElementById('mainContent').classList.add('hidden');
+  document.getElementById('uploadZone').classList.remove('hidden');
+  document.getElementById('statusBadge').textContent = 'في انتظار الملف';
+  document.getElementById('fileInput').value = '';
+  showToast('🗑️ تم مسح جميع البيانات');
+}
+
+// ─── TOAST ────────────────────────────────────────────────────────────────────
+function showToast(msg, type='green') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = type==='red' ? 'var(--accent-red)' : 'var(--accent-green)';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
