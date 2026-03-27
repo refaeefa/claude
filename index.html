@@ -334,6 +334,10 @@ tbody td {
 .btn-excel:hover { background:rgba(16,185,129,.25); }
 .btn-print { background:rgba(59,130,246,.15); color:var(--accent-blue); border:1px solid rgba(59,130,246,.3); }
 .btn-print:hover { background:rgba(59,130,246,.25); }
+.btn-json-export { background:rgba(245,158,11,.15); color:var(--accent-yellow); border:1px solid rgba(245,158,11,.3); }
+.btn-json-export:hover { background:rgba(245,158,11,.25); }
+.btn-json-import { background:rgba(139,92,246,.15); color:#a78bfa; border:1px solid rgba(139,92,246,.3); display:flex; align-items:center; gap:.5rem; }
+.btn-json-import:hover { background:rgba(139,92,246,.25); }
 
 /* STATS BAR */
 .stats-bar {
@@ -494,6 +498,11 @@ footer a { color:var(--accent-blue); text-decoration:none; }
       <div class="export-bar">
         <button class="btn-export btn-excel" onclick="exportExcel()">📥 تصدير Excel</button>
         <button class="btn-export btn-print" onclick="window.print()">🖨️ طباعة التقرير</button>
+        <button class="btn-export btn-json-export" onclick="exportJSON()">💾 حفظ نسخة احتياطية</button>
+        <label class="btn-export btn-json-import" style="cursor:pointer;">
+          📂 استيراد نسخة احتياطية
+          <input type="file" id="jsonImportInput" accept=".json" style="display:none" onchange="importJSON(this)">
+        </label>
       </div>
     </div>
 
@@ -947,6 +956,55 @@ function exportExcel() {
 
   XLSX.writeFile(wb, `تقييم_المشاريع_${new Date().toLocaleDateString('ar')}.xlsx`);
   showToast('📥 تم تصدير ملف Excel');
+}
+
+// ─── JSON BACKUP ─────────────────────────────────────────────────────────────────────────────
+function exportJSON() {
+  const backup = {
+    version: 1,
+    date: new Date().toISOString(),
+    scores: scores
+  };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], {type: 'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `تقييم_نسخة_${new Date().toLocaleDateString('ar').replace(/\//g,'-')}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✅ تم حفظ النسخة الاحتياطية');
+}
+
+function importJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const backup = JSON.parse(e.target.result);
+      if (!backup.scores) throw new Error('ملف غير صالح');
+      // دمج البيانات المستوردة مع الحالية
+      let count = 0;
+      Object.keys(backup.scores).forEach(id => {
+        if (backup.scores[id].saved) {
+          scores[id] = backup.scores[id];
+          count++;
+        }
+      });
+      persistScores();
+      // تحديث الواجهة
+      const filtered = curSection==='__all__' ? trainees : trainees.filter(t=>t.section===curSection);
+      renderTrainees(filtered);
+      updateSummary(filtered, curSection==='__all__'?'جميع الشعب':curSection);
+      updateProgress(filtered);
+      updateStats();
+      showToast(`رجع ${count} تقييم من النسخة الاحتياطية ✅`);
+    } catch(err) {
+      showToast('⚠️ ملف غير صالح', 'red');
+    }
+    input.value = '';
+  };
+  reader.readAsText(file);
 }
 
 // ─── RESET ALL ────────────────────────────────────────────────────────────────
