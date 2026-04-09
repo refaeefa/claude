@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تقرير دورات أكاديمية فهد — fahdacademy.org</title>
+<style>
+  :root {
+    --primary: #1a3a5c;
+    --accent: #e8a020;
+    --light: #f4f8ff;
+    --card-bg: #ffffff;
+    --text: #1e2a3a;
+    --muted: #6b7a8d;
+    --border: #d0dcea;
+    --green: #1a7a4a;
+    --blue: #1565c0;
+    --orange: #d4680a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0d2744 0%, #1a3a5c 60%, #1565c0 100%);
+    color: white;
+    padding: 40px 32px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: -40px;
+    width: 200px; height: 200px;
+    background: rgba(232,160,32,.12);
+    border-radius: 50%;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: -30px;
+    width: 260px; height: 260px;
+    background: rgba(255,255,255,.04);
+    border-radius: 50%;
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #0d2744;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  header p { font-size: 14px; opacity: .8; }
+  .header-meta {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .header-meta span {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* CONTAINER */
+  .container { max-width: 1000px; margin: 0 auto; padding: 32px 20px; }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+    border-right: 4px solid var(--accent);
+    padding-right: 12px;
+    margin-bottom: 20px;
+    margin-top: 36px;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  }
+  .stat-card .num {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-card .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* INSTRUCTOR */
+  .instructor-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  }
+  .instructor-icon {
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, var(--primary), #1565c0);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+  .instructor-box h3 { font-size: 16px; color: var(--primary); margin-bottom: 6px; }
+  .instructor-box p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag {
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: var(--primary);
+  }
+
+  /* COURSE CARDS */
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
+    gap: 18px;
+  }
+  .course-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .course-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,.1);
+  }
+  .course-header {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .course-number {
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    background: var(--primary);
+    border-radius: 4px;
+    padding: 2px 8px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .course-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+  .course-card .en-title {
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .course-body { padding: 14px 18px; }
+  .course-body p { font-size: 12.5px; color: #444; line-height: 1.6; margin-bottom: 10px; }
+  .course-outcomes { list-style: none; padding: 0; }
+  .course-outcomes li {
+    font-size: 12px;
+    color: var(--text);
+    padding: 3px 0 3px 0;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .course-outcomes li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .course-footer {
+    padding: 10px 18px;
+    background: #f8fafd;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .cat-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .cat-elec   { background: #e3f0ff; color: #1565c0; }
+  .cat-solar  { background: #fff3e0; color: #d4680a; }
+  .cat-skill  { background: #e8f5e9; color: #1a7a4a; }
+  .cat-intro  { background: #f3e5f5; color: #7b1fa2; }
+  .udemy-link {
+    font-size: 11px;
+    color: var(--blue);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .udemy-link:hover { text-decoration: underline; }
+
+  /* SUMMARY TABLE */
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+  }
+  .summary-table th {
+    background: var(--primary);
+    color: white;
+    padding: 12px 16px;
+    text-align: right;
+    font-weight: 600;
+  }
+  .summary-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table tr:nth-child(even) td { background: #f7faff; }
+
+  /* NOTES */
+  .note-box {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: #5d4037;
+    margin-top: 12px;
+  }
+  .note-box strong { color: #bf6000; }
+
+  /* FOOTER */
+  footer {
+    background: var(--primary);
+    color: rgba(255,255,255,.7);
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    margin-top: 40px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media(max-width:600px){
+    header h1 { font-size: 20px; }
+    .courses-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2,1fr); }
+    .instructor-box { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">📋 تقرير شامل</div>
+  <h1>أكاديمية فهد للكهرباء والطاقة</h1>
+  <p>fahdacademy.org — تقرير كامل بالدورات والمحتوى التدريبي</p>
+  <div class="header-meta">
+    <span>📅 أبريل 2026</span>
+    <span>🎓 11 دورة على Udemy</span>
+    <span>⭐ تقييم 4.7 / 5</span>
+    <span>👥 +8,000 متدرب</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- STATS -->
+  <div class="section-title">الأرقام الرئيسية</div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="num">11</span>
+      <div class="lbl">دورة تدريبية</div>
+    </div>
+    <div class="stat-card">
+      <span class="num">8,000+</span>
+      <div class="lbl">متدرب مشترك</div>
+    </div>
+    <div class="stat-card">
+      <span class="num">4.7</span>
+      <div class="lbl">متوسط التقييم</div>
+    </div>
+    <div class="stat-card">
+      <span class="num">23+</span>
+      <div class="lbl">عاماً من الخبرة</div>
+    </div>
+    <div class="stat-card">
+      <span class="num">2004</span>
+      <div class="lbl">بداية المحتوى الرقمي</div>
+    </div>
+    <div class="stat-card">
+      <span class="num">575 ر</span>
+      <div class="lbl">سعر الباقة الكاملة</div>
+    </div>
+  </div>
+
+  <!-- INSTRUCTOR -->
+  <div class="section-title">المدرب</div>
+  <div class="instructor-box">
+    <div class="instructor-icon">👨‍🏫</div>
+    <div>
+      <h3>المهندس فهد رفاعي — Fahad Refai</h3>
+      <p>
+        يحمل درجة الماجستير في الهندسة الكهربائية من بريطانيا (جامعة ستراثكلايد، دفعة 2007)، وهو مدرب هندسة كهربائية منذ أكثر من 23 عاماً. يُعد من أوائل صُنّاع المحتوى الهندسي العربي عبر الإنترنت منذ عام 2004م. مدرب معتمد ضمن منصة <strong>Udemy Business</strong> للتدريب التقني المؤسسي. يدير حساب يوتيوب @fahraf1 ومنصة fahdacademy.org.
+      </p>
+      <div class="tags">
+        <span class="tag">هندسة القدرة الكهربائية</span>
+        <span class="tag">الطاقة الشمسية</span>
+        <span class="tag">Udemy Business</span>
+        <span class="tag">اللغة العربية</span>
+        <span class="tag">الكليات التقنية</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COURSES -->
+  <div class="section-title">الدورات التدريبية الـ 11</div>
+  <div class="courses-grid">
+
+    <!-- 1 -->
+    <div class="course-card">
+      <div class="course-header">
+        <span class="course-number">01</span>
+        <h3>أساسيات الخلايا الشمسية</h3>
+        <div class="en-title">Solar Photovoltaic Technology Basics</div>
+      </div>
+      <div class="course-body">
+        <p>الدورة الأكثر مبيعاً لأكثر من سنتين على Udemy — 2,600+ مشترك، تقييم 4.5/5.</p>
+        <ul class="course-outcomes">
+          <li>مصادر الطاقة المتجددة وغير المتجددة</li>
+          <li>المبادئ الكهربائية للخلايا الشمسية</li>
+          <li>حساب الأحمال وتصميم نظام OFF-GRID</li>
+          <li>توصيل الألواح بالبطارية والإنفرتر</li>
+        </ul>
+      </div>
+      <div class="course-footer">
+        <span class="cat-badge cat-solar">☀️ طاقة شمسية</span>
+        <a class="udemy-link" href="https://www.udemy.com/course/101pvsolar/" target="_blank">🔗 Udemy</a>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="course-card">
+      <div class="course-header">
+        <span class="course-number">02</span>
+        <h3>الأنظمة الشمسية المتصلة بالشبكة</h3>
+        <div class="en-title">Grid-Tied PV Systems</div>
+      </div>
+      <div class="course-body">
+        <p>حسابات تصميم الأنظمة الشمسية المتصلة بالشبكة مع برامج التحليل الإلكترونية.</p>
+        <ul class="course-outcomes">
+          <li>حساب حجم النظام حسب الميزانية أو المساحة</li>
+          <li>استخراج إنتاج الألواح الشمسية بأي مكان عالمياً</li>
+          <li>تحديد Peak Sun Hours بمنطقتك</li>
+          <li>تحديد مساحة التركيب عبر Google Maps</li>
+        </ul>
+      </div>
+      <div class="course-footer">
+        <span class="cat-badge cat-solar">☀️ طاقة شمسية</span>
+        <a class="udemy-link" href="https://www.udemy.com/course/pvsolar2/" target="_blank">🔗 Udemy</a>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="course-card">
+      <div class="course-header">
+        <span class="course-number">03</span>
+        <h3>محطات التحويل الكهربائية وصيانتها</h3>
+        <div class="en-title">Electrical Power Substations</div>
+      </div>
+      <div class="course-body">
+        <p>مدخل شامل لأساسيات محطات التحويل — حلقة الوصل بين التوليد والمستهلكين. مدرب Udemy Business معتمد.</p>
+        <ul class="course-outcomes">
+          <li>مكونات المحطة ووظائفها</li>
+          <li>أنواع المحولات وإجراءات صيانتها</li>
+          <li>اعتبارات ومتطلبات الصيانة الدورية</li>
+        </ul>
+      </div>
+      <div class="course-footer">
+        <span class="cat-badge cat-elec">⚡ كهرباء</span>
+        <a class="udemy-link" href="https://www.udemy.com/course/powerplant/" target="_blank">🔗 Udemy</a>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="course-card">
+      <div class="course-header">
+        <span class="course-number">04</span>
+        <h3>كهرباء المنازل ومحطات التحويل</h3>
+        <div class="en-title">Home Electrical Systems</div>
+      </div>
+      <div class="course-body">
+        <p>35 محاضرة — 4 ساعات و37 دقيقة — 4 وحدات رئيسية. يناسب المبتدئين والطلاب.</p>
+        <ul class="course-outcomes">
+          <li>العداد الكهربائي وقراءة الفواتير</li>
+          <li>الأسلاك وأنواع الإفياش والقواطع</li>
+          <li>نظام التأريض في السعودية</li>
+          <li>مخاطر الصعق ومعايير الحماية</li>
+        </ul>
+      </div>
+      <div class="course-footer">
+        <span class="cat-badge cat-elec">⚡ كهرباء</span>
+        <a class="udemy-link" href="https://www.udemy.com/course/homeelectrical/" target="_blank">🔗 Udemy</a>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="course-card">
+      <div class="course-header">
+        <span class="course-number">05</span>
+        <h3>إنتاج وتوليد الكهرباء</h3>
+        <div class="en-title">Electricity Generation</div>
+      </div>
+      <div class="course-body">
+        <p>دورة تمهيدية للمبتدئين — لا متطلبات سابقة — تشرح طرق توليد الكهرباء التقليدية.</p>
+        <ul class="course-outcomes">
+          <li>طرق إنتاج الكهرباء بالعالم</li>
+          <li>مراحل التوليد والنقل والتوزيع</li>
+          <li>مفاهيم الجهد والتيار والقدرة</li>
+        </ul>
+      </div>
+      <div class="course-footer">
+        <span class="cat-badge cat-intro">🔰 مقدمة</span>
+        <a class="udemy-link" href="https://www.udemy.com/course/electricity-generatin/" target="_blank">🔗 Udemy</a>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="course-card">
+      <div class="course-header">
+        <span class="course-number">06</span>
+        <h3>محركات ومولدات التيار المستمر</h3>
+        <div class="en-title">DC Machines — Motors & Generators</div>
+      </div>
+      <div class="course-body">
+        <p>خلاصة علمية وعملية في آلات التيار المستمر بأسلوب شيق بعيد عن جفاف الجامعات.</p>
+        <ul class="course-outcomes">
+          <li>أنواع مولدات DC وتوصيلاتها</li>
+          <li>أنواع محركات DC وخصائصها</li>
+          <li>تصنيع العضو المنتج (Armature)</li>
+          <li>التركيب الداخلي للمولد والمحرك</li>
+        </ul>
+      </div>
+      <div class="course-footer">
+        <span class="cat-badge cat-elec">⚡ كهرباء</span>
+        <a class="udemy-link" href="https://www.udemy.com/course/dc-machines/" target="_blank">🔗 Udemy</a>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="course-card">
+      <div class="course-header">
+        <span class="course-number">07</span>
+        <h3>محولات القدرة الكهربائية</h3>
+        <div class="en-title">Power Transformers — Basics to Maintenance</div>
+      </div>
+      <div class="course-body">
+        <p>الشرح التطبيقي الذي لم تجده في الجامعة — يسد الفجوة بين النظرية والميدان.</p>
+        <ul class="course-outcomes">
+          <li>قراءة لوحات البيانات الفنية (Nameplate)</li>
+          <li>تشخيص الأعطال الشائعة وأسبابها</li>
+          <li>إجراءات الصيانة الدورية الميدانية</li>
+          <li>شروط توصيل المحولات على التوازي</li>
+        </ul>
+      </div>
+      <div class="course-footer">
+        <span class="cat-badge cat-elec">⚡ كهرباء</span>
+        <a class="udemy-link" href="https://www.udemy.com/course/transformers/" target="_blank">🔗 Udemy</a>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="course-card">
+      <div class="course-header">
+        <span class="course-number">08</span>
+        <h3>التعريف بتخصص الهندسة الكهربائية</h3>
+        <div class="en-title">Introduction to Electrical Engineering</div>
+      </div>
+      <div class="course-body">
+        <p>دورة توجيهية للطلاب المقبلين على التخصص — لا متطلبات مسبقة.</p>
+        <ul class="course-outcomes">
+          <li>أهم المفاهيم الكهربائية في التخصص</li>
+          <li>الفرص الوظيفية المستقبلية</li>
+          <li>مدى الحاجة للتخصص حالياً ومستقبلاً</li>
+          <li>نصائح لاجتياز التخصص بنجاح</li>
+        </ul>
+      </div>
+      <div class="course-footer">
+        <span class="cat-badge cat-intro">🔰 مقدمة</span>
+        <a class="udemy-link" href="https://www.udemy.com/course/101eleeng/" target="_blank">🔗 Udemy</a>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="course-card">
+      <div class="course-header">
+        <span class="course-number">09</span>
+        <h3>مولدات ومحطات الديزل الاحتياطية</h3>
+        <div class="en-title">Emergency Backup Power Systems & UPS</div>
+      </div>
+      <div class="course-body">
+        <p>محطات الديزل الاحتياطية في المستشفيات والفنادق والمصانع — ربطها بالأحمال.</p>
+        <ul class="course-outcomes">
+          <li>أنظمة التحويل الأوتوماتيكي ATS</li>
+          <li>حسابات التيار والأحمال الكهربائية</li>
+          <li>حسابات القدرة قبل شراء المولد</li>
+          <li>طرق ربط المحطات مع الأحمال</li>
+        </ul>
+      </div>
+      <div class="course-footer">
+        <span class="cat-badge cat-elec">⚡ كهرباء</span>
+        <a class="udemy-link" href="https://www.udemy.com/course/backuppower/" target="_blank">🔗 Udemy</a>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="course-card">
+      <div class="course-header">
+        <span class="course-number">10</span>
+        <h3>مهارات تسويق الذات للوظيفة والعمل الحر</h3>
+        <div class="en-title">Self-Marketing Skills for Jobs & Freelance</div>
+      </div>
+      <div class="course-body">
+        <p>من خبرة شخصية وعملية — كيف تستثمر نفسك قبل وبعد التخرج.</p>
+        <ul class="course-outcomes">
+          <li>كتابة CV مهنية احترافية</li>
+          <li>التهيئة لسوق العمل والمقابلات</li>
+          <li>استراتيجيات العمل الحر الرقمي</li>
+          <li>بناء حضور رقمي مميز</li>
+        </ul>
+      </div>
+      <div class="course-footer">
+        <span class="cat-badge cat-skill">🎯 مهارات</span>
+        <a class="udemy-link" href="https://www.udemy.com/course/marketme/" target="_blank">🔗 Udemy</a>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="course-card">
+      <div class="course-header">
+        <span class="course-number">11</span>
+        <h3>مهارات الوظيفة والعمل المهني</h3>
+        <div class="en-title">Professional Job Skills</div>
+      </div>
+      <div class="course-body">
+        <p>الاستعداد لسوق العمل من كتابة CV إلى اجتياز المقابلات والبدء بالمهام الوظيفية.</p>
+        <ul class="course-outcomes">
+          <li>مهارات التقديم والمقابلات</li>
+          <li>بناء الخبرات قبل التخرج</li>
+          <li>التأهل للقطاعين الحكومي والخاص</li>
+        </ul>
+      </div>
+      <div class="course-footer">
+        <span class="cat-badge cat-skill">🎯 مهارات</span>
+        <a class="udemy-link" href="https://www.udemy.com/course/work-skills-professional-skills/" target="_blank">🔗 Udemy</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SUMMARY TABLE -->
+  <div class="section-title">جدول ملخص الدورات</div>
+  <div style="overflow-x:auto;">
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>اسم الدورة</th>
+          <th>الفئة</th>
+          <th>الجمهور المستهدف</th>
+          <th>رابط Udemy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>أساسيات الخلايا الشمسية</td><td>☀️ طاقة شمسية</td><td>مهندسون، فنيون، طلاب</td><td><a href="https://www.udemy.com/course/101pvsolar/">101pvsolar</a></td></tr>
+        <tr><td>2</td><td>الأنظمة الشمسية المتصلة بالشبكة</td><td>☀️ طاقة شمسية</td><td>مهندسون ومصممو أنظمة</td><td><a href="https://www.udemy.com/course/pvsolar2/">pvsolar2</a></td></tr>
+        <tr><td>3</td><td>محطات التحويل الكهربائية</td><td>⚡ كهرباء</td><td>مهندسو القدرة، فنيو المحطات</td><td><a href="https://www.udemy.com/course/powerplant/">powerplant</a></td></tr>
+        <tr><td>4</td><td>كهرباء المنازل ومحطات التحويل</td><td>⚡ كهرباء</td><td>مبتدئون، طلاب، فنيون</td><td><a href="https://www.udemy.com/course/homeelectrical/">homeelectrical</a></td></tr>
+        <tr><td>5</td><td>إنتاج وتوليد الكهرباء</td><td>⚡ كهرباء</td><td>الجميع — مبتدئون</td><td><a href="https://www.udemy.com/course/electricity-generatin/">electricity-generatin</a></td></tr>
+        <tr><td>6</td><td>محركات ومولدات التيار المستمر</td><td>⚡ كهرباء</td><td>طلاب هندسة، فنيون</td><td><a href="https://www.udemy.com/course/dc-machines/">dc-machines</a></td></tr>
+        <tr><td>7</td><td>محولات القدرة الكهربائية</td><td>⚡ كهرباء</td><td>مهندسون وفنيو الكهرباء</td><td><a href="https://www.udemy.com/course/transformers/">transformers</a></td></tr>
+        <tr><td>8</td><td>التعريف بتخصص الهندسة الكهربائية</td><td>🔰 مقدمة</td><td>طلاب مقبلون على التخصص</td><td><a href="https://www.udemy.com/course/101eleeng/">101eleeng</a></td></tr>
+        <tr><td>9</td><td>مولدات ومحطات الديزل الاحتياطية</td><td>⚡ كهرباء</td><td>مهندسو الكهرباء والميكانيكا</td><td><a href="https://www.udemy.com/course/backuppower/">backuppower</a></td></tr>
+        <tr><td>10</td><td>مهارات تسويق الذات</td><td>🎯 مهارات</td><td>طلاب وخريجون</td><td><a href="https://www.udemy.com/course/marketme/">marketme</a></td></tr>
+        <tr><td>11</td><td>مهارات الوظيفة المهنية</td><td>🎯 مهارات</td><td>طلاب وخريجون</td><td><a href="https://www.udemy.com/course/work-skills-professional-skills/">work-skills</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- NOTES -->
+  <div class="note-box">
+    <strong>📦 الباقة الشاملة:</strong> يمكن الاشتراك في جميع الـ 11 دورة بسعر موحد 575 ريال سعودي عبر موقع fahdacademy.org — توفيراً كبيراً مقارنة بالاشتراك الفردي في كل دورة.
+    <br><br>
+    <strong>🏅 اعتماد مؤسسي:</strong> المدرب معتمد ضمن Udemy Business للتدريب التقني المؤسسي — مما يجعل الدورات مناسبة لبرامج تدريب الشركات والجهات الحكومية.
+    <br><br>
+    <strong>🌐 اللغة:</strong> جميع الدورات باللغة العربية مع الحفاظ على المصطلحات العلمية الإنجليزية مع ترجمتها.
+  </div>
+
+</div>
+
+<footer>
+  المدرب فهد رفاعي — <a href="https://fahdacademy.org" target="_blank">fahdacademy.org</a> | تقرير مُولَّد بواسطة Claude AI — أبريل 2026
+</footer>
+
+</body>
+</html>
