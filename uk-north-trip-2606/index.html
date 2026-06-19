@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رحلة شمال بريطانيا — 12 يوم من الهدوء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --slate:    #1C2430;
+    --ink:      #2C3A4A;
+    --mist:     #E8EDF2;
+    --fog:      #F4F6F8;
+    --heather:  #6B7FA3;
+    --loch:     #2E6B8A;
+    --amber:    #C8922A;
+    --moss:     #4A7C59;
+    --light-text:#667085;
+    --white:    #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    background: var(--fog);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: linear-gradient(160deg, var(--slate) 0%, #1a3a4f 55%, #2a4a3a 100%);
+    color: var(--white);
+    padding: 64px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff08' stroke-width='1'%3E%3Ccircle cx='30' cy='30' r='25'/%3E%3Ccircle cx='30' cy='30' r='15'/%3E%3C/g%3E%3C/svg%3E") repeat;
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(200,146,42,0.25);
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 42px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  .hero p {
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    max-width: 480px;
+    margin: 0 auto 32px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--amber);
+    display: block;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+  }
+
+  /* ─── NAV TABS ─── */
+  .tabs-wrap {
+    background: var(--slate);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tabs-wrap::-webkit-scrollbar { display: none; }
+  .tabs {
+    display: flex;
+    min-width: max-content;
+    padding: 0 16px;
+  }
+  .tab {
+    padding: 14px 18px;
+    cursor: pointer;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .tab:hover { color: rgba(255,255,255,0.85); }
+  .tab.active {
+    color: var(--amber);
+    border-bottom-color: var(--amber);
+  }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    display: none;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 16px 64px;
+  }
+  .section.active { display: block; }
+
+  /* ─── SECTION HEADER ─── */
+  .sec-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--slate);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sec-title .icon { font-size: 24px; }
+  .sec-sub {
+    color: var(--light-text);
+    font-size: 13px;
+    margin-bottom: 28px;
+    padding-right: 34px;
+  }
+
+  /* ─── SUMMARY TABLE ─── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .sum-card {
+    background: var(--white);
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .sum-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .sum-icon.blue { background: #EBF4F8; }
+  .sum-icon.green { background: #EBF5F0; }
+  .sum-icon.amber { background: #FDF6E9; }
+  .sum-icon.purple { background: #F0EBF8; }
+  .sum-label { font-size: 11px; color: var(--light-text); }
+  .sum-val { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+  /* ─── DAY CARDS ─── */
+  .day-card {
+    background: var(--white);
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .day-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .day-num {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    flex-shrink: 0;
+    color: white;
+  }
+  .day-num.transit { background: var(--heather); }
+  .day-num.light   { background: var(--moss); }
+  .day-num.medium  { background: var(--loch); }
+  .day-num.arrive  { background: var(--amber); }
+  .day-info { flex: 1; }
+  .day-title { font-weight: 600; font-size: 15px; color: var(--slate); }
+  .day-meta {
+    font-size: 12px;
+    color: var(--light-text);
+    display: flex; gap: 12px; flex-wrap: wrap;
+    margin-top: 2px;
+  }
+  .day-meta span { display: flex; align-items: center; gap: 4px; }
+  .day-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+  .badge-light { background: #E8F5EE; color: var(--moss); }
+  .badge-medium { background: #EAF2F8; color: var(--loch); }
+  .badge-transit { background: #EEF0F5; color: var(--heather); }
+  .badge-arrive { background: #FDF6E9; color: var(--amber); }
+  .toggle-icon {
+    font-size: 18px;
+    color: var(--heather);
+    transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+  .day-card.open .toggle-icon { transform: rotate(180deg); }
+  .day-body {
+    display: none;
+    border-top: 1px solid #EEF0F4;
+    padding: 20px;
+  }
+  .day-card.open .day-body { display: block; }
+
+  .time-block { margin-bottom: 20px; }
+  .time-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--heather);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .time-label::before {
+    content: '';
+    width: 18px; height: 2px;
+    background: var(--heather);
+    border-radius: 1px;
+    display: inline-block;
+  }
+  .time-content {
+    font-size: 14px;
+    color: var(--ink);
+    padding-right: 24px;
+  }
+  .time-content ul { padding-right: 18px; margin-top: 4px; }
+  .time-content li { margin-bottom: 4px; }
+  .skip-note {
+    background: #FFF8EC;
+    border-right: 3px solid var(--amber);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #8B6914;
+    margin-top: 12px;
+  }
+  .tip-note {
+    background: #EAF7EE;
+    border-right: 3px solid var(--moss);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #2E5E3E;
+    margin-top: 12px;
+  }
+  .walk-info {
+    background: var(--mist);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  /* ─── TRANSPORT TABLE ─── */
+  .trans-card {
+    background: var(--white);
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .trans-header {
+    background: var(--slate);
+    color: white;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .trans-header h3 { font-size: 14px; font-weight: 600; }
+  .trans-route {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+  }
+  .trans-body { padding: 16px 18px; }
+  .trans-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 7px 0;
+    border-bottom: 1px solid #F0F2F5;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .trans-row:last-child { border-bottom: none; }
+  .trans-key { font-size: 12px; color: var(--light-text); min-width: 120px; }
+  .trans-val { font-size: 13px; color: var(--ink); font-weight: 500; text-align: left; }
+  .price-tag {
+    display: inline-block;
+    background: #EAF7EE;
+    color: var(--moss);
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  .warn-tag {
+    display: inline-block;
+    background: #FDF6E9;
+    color: #C8922A;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+
+  /* ─── ACCOMMODATION ─── */
+  .hotel-card {
+    background: var(--white);
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .hotel-city {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--heather);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .hotel-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--slate);
+    margin-bottom: 4px;
+  }
+  .hotel-meta {
+    font-size: 12px;
+    color: var(--light-text);
+    margin-bottom: 10px;
+  }
+  .hotel-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .feat-pill {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--mist);
+    color: var(--ink);
+  }
+  .hotel-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--loch);
+  }
+  .alt-hotel {
+    font-size: 13px;
+    color: var(--light-text);
+    margin-top: 6px;
+  }
+
+  /* ─── BUDGET TABLE ─── */
+  .budget-section {
+    background: var(--white);
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .budget-header {
+    background: var(--ink);
+    color: white;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .budget-table { width: 100%; border-collapse: collapse; }
+  .budget-table th {
+    background: #F8FAFB;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--heather);
+    text-align: right;
+    border-bottom: 1px solid #E2E8F0;
+  }
+  .budget-table td {
+    padding: 10px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid #F0F2F5;
+  }
+  .budget-table tr:last-child td { border-bottom: none; }
+  .budget-table td:not(:first-child) { text-align: center; }
+  .budget-eco { color: var(--moss); font-weight: 600; }
+  .budget-mid { color: var(--loch); font-weight: 600; }
+  .total-row { background: #F8FAFB; }
+  .total-row td { font-weight: 700; font-size: 14px; }
+
+  /* ─── SKYE SECTION ─── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 560px) { .compare-grid { grid-template-columns: 1fr; } }
+  .compare-card {
+    border: 2px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 18px;
+    background: var(--white);
+  }
+  .compare-card.recommended { border-color: var(--moss); }
+  .compare-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--slate);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .rec-badge {
+    font-size: 10px;
+    background: var(--moss);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+  .compare-list { list-style: none; }
+  .compare-list li {
+    font-size: 13px;
+    padding: 4px 0;
+    border-bottom: 1px solid #F0F2F5;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .compare-list li:last-child { border-bottom: none; }
+  .pro { color: var(--moss); }
+  .con { color: #C0392B; }
+
+  /* ─── TIPS ─── */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .tip-card {
+    background: var(--white);
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .tip-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--slate);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tip-card ul { list-style: none; }
+  .tip-card li {
+    font-size: 13px;
+    padding: 5px 0;
+    border-bottom: 1px solid #F5F5F5;
+    color: var(--ink);
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .tip-card li:last-child { border-bottom: none; }
+
+  /* ─── LINKS ─── */
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .link-card {
+    background: var(--white);
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 16px;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+  }
+  .link-card:hover {
+    border-color: var(--loch);
+    box-shadow: 0 2px 12px rgba(46,107,138,0.12);
+  }
+  .link-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--mist);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .link-name { font-size: 14px; font-weight: 600; color: var(--slate); }
+  .link-desc { font-size: 12px; color: var(--light-text); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hero { padding: 40px 16px 36px; }
+    .hero-stats { gap: 20px; }
+    .day-meta { gap: 8px; }
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 28px 16px;
+    font-size: 12px;
+    color: var(--light-text);
+    border-top: 1px solid #E2E8F0;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Solo Travel · UK North</div>
+  <h1>رحلة شمال بريطانيا<br>12 يومًا من الهدوء</h1>
+  <p>Lake District — Glasgow — Inverness<br>خطة واقعية لشخص يريد المشي، الطبيعة، والذكريات — بدون ضغط.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">12</span><span class="stat-label">يومًا</span></div>
+    <div class="stat"><span class="stat-num">4</span><span class="stat-label">محطات</span></div>
+    <div class="stat"><span class="stat-num">900£</span><span class="stat-label">إجمالي متوسط</span></div>
+    <div class="stat"><span class="stat-num">Solo</span><span class="stat-label">مسافر منفرد</span></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('summary')">📋 الملخص</div>
+    <div class="tab" onclick="showTab('days')">📅 الجدول اليومي</div>
+    <div class="tab" onclick="showTab('transport')">🚆 المواصلات</div>
+    <div class="tab" onclick="showTab('hotels')">🏨 السكن</div>
+    <div class="tab" onclick="showTab('budget')">💷 الميزانية</div>
+    <div class="tab" onclick="showTab('skye')">🏔️ جزيرة سكاي</div>
+    <div class="tab" onclick="showTab('tips')">💡 نصائح</div>
+    <div class="tab" onclick="showTab('links')">🔗 روابط الحجز</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB: SUMMARY -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="summary" class="section active">
+  <div class="sec-title"><span class="icon">📋</span> نظرة عامة على الرحلة</div>
+  <p class="sec-sub">12 يوم / 11 ليلة — solo من السعودية — شمال بريطانيا فقط</p>
+
+  <div class="summary-grid">
+    <div class="sum-card">
+      <div class="sum-icon blue">✈️</div>
+      <div>
+        <div class="sum-label">المطار</div>
+        <div class="sum-val">مانشستر MAN</div>
+      </div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-icon amber">🗓️</div>
+      <div>
+        <div class="sum-label">المدة</div>
+        <div class="sum-val">12 يوم / 11 ليلة</div>
+      </div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-icon green">🏨</div>
+      <div>
+        <div class="sum-label">تغيير فنادق</div>
+        <div class="sum-val">4 فنادق فقط</div>
+      </div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-icon purple">💷</div>
+      <div>
+        <div class="sum-label">الميزانية المتوسطة</div>
+        <div class="sum-val">850–1000 £</div>
+      </div>
+    </div>
+  </div>
+
+  <table class="budget-table" style="background:white; border-radius:12px; overflow:hidden; border:1px solid #E2E8F0; width:100%; border-collapse:collapse;">
+    <thead>
+      <tr>
+        <th style="padding:12px 16px;font-size:13px;color:#667085;text-align:right;background:#F8FAFB;border-bottom:1px solid #E2E8F0;">اليوم</th>
+        <th style="padding:12px 16px;font-size:13px;color:#667085;text-align:right;background:#F8FAFB;border-bottom:1px solid #E2E8F0;">المكان</th>
+        <th style="padding:12px 16px;font-size:13px;color:#667085;text-align:right;background:#F8FAFB;border-bottom:1px solid #E2E8F0;">السكن</th>
+        <th style="padding:12px 16px;font-size:13px;color:#667085;text-align:right;background:#F8FAFB;border-bottom:1px solid #E2E8F0;">طبيعة اليوم</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">يوم 1</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">مانشستر</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">فندق قرب Piccadilly</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;"><span class="badge-arrive">وصول + تكيف</span></td></tr>
+      <tr><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">يوم 2</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">مانشستر → وندرمير</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">Windermere / Ambleside</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;"><span class="badge-transit">انتقال + استكشاف</span></td></tr>
+      <tr><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">يوم 3</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">Lake District</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">نفس الفندق</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;"><span class="badge-light">خفيف · طبيعة</span></td></tr>
+      <tr><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">يوم 4</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">Lake District</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">نفس الفندق</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;"><span class="badge-medium">متوسط · Grasmere</span></td></tr>
+      <tr><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">يوم 5</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">Lake District</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">نفس الفندق</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;"><span class="badge-light">خفيف · Rydal Water</span></td></tr>
+      <tr><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">يوم 6</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">وندرمير → قلاسقو</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">Glasgow City Centre</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;"><span class="badge-transit">انتقال</span></td></tr>
+      <tr><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">يوم 7</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">قلاسقو</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">نفس الفندق</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;"><span class="badge-light">خفيف · تجول المدينة</span></td></tr>
+      <tr><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">يوم 8</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">قلاسقو</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">نفس الفندق</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;"><span class="badge-medium">متوسط · West End</span></td></tr>
+      <tr><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">يوم 9</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">قلاسقو → إنفرنس</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">Inverness</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;"><span class="badge-transit">انتقال</span></td></tr>
+      <tr><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">يوم 10</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">إنفرنس / Loch Ness</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">نفس الفندق</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;"><span class="badge-medium">متوسط · Loch Ness</span></td></tr>
+      <tr><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">يوم 11</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">إنفرنس → مانشستر</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;">قرب مطار مانشستر</td><td style="padding:10px 16px;border-bottom:1px solid #F0F2F5;"><span class="badge-transit">يوم انتقال كامل</span></td></tr>
+      <tr><td style="padding:10px 16px;">يوم 12</td><td style="padding:10px 16px;">المطار</td><td style="padding:10px 16px;">—</td><td style="padding:10px 16px;"><span class="badge-arrive">رحلة العودة</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB: DAYS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="days" class="section">
+  <div class="sec-title"><span class="icon">📅</span> الجدول اليومي المفصّل</div>
+  <p class="sec-sub">لا أكثر من نشاطين رئيسيين في اليوم. أيام الانتقال فارغة التخطيط مقصود.</p>
+
+  <!-- DAY 1 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num arrive">1</div>
+      <div class="day-info">
+        <div class="day-title">مانشستر — يوم الوصول</div>
+        <div class="day-meta">
+          <span>📍 مانشستر</span>
+          <span>🚶 مشي خفيف جداً</span>
+        </div>
+      </div>
+      <span class="day-badge badge-arrive">وصول</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">وصول مانشستر — مترو Metrolink من المطار إلى Piccadilly (18 دقيقة / £4). تسجيل دخول الفندق أو إيداع الحقائب.</div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">الظهيرة</div>
+        <div class="time-content">
+          <ul>
+            <li>مشي خفيف في Northern Quarter — أحياء قديمة ومحلات مستقلة وقهوة جيدة</li>
+            <li>قهوة في <strong>Takk</strong> أو <strong>Fig + Sparrow</strong> — من أفضل قهاوي مانشستر</li>
+            <li>تجول في Afflecks Palace إن أردت — ليس ضرورياً</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">المساء</div>
+        <div class="time-content">عشاء في منطقة Piccadilly Gardens أو Ancoats. نوم مبكر. غداً تنتقل إلى Lake District.</div>
+      </div>
+      <div class="skip-note">⚠️ لا أنصح بـ: Deansgate, Spinningfields — مناطق تجارية مزدحمة بلا روح</div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num transit">2</div>
+      <div class="day-info">
+        <div class="day-title">مانشستر → وندرمير — يوم الانتقال</div>
+        <div class="day-meta"><span>📍 Lake District</span><span>🚆 قطار 1.5 ساعة</span></div>
+      </div>
+      <span class="day-badge badge-transit">انتقال</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">إفطار في الفندق. خروج مبكر نحو محطة Piccadilly. قطار مباشر إلى Windermere (أو عبر Oxenholme). اركب صباحاً لتستمتع بالمنظر من النافذة.</div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">الظهيرة</div>
+        <div class="time-content">
+          <ul>
+            <li>وصول وندرمير — تسجيل الدخول في B&B أو فندق</li>
+            <li>مشي خفيف إلى <strong>شاطئ بحيرة Windermere</strong> — الوصول الأول للبحيرة</li>
+            <li>قهوة في <strong>Café Bar Green</strong> أو أي مقهى على الشارع الرئيسي</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">المساء</div>
+        <div class="time-content">عشاء في Windermere أو Bowness (مشياً 15 دقيقة). نوم مبكر — غداً يوم طبيعة.</div>
+      </div>
+      <div class="tip-note">✅ يوم الانتقال قصير. لا تضغط على نفسك بتخطيط اليوم كله.</div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num light">3</div>
+      <div class="day-info">
+        <div class="day-title">Bowness + بحيرة وندرمير</div>
+        <div class="day-meta"><span>📍 Lake District</span><span>🚶 3–5 كم مشي</span></div>
+      </div>
+      <span class="day-badge badge-light">خفيف</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">
+          <ul>
+            <li>إفطار في B&B (عادة مشمول)</li>
+            <li>مشي على <strong>Windermere Lake Shore Path</strong> — مسار ممتع على ضفة البحيرة</li>
+            <li>منظر الجبال على الماء — جلسة هادئة</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">الظهيرة</div>
+        <div class="time-content">
+          <ul>
+            <li>عبّارة صغيرة إلى <strong>Far Sawrey</strong> (جهة غربية البحيرة) — تذكرة £6–8</li>
+            <li>تجول قصير أو جلوس على الضفة الأخرى</li>
+            <li>عودة بالعبارة — المنظر من الماء رائع</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">المساء</div>
+        <div class="time-content">تجول في Bowness — قرية جميلة بها محلات ومطاعم. عشاء هادئ.</div>
+      </div>
+      <div class="walk-info">🚶 إجمالي المشي: 3–5 كم — خفيف جداً</div>
+      <div class="skip-note">⚠️ لا أنصح بـ: World of Beatrix Potter — موجّه للعائلات والأطفال</div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num medium">4</div>
+      <div class="day-info">
+        <div class="day-title">Grasmere — قرية وردزوورث</div>
+        <div class="day-meta"><span>📍 Lake District</span><span>🚌 باص 555</span><span>🚶 4–6 كم</span></div>
+      </div>
+      <span class="day-badge badge-medium">متوسط</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">
+          <ul>
+            <li>باص 555 من Windermere إلى <strong>Grasmere</strong> (20 دقيقة)</li>
+            <li>مشي على <strong>Grasmere Lake circuit</strong> — دائرة كاملة حول البحيرة، 5 كم، هادئة جداً</li>
+            <li>توقف في <strong>Sarah Nelson's Gingerbread Shop</strong> — قديمة من 1854، تجربة فريدة</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">الظهيرة</div>
+        <div class="time-content">
+          <ul>
+            <li>غداء في مقهى محلي في القرية</li>
+            <li>قبور شعراء الرومانسية في كنيسة St Oswald — هادئة وتاريخية</li>
+            <li>تجول حر في القرية الصغيرة</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">المساء</div>
+        <div class="time-content">باص 555 عودة إلى Windermere. عشاء وراحة.</div>
+      </div>
+      <div class="walk-info">🚶 إجمالي المشي: 5–7 كم مع جولة البحيرة</div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num light">5</div>
+      <div class="day-info">
+        <div class="day-title">Rydal Water + Ambleside — يوم هادئ</div>
+        <div class="day-meta"><span>📍 Lake District</span><span>🚶 3–6 كم حسب الرغبة</span></div>
+      </div>
+      <span class="day-badge badge-light">خفيف</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">
+          <ul>
+            <li>باص إلى <strong>Ambleside</strong> (15 دقيقة من وندرمير)</li>
+            <li>مشي إلى <strong>Rydal Water</strong> — بحيرة صغيرة هادئة جداً، أقل شهرة = أقل زحام</li>
+            <li>المسار يمر بين الأشجار والصخور — وادٍ ساكن</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">الظهيرة</div>
+        <div class="time-content">
+          <ul>
+            <li>عودة إلى Ambleside — مشي في الشوارع القديمة</li>
+            <li>غداء في <strong>Lucy's on a Plate</strong> أو أي مقهى محلي</li>
+            <li>راحة أو تجول حر</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">المساء</div>
+        <div class="time-content">آخر ليلة في Lake District. عشاء هادئ في وندرمير. تجهيز حقائب للسفر لقلاسقو غداً.</div>
+      </div>
+      <div class="walk-info">🚶 إجمالي المشي: 3–6 كم حسب ما تختار</div>
+      <div class="skip-note">⚠️ لا أنصح بـ: Keswick — يوم كامل بالانتقال، بعيد نسبياً، أفضل لو عندك سيارة</div>
+    </div>
+  </div>
+
+  <!-- DAY 6 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num transit">6</div>
+      <div class="day-info">
+        <div class="day-title">وندرمير → قلاسقو — يوم انتقال</div>
+        <div class="day-meta"><span>📍 Glasgow</span><span>🚆 2.5–3 ساعة قطار</span></div>
+      </div>
+      <span class="day-badge badge-transit">انتقال</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">
+          <ul>
+            <li>إفطار وخروج مبكر</li>
+            <li>باص أو تاكسي إلى Oxenholme Lake District Station (30 دقيقة)</li>
+            <li>قطار Oxenholme → Glasgow Central</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">الظهيرة</div>
+        <div class="time-content">
+          <ul>
+            <li>وصول قلاسقو — تسجيل دخول فندق</li>
+            <li>مشي في <strong>Merchant City</strong> — حي قديم جميل، محلات ومطاعم</li>
+            <li>قهوة في <strong>Papercup Coffee</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">المساء</div>
+        <div class="time-content">عشاء هادئ قرب الفندق. راحة.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 7 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num light">7</div>
+      <div class="day-info">
+        <div class="day-title">قلاسقو — المدينة القديمة</div>
+        <div class="day-meta"><span>📍 Glasgow</span><span>🚶 4–6 كم مشي</span></div>
+      </div>
+      <span class="day-badge badge-light">خفيف</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">
+          <ul>
+            <li>مشي إلى <strong>Glasgow Cathedral</strong> — كاتدرائية قوطية 1136م، أقدم مبنى في قلاسقو</li>
+            <li>بجانبها <strong>Necropolis</strong> — مقبرة فيكتورية على تلة، منظر رائع للمدينة</li>
+            <li>صباح رائع وهادئ</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">الظهيرة</div>
+        <div class="time-content">
+          <ul>
+            <li>نزول إلى <strong>Merchant City</strong> — غداء في أي مطعم محلي</li>
+            <li>تجول حر في الأحياء القديمة</li>
+            <li>زيارة <strong>Kelvingrove Art Gallery</strong> — دخول مجاني، مبنى رائع</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">المساء</div>
+        <div class="time-content">تجول في مركز المدينة. عشاء في Merchant City أو Argyle Street.</div>
+      </div>
+      <div class="walk-info">🚶 إجمالي المشي: 4–6 كم — معظمه في مناطق مدينة</div>
+      <div class="skip-note">⚠️ لا أنصح بـ: متحف المواصلات (Riverside Museum) — ممتع لكنه بعيد عن المركز نسبياً، بالمترو يوجد</div>
+    </div>
+  </div>
+
+  <!-- DAY 8 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num medium">8</div>
+      <div class="day-info">
+        <div class="day-title">قلاسقو — West End & Kelvingrove Park</div>
+        <div class="day-meta"><span>📍 Glasgow</span><span>🚶 4–5 كم مشي</span></div>
+      </div>
+      <span class="day-badge badge-medium">متوسط</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">
+          <ul>
+            <li>مشي أو مترو إلى <strong>West End</strong></li>
+            <li>تجول في <strong>Byres Road</strong> — شارع يسكنه الطلاب والأدباء، قهاوي وكتب</li>
+            <li>قهوة في <strong>Offshore Coffee</strong> أو <strong>Kember & Jones</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">الظهيرة</div>
+        <div class="time-content">
+          <ul>
+            <li>مشي في <strong>Kelvingrove Park</strong> — متنزه نهري كبير جميل</li>
+            <li>جلسة على العشب أو بجانب النهر</li>
+            <li>زيارة <strong>University of Glasgow</strong> بنيانها القوطي — مجانية، رائعة بصرياً</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">المساء</div>
+        <div class="time-content">آخر ليلة في قلاسقو. عشاء في West End. تجهيز الحقائب لقطار إنفرنس غداً.</div>
+      </div>
+      <div class="walk-info">🚶 إجمالي المشي: 4–5 كم في حي سكني جميل</div>
+    </div>
+  </div>
+
+  <!-- DAY 9 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num transit">9</div>
+      <div class="day-info">
+        <div class="day-title">قلاسقو → إنفرنس — رحلة القطار الأجمل</div>
+        <div class="day-meta"><span>📍 Inverness</span><span>🚆 3 ساعات قطار</span></div>
+      </div>
+      <span class="day-badge badge-transit">انتقال</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">
+          <ul>
+            <li>قطار من <strong>Glasgow Queen Street</strong> إلى <strong>Inverness</strong></li>
+            <li>الرحلة 3 ساعات — جبال اسكتلندا من النافذة</li>
+            <li><strong>اجلس في الجهة اليمنى من القطار</strong> لأفضل المناظر (Highland scenery)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">الظهيرة</div>
+        <div class="time-content">
+          <ul>
+            <li>وصول إنفرنس — تسجيل الدخول</li>
+            <li>مشي في <strong>Inverness City Centre</strong> — مدينة صغيرة ودافئة</li>
+            <li>جسر الأحمر فوق نهر River Ness — منظر جميل</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">المساء</div>
+        <div class="time-content">عشاء في المركز. غداً جولة Loch Ness.</div>
+      </div>
+      <div class="tip-note">✅ رحلة القطار من قلاسقو إلى إنفرنس واحدة من أجمل مسارات القطارات في أوروبا — استمتع بها كنشاط بحد ذاته.</div>
+    </div>
+  </div>
+
+  <!-- DAY 10 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num medium">10</div>
+      <div class="day-info">
+        <div class="day-title">إنفرنس + Loch Ness</div>
+        <div class="day-meta"><span>📍 Inverness</span><span>🚌 جولة منظمة أو باص</span></div>
+      </div>
+      <span class="day-badge badge-medium">متوسط</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">
+          <ul>
+            <li><strong>خيار 1:</strong> جولة منظمة نصف يوم إلى Loch Ness — تشمل Urquhart Castle (£30–45)</li>
+            <li><strong>خيار 2:</strong> باص محلي إلى Drumnadrochit ثم مشياً إلى قلعة Urquhart</li>
+            <li>الجولة المنظمة أريح وتوفر وقتاً</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">الظهيرة</div>
+        <div class="time-content">
+          <ul>
+            <li>الجلوس على ضفة Loch Ness — بحيرة ضخمة وعميقة ومهيبة</li>
+            <li>زيارة أطلال <strong>Urquhart Castle</strong> — دخول £10</li>
+            <li>عودة إلى إنفرنس</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">المساء</div>
+        <div class="time-content">
+          <ul>
+            <li>مشي على <strong>River Ness path</strong> داخل المدينة — متنزه جميل</li>
+            <li>قهوة في <strong>Castle Coffee</strong> بمنظر القلعة</li>
+            <li>عشاء وراحة — غداً رحلة طويلة</li>
+          </ul>
+        </div>
+      </div>
+      <div class="skip-note">⚠️ Loch Ness Exhibition Centre — إن لم تكن مهتماً بقصة الوحش، يمكن تجاهله تماماً.</div>
+    </div>
+  </div>
+
+  <!-- DAY 11 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num transit">11</div>
+      <div class="day-info">
+        <div class="day-title">إنفرنس → مانشستر — يوم انتقال طويل</div>
+        <div class="day-meta"><span>📍 Manchester</span><span>✈️ طيران 1:15 ساعة</span></div>
+      </div>
+      <span class="day-badge badge-transit">انتقال</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">
+          <ul>
+            <li>إفطار مبكر وتسجيل خروج</li>
+            <li>تاكسي إلى مطار إنفرنس INV (10 دقائق)</li>
+            <li>رحلة Loganair / Flybe أو Easyjet إلى مانشستر MAN — حوالي 1:15 ساعة</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">الظهيرة</div>
+        <div class="time-content">
+          <ul>
+            <li>وصول مانشستر — مترو إلى فندق قرب المطار أو المدينة</li>
+            <li>راحة تامة — يوم طويل</li>
+            <li>إن رغبت: مشي خفيف في Northern Quarter مجدداً أو قهوة ورسائل</li>
+          </ul>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">المساء</div>
+        <div class="time-content">عشاء آخر في مانشستر. نوم مبكر — الرحلة غداً.</div>
+      </div>
+      <div class="tip-note">✅ بديل: قطار Inverness → Glasgow → Manchester (6–7 ساعات بتبديل). أرخص لكن مجهد. الطيران أفضل بكثير.</div>
+    </div>
+  </div>
+
+  <!-- DAY 12 -->
+  <div class="day-card">
+    <div class="day-header" onclick="toggleDay(this)">
+      <div class="day-num arrive">12</div>
+      <div class="day-info">
+        <div class="day-title">العودة إلى السعودية</div>
+        <div class="day-meta"><span>📍 Manchester MAN</span><span>✈️ رحلة العودة</span></div>
+      </div>
+      <span class="day-badge badge-arrive">عودة</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="day-body">
+      <div class="time-block">
+        <div class="time-label">الصباح</div>
+        <div class="time-content">إفطار في الفندق. مترو Metrolink من Piccadilly إلى Terminal 3 (18 دقيقة). الوصول 3 ساعات قبل الرحلة على الأقل.</div>
+      </div>
+      <div class="tip-note">✅ وداع الرحلة الهادئة.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB: TRANSPORT -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="transport" class="section">
+  <div class="sec-title"><span class="icon">🚆</span> المواصلات المفصّلة</div>
+  <p class="sec-sub">كل انتقال بالتفصيل — محطات، أسعار، حجز. الأسعار تقديرية وتتغير حسب التاريخ.</p>
+
+  <div class="trans-card">
+    <div class="trans-header">
+      <div>
+        <div class="trans-header h3">✈️ المطار → مانشستر المدينة</div>
+        <div class="trans-route">Manchester Airport → Piccadilly</div>
+      </div>
+    </div>
+    <div class="trans-body">
+      <div class="trans-row"><div class="trans-key">الوسيلة</div><div class="trans-val">مترو Metrolink (الخيار الأفضل)</div></div>
+      <div class="trans-row"><div class="trans-key">المحطة</div><div class="trans-val">Manchester Airport Tram Stop → Manchester Piccadilly</div></div>
+      <div class="trans-row"><div class="trans-key">المدة</div><div class="trans-val">18–22 دقيقة</div></div>
+      <div class="trans-row"><div class="trans-key">السعر</div><div class="trans-val"><span class="price-tag">£4–5</span></div></div>
+      <div class="trans-row"><div class="trans-key">تكرار</div><div class="trans-val">كل 12 دقيقة</div></div>
+      <div class="trans-row"><div class="trans-key">الحجز</div><div class="trans-val">بدون حجز — شراء من الآلة</div></div>
+      <div class="trans-row"><div class="trans-key">تاكسي بديل</div><div class="trans-val">Uber / تاكسي £20–30 — 20–40 دقيقة حسب الأزمة</div></div>
+    </div>
+  </div>
+
+  <div class="trans-card">
+    <div class="trans-header">
+      <div>
+        <div class="trans-header h3">🚆 مانشستر → وندرمير</div>
+        <div class="trans-route">Manchester Piccadilly → Windermere</div>
+      </div>
+    </div>
+    <div class="trans-body">
+      <div class="trans-row"><div class="trans-key">الوسيلة</div><div class="trans-val">قطار مباشر أو عبر Oxenholme</div></div>
+      <div class="trans-row"><div class="trans-key">الركوب من</div><div class="trans-val">Manchester Piccadilly</div></div>
+      <div class="trans-row"><div class="trans-key">النزول في</div><div class="trans-val">Windermere (أو الأقرب لفندقك)</div></div>
+      <div class="trans-row"><div class="trans-key">التبديل</div><div class="trans-val">أحياناً في Oxenholme — انتبه لجدول TransPennine</div></div>
+      <div class="trans-row"><div class="trans-key">المدة</div><div class="trans-val">1.5–2 ساعة</div></div>
+      <div class="trans-row"><div class="trans-key">السعر</div><div class="trans-val"><span class="price-tag">£15–30 Advance</span> / <span class="price-tag">£35–50 Off-Peak</span></div></div>
+      <div class="trans-row"><div class="trans-key">الحجز</div><div class="trans-val">Trainline أو National Rail — احجز Advance مبكراً</div></div>
+      <div class="trans-row"><div class="trans-key">توصية</div><div class="trans-val"><span class="warn-tag">احجز Advance قبل السفر بـ 6–8 أسابيع للسعر الأفضل</span></div></div>
+    </div>
+  </div>
+
+  <div class="trans-card">
+    <div class="trans-header">
+      <div>
+        <div class="trans-header h3">🚆 وندرمير → قلاسقو</div>
+        <div class="trans-route">Windermere → Glasgow Central</div>
+      </div>
+    </div>
+    <div class="trans-body">
+      <div class="trans-row"><div class="trans-key">الطريقة</div><div class="trans-val">باص إلى Oxenholme ثم قطار</div></div>
+      <div class="trans-row"><div class="trans-key">أو</div><div class="trans-val">تاكسي/Uber إلى Kendal أو Oxenholme (20 دقيقة)</div></div>
+      <div class="trans-row"><div class="trans-key">القطار من</div><div class="trans-val">Oxenholme Lake District</div></div>
+      <div class="trans-row"><div class="trans-key">إلى</div><div class="trans-val">Glasgow Central</div></div>
+      <div class="trans-row"><div class="trans-key">المدة الإجمالية</div><div class="trans-val">2.5–3 ساعة</div></div>
+      <div class="trans-row"><div class="trans-key">السعر</div><div class="trans-val"><span class="price-tag">£30–55 Advance</span></div></div>
+      <div class="trans-row"><div class="trans-key">الحجز</div><div class="trans-val">Trainline / ScotRail</div></div>
+    </div>
+  </div>
+
+  <div class="trans-card">
+    <div class="trans-header">
+      <div>
+        <div class="trans-header h3">🚆 قلاسقو → إنفرنس</div>
+        <div class="trans-route">Glasgow Queen Street → Inverness</div>
+      </div>
+    </div>
+    <div class="trans-body">
+      <div class="trans-row"><div class="trans-key">الوسيلة</div><div class="trans-val">قطار ScotRail — أحد أجمل المسارات في أوروبا</div></div>
+      <div class="trans-row"><div class="trans-key">الركوب من</div><div class="trans-val">Glasgow Queen Street (ليست Central)</div></div>
+      <div class="trans-row"><div class="trans-key">النزول في</div><div class="trans-val">Inverness</div></div>
+      <div class="trans-row"><div class="trans-key">مباشر؟</div><div class="trans-val">نعم — بعض الرحلات مباشرة، بعضها عبر Perth</div></div>
+      <div class="trans-row"><div class="trans-key">المدة</div><div class="trans-val">3 ساعات</div></div>
+      <div class="trans-row"><div class="trans-key">السعر</div><div class="trans-val"><span class="price-tag">£25–50 ScotRail Advance</span></div></div>
+      <div class="trans-row"><div class="trans-key">الحجز</div><div class="trans-val">ScotRail.co.uk أو Trainline</div></div>
+      <div class="trans-row"><div class="trans-key">نصيحة</div><div class="trans-val"><span class="warn-tag">اجلس يميناً لمناظر الجبال</span></div></div>
+    </div>
+  </div>
+
+  <div class="trans-card">
+    <div class="trans-header">
+      <div>
+        <div class="trans-header h3">✈️ إنفرنس → مانشستر (اليوم 11)</div>
+        <div class="trans-route">INV → MAN — الخيار الأسرع والأريح</div>
+      </div>
+    </div>
+    <div class="trans-body">
+      <div class="trans-row"><div class="trans-key">الوسيلة المقترحة</div><div class="trans-val">طيران داخلي — Loganair أو easyJet</div></div>
+      <div class="trans-row"><div class="trans-key">المطار</div><div class="trans-val">Inverness Airport (INV) — 10 دقائق تاكسي من المدينة</div></div>
+      <div class="trans-row"><div class="trans-key">المدة</div><div class="trans-val">1:15 ساعة</div></div>
+      <div class="trans-row"><div class="trans-key">السعر</div><div class="trans-val"><span class="price-tag">£60–120</span> حسب التاريخ</div></div>
+      <div class="trans-row"><div class="trans-key">الحجز</div><div class="trans-val">Loganair.co.uk أو easyJet.com مباشرة</div></div>
+      <div class="trans-row"><div class="trans-key">تاكسي للمطار</div><div class="trans-val">£12–15 من مركز إنفرنس — Uber متاح</div></div>
+      <div class="trans-row"><div class="trans-key">بديل</div><div class="trans-val">قطار 6–7 ساعات مع تبديل — أرخص لكن مجهد</div></div>
+    </div>
+  </div>
+
+  <div class="trans-card">
+    <div class="trans-header">
+      <div>
+        <div class="trans-header h3">🚇 داخل Lake District</div>
+        <div class="trans-route">Windermere ↔ Ambleside ↔ Grasmere ↔ Rydal</div>
+      </div>
+    </div>
+    <div class="trans-body">
+      <div class="trans-row"><div class="trans-key">باص 555</div><div class="trans-val">Windermere → Ambleside → Grasmere → Keswick — الباص الرئيسي</div></div>
+      <div class="trans-row"><div class="trans-key">باص 599</div><div class="trans-val">Windermere → Bowness (قصير، مشياً أيضاً ممكن)</div></div>
+      <div class="trans-row"><div class="trans-key">التذكرة</div><div class="trans-val"><span class="price-tag">£2–4 للرحلة</span> أو تذكرة يوم £10</div></div>
+      <div class="trans-row"><div class="trans-key">التكرار</div><div class="trans-val">كل 30–60 دقيقة — تحقق من Stagecoach Cumbria</div></div>
+      <div class="trans-row"><div class="trans-key">عبّارة البحيرة</div><div class="trans-val">Windermere Lake Cruises — £8–12 جولة كاملة</div></div>
+      <div class="trans-row"><div class="trans-key">Uber</div><div class="trans-val">متاح في وندرمير وAmbleside</div></div>
+    </div>
+  </div>
+
+  <div class="trans-card">
+    <div class="trans-header">
+      <div>
+        <div class="trans-header h3">🚇 داخل قلاسقو</div>
+        <div class="trans-route">Glasgow City Centre & West End</div>
+      </div>
+    </div>
+    <div class="trans-body">
+      <div class="trans-row"><div class="trans-key">المشي</div><div class="trans-val">المدينة صغيرة — معظم الأماكن في 20–30 دقيقة مشياً</div></div>
+      <div class="trans-row"><div class="trans-key">مترو Subway</div><div class="trans-val">دائرة واحدة تغطي المركز و West End — £1.80 للرحلة</div></div>
+      <div class="trans-row"><div class="trans-key">Uber</div><div class="trans-val">متاح ومعقول — £5–10 للمشوار الداخلي</div></div>
+      <div class="trans-row"><div class="trans-key">باص</div><div class="trans-val">First Bus — يغطي جميع الأحياء</div></div>
+    </div>
+  </div>
+
+  <div class="trans-card">
+    <div class="trans-header">
+      <div>
+        <div class="trans-header h3">🚶 داخل إنفرنس</div>
+        <div class="trans-route">Inverness City — صغيرة وقابلة للمشي</div>
+      </div>
+    </div>
+    <div class="trans-body">
+      <div class="trans-row"><div class="trans-key">المشي</div><div class="trans-val">كل شيء في المركز على بعد 10–15 دقيقة مشياً</div></div>
+      <div class="trans-row"><div class="trans-key">Uber</div><div class="trans-val">✅ متاح فعلياً في إنفرنس — £5–10</div></div>
+      <div class="trans-row"><div class="trans-key">تاكسي محلي</div><div class="trans-val">متوفر أمام المحطة — مناسب للمطار والجولات</div></div>
+      <div class="trans-row"><div class="trans-key">للمطار</div><div class="trans-val">Uber أو تاكسي £12–15</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB: HOTELS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="hotels" class="section">
+  <div class="sec-title"><span class="icon">🏨</span> السكن المقترح</div>
+  <p class="sec-sub">مناطق وأمثلة فنادق — بدون سيارة — قريب من المواصلات — موقع جيد. الأسعار لليلة/شخص واحد.</p>
+
+  <div class="hotel-card">
+    <div class="hotel-city">اليوم 1 — مانشستر (ليلة وصول)</div>
+    <div class="hotel-name">🏙️ المنطقة: شمال Piccadilly أو Ancoats</div>
+    <div class="hotel-meta">قريب من محطة Piccadilly — مشياً أو مترو من المطار</div>
+    <div class="hotel-features">
+      <span class="feat-pill">✅ قريب من المحطة</span>
+      <span class="feat-pill">✅ Northern Quarter قريب</span>
+      <span class="feat-pill">✅ مطاعم حوله</span>
+    </div>
+    <div class="hotel-price">أمثلة مناسبة:</div>
+    <div class="alt-hotel">
+      • <strong>Jurys Inn Manchester Piccadilly</strong> — حجوزة، موقع ممتاز، £70–90/ليلة<br>
+      • <strong>Motel One Manchester Piccadilly</strong> — تصميم حديث، هادئ، £75–100/ليلة<br>
+      • <strong>Innside by Meliá Manchester</strong> — أعلى قليلاً، أناقة جيدة، £90–120/ليلة<br>
+      • <strong>AC Hotel Manchester Salford Quays</strong> — إذا أردت أبعد عن الصخب
+    </div>
+  </div>
+
+  <div class="hotel-card">
+    <div class="hotel-city">اليوم 2–5 — Lake District (4 ليالٍ)</div>
+    <div class="hotel-name">🌄 المنطقة الأفضل: Ambleside أو Windermere</div>
+    <div class="hotel-meta">Ambleside أفضل للمشاة — في قلب القرى ومحطة الباصات. Windermere أكبر وبها المحطة.</div>
+    <div class="hotel-features">
+      <span class="feat-pill">✅ إفطار إنجليزي كامل مشمول</span>
+      <span class="feat-pill">✅ قريب من الباصات</span>
+      <span class="feat-pill">✅ هادئ وعائلي</span>
+    </div>
+    <div class="hotel-price">أمثلة مناسبة:</div>
+    <div class="alt-hotel">
+      • <strong>Ambleside Manor</strong> (Ambleside) — B&B ممتاز، إفطار جيد، £70–100/ليلة<br>
+      • <strong>Rothay Manor Hotel</strong> (Ambleside) — أناقة محافظة هادئة، £90–130/ليلة<br>
+      • <strong>The Hideaway at Windermere</strong> — B&B صغير دافئ، £80–110/ليلة<br>
+      • <strong>Windermere Suites</strong> — شقق مريحة، مناسب لشخص واحد<br>
+      <small>💡 ابحث في Booking.com فلتر: "Ambleside B&B" تقييم 8+ — ستجد خيارات كثيرة</small>
+    </div>
+  </div>
+
+  <div class="hotel-card">
+    <div class="hotel-city">اليوم 6–8 — قلاسقو (3 ليالٍ)</div>
+    <div class="hotel-name">🏙️ المنطقة الأفضل: City Centre / Merchant City</div>
+    <div class="hotel-meta">بين Glasgow Central وQueen Street — مشياً لكل شيء. تجنب West End للسكن (أبعد عن المحطات).</div>
+    <div class="hotel-features">
+      <span class="feat-pill">✅ مركزي</span>
+      <span class="feat-pill">✅ بين المحطتين</span>
+      <span class="feat-pill">✅ مشياً لأهم الأماكن</span>
+    </div>
+    <div class="hotel-price">أمثلة مناسبة:</div>
+    <div class="alt-hotel">
+      • <strong>Motel One Glasgow</strong> — اختياري الأول، £70–100/ليلة، موقع ممتاز<br>
+      • <strong>citizenM Glasgow</strong> — حديث، تقنية، £80–110/ليلة<br>
+      • <strong>Z Hotel Glasgow</strong> — اقتصادي ومركزي، £60–85/ليلة<br>
+      • <strong>Ibis Glasgow City Centre</strong> — موثوق واقتصادي، £55–80/ليلة
+    </div>
+  </div>
+
+  <div class="hotel-card">
+    <div class="hotel-city">اليوم 9–10 — إنفرنس (2 ليلتان)</div>
+    <div class="hotel-name">🏰 المنطقة الأفضل: مركز المدينة قرب River Ness</div>
+    <div class="hotel-meta">مدينة صغيرة — معظم الفنادق قريبة من المحطة والنهر. تجنب الفنادق خارج المركز.</div>
+    <div class="hotel-features">
+      <span class="feat-pill">✅ قريب من النهر</span>
+      <span class="feat-pill">✅ قريب من المحطة</span>
+      <span class="feat-pill">✅ مشياً لكل شيء</span>
+    </div>
+    <div class="hotel-price">أمثلة مناسبة:</div>
+    <div class="alt-hotel">
+      • <strong>Mercure Inverness</strong> — تقييم ممتاز، قرب النهر، £80–110/ليلة<br>
+      • <strong>Premier Inn Inverness City Centre</strong> — موثوق ومعقول، £65–90/ليلة<br>
+      • <strong>Kingsmills Hotel</strong> — أفخم قليلاً، مع حديقة، £90–130/ليلة<br>
+      • <strong>Columba Hotel</strong> — على النهر مباشرة، £70–100/ليلة
+    </div>
+  </div>
+
+  <div class="hotel-card">
+    <div class="hotel-city">اليوم 11 — مانشستر (ليلة العودة)</div>
+    <div class="hotel-name">🛫 المنطقة الأفضل: قرب Terminal 2/3 أو Piccadilly</div>
+    <div class="hotel-meta">إن كانت رحلتك صباحاً باكراً → فندق المطار أريح. إن كانت ظهراً → Piccadilly أفضل.</div>
+    <div class="hotel-features">
+      <span class="feat-pill">✅ قريب من المطار</span>
+      <span class="feat-pill">✅ بدون صخب</span>
+      <span class="feat-pill">✅ مناسب للنوم المبكر</span>
+    </div>
+    <div class="hotel-price">أمثلة مناسبة:</div>
+    <div class="alt-hotel">
+      • <strong>Premier Inn Manchester Airport</strong> — مباشرة في المطار، ممتاز للرحلات المبكرة، £70–100/ليلة<br>
+      • <strong>Clayton Hotel Manchester Airport</strong> — أناقة، ترولي حتى Terminal 2، £80–120/ليلة<br>
+      • <strong>Radisson Blu Manchester Airport</strong> — مريح جداً، £90–130/ليلة
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB: BUDGET -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="budget" class="section">
+  <div class="sec-title"><span class="icon">💷</span> الميزانية التقديرية</div>
+  <p class="sec-sub">الأسعار بالجنيه الإسترليني — تقديرية — تتغير حسب التاريخ وطريقة الحجز. 1 جنيه ≈ 4.75 ريال سعودي (تقريبي).</p>
+
+  <div class="budget-section">
+    <div class="budget-header">🏨 السكن (11 ليلة)</div>
+    <table class="budget-table">
+      <thead>
+        <tr><th>المدينة</th><th>الليالي</th><th>اقتصادي/ليلة</th><th>متوسط/ليلة</th><th>الإجمالي اقتصادي</th><th>الإجمالي متوسط</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>مانشستر (وصول)</td><td>1</td><td class="budget-eco">£60</td><td class="budget-mid">£85</td><td class="budget-eco">£60</td><td class="budget-mid">£85</td></tr>
+        <tr><td>Lake District</td><td>4</td><td class="budget-eco">£70</td><td class="budget-mid">£100</td><td class="budget-eco">£280</td><td class="budget-mid">£400</td></tr>
+        <tr><td>قلاسقو</td><td>3</td><td class="budget-eco">£60</td><td class="budget-mid">£85</td><td class="budget-eco">£180</td><td class="budget-mid">£255</td></tr>
+        <tr><td>إنفرنس</td><td>2</td><td class="budget-eco">£65</td><td class="budget-mid">£90</td><td class="budget-eco">£130</td><td class="budget-mid">£180</td></tr>
+        <tr><td>مانشستر (عودة)</td><td>1</td><td class="budget-eco">£65</td><td class="budget-mid">£90</td><td class="budget-eco">£65</td><td class="budget-mid">£90</td></tr>
+        <tr class="total-row"><td><strong>الإجمالي</strong></td><td>11</td><td>—</td><td>—</td><td class="budget-eco">£715</td><td class="budget-mid">£1010</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="budget-section">
+    <div class="budget-header">🚆 المواصلات بين المدن</div>
+    <table class="budget-table">
+      <thead>
+        <tr><th>الانتقال</th><th>اقتصادي</th><th>متوسط</th><th>ملاحظة</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>مطار → مانشستر + عودة</td><td class="budget-eco">£8</td><td class="budget-mid">£8</td><td>مترو ذهاباً وإياباً</td></tr>
+        <tr><td>مانشستر → Lake District</td><td class="budget-eco">£18</td><td class="budget-mid">£35</td><td>Advance vs Off-Peak</td></tr>
+        <tr><td>Lake District → قلاسقو</td><td class="budget-eco">£25</td><td class="budget-mid">£45</td><td>Oxenholme + قطار</td></tr>
+        <tr><td>قلاسقو → إنفرنس</td><td class="budget-eco">£25</td><td class="budget-mid">£45</td><td>ScotRail</td></tr>
+        <tr><td>إنفرنس → مانشستر</td><td class="budget-eco">£65</td><td class="budget-mid">£100</td><td>طيران (الأريح)</td></tr>
+        <tr class="total-row"><td><strong>الإجمالي</strong></td><td class="budget-eco">£141</td><td class="budget-mid">£233</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="budget-section">
+    <div class="budget-header">🚌 المواصلات داخل المدن</div>
+    <table class="budget-table">
+      <thead>
+        <tr><th>المدينة</th><th>الأيام</th><th>التقدير اليومي</th><th>الإجمالي</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>مانشستر</td><td>2 أيام</td><td class="budget-eco">£5</td><td class="budget-eco">£10</td></tr>
+        <tr><td>Lake District</td><td>4 أيام</td><td class="budget-eco">£8</td><td class="budget-eco">£32</td></tr>
+        <tr><td>قلاسقو</td><td>3 أيام</td><td class="budget-eco">£6</td><td class="budget-eco">£18</td></tr>
+        <tr><td>إنفرنس</td><td>2 أيام</td><td class="budget-eco">£5</td><td class="budget-eco">£10</td></tr>
+        <tr class="total-row"><td><strong>الإجمالي</strong></td><td></td><td></td><td class="budget-eco">£70</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="budget-section">
+    <div class="budget-header">🍽️ الأكل والقهوة</div>
+    <table class="budget-table">
+      <thead>
+        <tr><th>البند</th><th>اقتصادي/يوم</th><th>متوسط/يوم</th><th>ملاحظة</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>إفطار (مشمول في B&B)</td><td class="budget-eco">£0–5</td><td class="budget-mid">£0–5</td><td>في Lake District مشمول عادة</td></tr>
+        <tr><td>غداء</td><td class="budget-eco">£8–12</td><td class="budget-mid">£12–18</td><td>مقهى أو ساندويتش</td></tr>
+        <tr><td>عشاء</td><td class="budget-eco">£12–18</td><td class="budget-mid">£18–28</td><td>مطعم محلي</td></tr>
+        <tr><td>قهوة + متفرقات</td><td class="budget-eco">£5–8</td><td class="budget-mid">£8–12</td><td>قهاوي جيدة في كل مكان</td></tr>
+        <tr class="total-row"><td><strong>إجمالي (×11 يوم)</strong></td><td class="budget-eco">£275–385</td><td class="budget-mid">£385–550</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="budget-section">
+    <div class="budget-header">🎫 الدخوليات والجولات</div>
+    <table class="budget-table">
+      <thead>
+        <tr><th>النشاط</th><th>التكلفة</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Windermere Lake Cruise (عبّارة)</td><td class="budget-eco">£8–12</td></tr>
+        <tr><td>Urquhart Castle (Loch Ness)</td><td class="budget-eco">£10</td></tr>
+        <tr><td>جولة Loch Ness منظمة (اختيارية)</td><td class="budget-mid">£30–45</td></tr>
+        <tr><td>Kelvingrove Art Gallery (Glasgow)</td><td class="budget-eco">£0 مجاني</td></tr>
+        <tr><td>Glasgow Cathedral</td><td class="budget-eco">£0 مجاني</td></tr>
+        <tr><td>University of Glasgow</td><td class="budget-eco">£0 مجاني</td></tr>
+        <tr class="total-row"><td><strong>الإجمالي التقديري</strong></td><td class="budget-eco">£48–67</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="budget-section">
+    <div class="budget-header">📊 الملخص الإجمالي</div>
+    <table class="budget-table">
+      <thead>
+        <tr><th>البند</th><th>اقتصادي (£)</th><th>متوسط مريح (£)</th><th>تقريبي بالريال</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>السكن</td><td class="budget-eco">715</td><td class="budget-mid">1010</td><td>3,400–4,800 ر</td></tr>
+        <tr><td>مواصلات بين المدن</td><td class="budget-eco">141</td><td class="budget-mid">233</td><td>670–1,100 ر</td></tr>
+        <tr><td>مواصلات داخلية</td><td class="budget-eco">70</td><td class="budget-mid">90</td><td>330–430 ر</td></tr>
+        <tr><td>الأكل والقهوة</td><td class="budget-eco">330</td><td class="budget-mid">465</td><td>1,570–2,210 ر</td></tr>
+        <tr><td>الدخوليات والجولات</td><td class="budget-eco">48</td><td class="budget-mid">67</td><td>230–320 ر</td></tr>
+        <tr class="total-row"><td><strong>الإجمالي</strong></td><td class="budget-eco"><strong>£1,304</strong></td><td class="budget-mid"><strong>£1,865</strong></td><td><strong>6,200–8,860 ر</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12px; color:var(--light-text); margin-top:8px;">* لا تشمل تذكرة الطيران الدولية. الأسعار تقديرية وتتغير حسب التاريخ وطريقة الحجز.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB: SKYE -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="skye" class="section">
+  <div class="sec-title"><span class="icon">🏔️</span> هل تزور جزيرة سكاي؟</div>
+  <p class="sec-sub">تحليل واقعي لخيارين — والرأي الصريح في النهاية.</p>
+
+  <div class="compare-grid">
+    <div class="compare-card recommended">
+      <div class="compare-title">خيار 1: جولة يوم كامل من إنفرنس <span class="rec-badge">مقترح</span></div>
+      <ul class="compare-list">
+        <li><span class="pro">✓</span> لا حاجة لتغيير السكن</li>
+        <li><span class="pro">✓</span> تجربة سكاي الجمالية دون تعقيد</li>
+        <li><span class="pro">✓</span> تعود لتنام في إنفرنس مريحاً</li>
+        <li><span class="pro">✓</span> جولات منظمة متاحة بسهولة</li>
+        <li><span class="con">✗</span> يوم طويل جداً — 10–12 ساعة</li>
+        <li><span class="con">✗</span> لا تستطيع السير الطويل — وقت قصير</li>
+        <li><span class="con">✗</span> الجزيرة مزدحمة صيفاً</li>
+        <li><span class="con">✗</span> الطقس السيئ يخرب كل شيء</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <div class="compare-title">خيار 2: Loch Ness فقط — بدون سكاي</div>
+      <ul class="compare-list">
+        <li><span class="pro">✓</span> أريح جداً — يومان هادئان</li>
+        <li><span class="pro">✓</span> Loch Ness مهيبة وكافية</li>
+        <li><span class="pro">✓</span> إنفرنس نفسها مدينة جميلة للمشي</li>
+        <li><span class="pro">✓</span> لا تعب زائد</li>
+        <li><span class="con">✗</span> تفوتك مناظر سكاي الشهيرة</li>
+        <li><span class="con">✗</span> إذا كنت في اسكتلندا للمرة الأولى قد تشعر بالندم</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="budget-section">
+    <div class="budget-header">🚌 تفاصيل جولة سكاي من إنفرنس (إن اخترت الخيار الأول)</div>
+    <table class="budget-table">
+      <thead>
+        <tr><th>البند</th><th>التفاصيل</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>النوع</td><td>جولة منظمة day tour من إنفرنس — الأفضل بدون سيارة</td></tr>
+        <tr><td>المدة</td><td>10–12 ساعة (خروج 7:30 صباحاً، عودة 7–8 مساءً)</td></tr>
+        <tr><td>السعر</td><td class="budget-mid">£55–80 للشخص</td></tr>
+        <tr><td>أبرز الأماكن</td><td>Eilean Donan Castle — Kyle of Lochalsh — Portree — Old Man of Storr (اختياري)</td></tr>
+        <tr><td>أفضل مزودين</td><td>Highland Experience Tours / Rabbie's / Wild Fox Tours</td></tr>
+        <tr><td>الحجز</td><td>مباشرة على مواقعهم — احجز مبكراً جداً الصيف</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="background:#1C2430; color:white; border-radius:14px; padding:22px; margin-top:20px;">
+    <div style="font-size:15px; font-weight:700; margin-bottom:10px; color:var(--amber);">💬 رأيي الصريح:</div>
+    <p style="font-size:14px; line-height:1.7; color:rgba(255,255,255,0.85);">
+      أنصح بـ <strong>الخيار الثاني — الاكتفاء بـ Loch Ness وإنفرنس</strong>. سببان رئيسيان: أولاً، الجولة اليومية لسكاي من إنفرنس طويلة ومجهدة (12 ساعة في حافلة)، وبما أن راحتك أولوية فإن يوماً كاملاً في الباص لا يناسب أسلوب رحلتك. ثانياً، إنفرنس ولوك نيس كافيتان تماماً لتمنحاك اسكتلندا الجبلية الحقيقية. <br><br>
+      <strong>الاستثناء الوحيد:</strong> إذا كان الطقس رائعاً، وكنت تشعر بنشاط حقيقي، وحجزت مسبقاً — اذهب. المنظر من Old Man of Storr لا ينسى. لكن لا تضغط على نفسك إن لم تشعر برغبة.
+    </p>
+  </div>
+
+  <div class="skip-note" style="margin-top:16px;">⚠️ لا تذهب لسكاي إذا: الطقس ضبابي أو ممطر (95% من المشهد يختفي) — أو إذا كنت متعباً — أو إذا كان الحجز في اللحظة الأخيرة صيفاً (مكان مزدحم جداً).</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB: TIPS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="tips" class="section">
+  <div class="sec-title"><span class="icon">💡</span> نصائح عملية قبل السفر</div>
+  <p class="sec-sub">كل ما تحتاجه قبل الخروج من البيت.</p>
+
+  <div class="tips-grid">
+    <div class="tip-card">
+      <h4>📋 قبل السفر</h4>
+      <ul>
+        <li>▸ احجز تذاكر القطارات Advance مبكراً — قبل 6–8 أسابيع لأفضل سعر</li>
+        <li>▸ احجز B&B في Lake District مبكراً — تمتلئ الصيف بسرعة</li>
+        <li>▸ حمّل تطبيق Trainline — أسرع للبحث والحجز</li>
+        <li>▸ حمّل تطبيق Uber قبل السفر — يعمل في كل المدن</li>
+        <li>▸ حمّل تطبيق Citymapper للتنقل داخل المدن</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h4>🌦️ الطقس والملابس</h4>
+      <ul>
+        <li>▸ اسكتلندا تمطر في أي وقت — معطف مقاوم للمطار ضروري</li>
+        <li>▸ حذاء مشي مقاوم للماء — ليس رياضي عادي</li>
+        <li>▸ طبقات (layers) — البرد والدفء في نفس اليوم</li>
+        <li>▸ كبسولة ملابس لا حقيبة ثقيلة — تتنقل كثيراً</li>
+        <li>▸ أفضل أشهر للزيارة: مايو–سبتمبر</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h4>💳 الدفع والمال</h4>
+      <ul>
+        <li>▸ Contactless في كل مكان — بطاقتك كافية</li>
+        <li>▸ بطاقة Wise أو Revolut — بدون عمولات عملة</li>
+        <li>▸ معك £100–150 نقداً للطوارئ فقط</li>
+        <li>▸ البقشيش (tip) 10–15% في المطاعم — اختياري</li>
+        <li>▸ الماء من الصنبور صالح للشرب في كل بريطانيا</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h4>🛤️ المشي والطبيعة</h4>
+      <ul>
+        <li>▸ تطبيق AllTrails — خرائط مسارات المشي</li>
+        <li>▸ تطبيق OS Maps — الأفضل في بريطانيا</li>
+        <li>▸ ابدأ المشي صباحاً — الإضاءة أجمل والزحام أقل</li>
+        <li>▸ الغيوم جزء من الجمال — لا تنتظر يوماً مشمساً 100%</li>
+        <li>▸ بعض مسارات Lake District موحلة — حذاء مناسب مهم</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h4>📱 تطبيقات مفيدة</h4>
+      <ul>
+        <li>▸ <strong>Trainline</strong> — قطارات بريطانيا</li>
+        <li>▸ <strong>ScotRail app</strong> — قطارات اسكتلندا</li>
+        <li>▸ <strong>Stagecoach</strong> — باصات Lake District</li>
+        <li>▸ <strong>Uber</strong> — تاكسي في كل المدن</li>
+        <li>▸ <strong>Booking.com</strong> — مقارنة الفنادق</li>
+        <li>▸ <strong>Google Maps offline</strong> — خرائط بدون إنترنت</li>
+      </ul>
+    </div>
+    <div class="tip-card">
+      <h4>☕ قهوة وطعام</h4>
+      <ul>
+        <li>▸ Flat White — الأشهر في بريطانيا للمحبين</li>
+        <li>▸ Full English Breakfast في B&B — لا تفوته</li>
+        <li>▸ Scotch Pie وHaggis في اسكتلندا — تجربة محلية</li>
+        <li>▸ Cream tea (سكون + مربى + كريمة) في Lake District</li>
+        <li>▸ Greggs (مخبز سلسلة) للإفطار الاقتصادي السريع</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB: LINKS -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="links" class="section">
+  <div class="sec-title"><span class="icon">🔗</span> روابط الحجز المهمة</div>
+  <p class="sec-sub">كل ما تحتاجه في مكان واحد.</p>
+
+  <div class="links-grid">
+    <a href="https://www.trainline.com" target="_blank" class="link-card">
+      <div class="link-icon">🚆</div>
+      <div><div class="link-name">Trainline</div><div class="link-desc">قطارات بريطانيا — حجز وتتبع</div></div>
+    </a>
+    <a href="https://www.nationalrail.co.uk" target="_blank" class="link-card">
+      <div class="link-icon">🚄</div>
+      <div><div class="link-name">National Rail</div><div class="link-desc">جدول رسمي لجميع قطارات UK</div></div>
+    </a>
+    <a href="https://www.scotrail.co.uk" target="_blank" class="link-card">
+      <div class="link-icon">🏴󠁧󠁢󠁳󠁣󠁴󠁿</div>
+      <div><div class="link-name">ScotRail</div><div class="link-desc">قطارات اسكتلندا — حجز Advance</div></div>
+    </a>
+    <a href="https://www.citylink.co.uk" target="_blank" class="link-card">
+      <div class="link-icon">🚌</div>
+      <div><div class="link-name">Scottish Citylink</div><div class="link-desc">باصات بين مدن اسكتلندا</div></div>
+    </a>
+    <a href="https://www.stagecoachbus.com" target="_blank" class="link-card">
+      <div class="link-icon">🚍</div>
+      <div><div class="link-name">Stagecoach Cumbria</div><div class="link-desc">باصات Lake District (555, 599)</div></div>
+    </a>
+    <a href="https://www.booking.com" target="_blank" class="link-card">
+      <div class="link-icon">🏨</div>
+      <div><div class="link-name">Booking.com</div><div class="link-desc">مقارنة وحجز فنادق وB&B</div></div>
+    </a>
+    <a href="https://www.loganair.co.uk" target="_blank" class="link-card">
+      <div class="link-icon">✈️</div>
+      <div><div class="link-name">Loganair</div><div class="link-desc">رحلات داخلية — Inverness → Manchester</div></div>
+    </a>
+    <a href="https://www.easyjet.com" target="_blank" class="link-card">
+      <div class="link-icon">🛫</div>
+      <div><div class="link-name">easyJet</div><div class="link-desc">بديل للطيران الداخلي</div></div>
+    </a>
+    <a href="https://www.windermere-lakecruises.co.uk" target="_blank" class="link-card">
+      <div class="link-icon">⛵</div>
+      <div><div class="link-name">Windermere Lake Cruises</div><div class="link-desc">عبّارات بحيرة وندرمير</div></div>
+    </a>
+    <a href="https://www.rabbies.com" target="_blank" class="link-card">
+      <div class="link-icon">🏔️</div>
+      <div><div class="link-name">Rabbie's Tours</div><div class="link-desc">جولات سكاي من إنفرنس</div></div>
+    </a>
+    <a href="https://www.highlandexperiencetours.com" target="_blank" class="link-card">
+      <div class="link-icon">🗻</div>
+      <div><div class="link-name">Highland Experience</div><div class="link-desc">جولات المرتفعات من إنفرنس</div></div>
+    </a>
+    <a href="https://www.uber.com" target="_blank" class="link-card">
+      <div class="link-icon">🚗</div>
+      <div><div class="link-name">Uber UK</div><div class="link-desc">تاكسي — متاح في جميع المدن</div></div>
+    </a>
+  </div>
+
+  <div style="background:#EAF7EE; border-radius:12px; padding:18px; margin-top:24px; font-size:13px; color:#2E5E3E; line-height:1.7;">
+    <strong>🗓️ ترتيب الحجز المقترح:</strong><br>
+    1. الطيران الدولي أولاً<br>
+    2. السكن في Lake District (يمتلئ مبكراً)<br>
+    3. قطارات Advance (كل القطارات معاً)<br>
+    4. رحلة إنفرنس → مانشستر (طيران داخلي)<br>
+    5. سكن قلاسقو وإنفرنس ومانشستر<br>
+    6. جولة سكاي إن أردت (Rabbie's تمتلئ الصيف)
+  </div>
+</div>
+
+<footer>
+  خطة سفر شمال بريطانيا — Solo Travel 2025 · أعدّها المدرب فهد رفاعي · fahdacademy.org<br>
+  الأسعار تقديرية وتتغير حسب التاريخ وطريقة الحجز · آخر تحديث 2025
+</footer>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleDay(header) {
+  const card = header.parentElement;
+  card.classList.toggle('open');
+}
+
+// Open first day by default
+document.querySelector('.day-card .day-header').click();
+</script>
+
+</body>
+</html>
