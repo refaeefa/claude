@@ -3,721 +3,299 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بطاقة تهنئة — المنتخب السعودي بطل مونديال 2026 🏆</title>
+  <title>مولّد بطاقات التهنئة بالنجاح — فهد رفاعي</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Cairo',sans-serif;direction:rtl;background:#f4f3f8;min-height:100vh}
 
-    :root {
-      --green: #006c35;
-      --green-dark: #004d26;
-      --green-light: #00a651;
-      --gold: #c9a84c;
-      --gold-light: #f5d07a;
-      --white: #fff;
-      --bg: #0a1a0f;
-    }
+    .top-bar{background:#fff;border-bottom:1px solid #e5e7eb;padding:1rem 1.5rem;display:flex;align-items:center;gap:12px}
+    .dot{width:9px;height:9px;border-radius:50%;background:#7c3aed;flex-shrink:0}
+    .top-bar-title{font-size:17px;font-weight:700;color:#111}
+    .top-bar-sub{font-size:13px;color:#6b7280}
 
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: var(--bg);
-      color: var(--white);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+    .body{display:grid;grid-template-columns:320px 1fr;min-height:calc(100vh - 61px)}
+    @media(max-width:700px){.body{grid-template-columns:1fr}}
 
-    /* ===== HERO / HEADER ===== */
-    .hero {
-      text-align: center;
-      padding: 2.5rem 1rem 1.5rem;
-      background: radial-gradient(ellipse at top, #003d1f 0%, #0a1a0f 70%);
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23006c35' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-      pointer-events: none;
-    }
-    .flag-emoji { font-size: 3.5rem; display: block; margin-bottom: .5rem; animation: wave 2s ease-in-out infinite; }
-    @keyframes wave { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(5deg)} }
-    .hero h1 {
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--gold-light), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1.3;
-      margin-bottom: .4rem;
-    }
-    .hero p { color: #a5d6b0; font-size: 1rem; margin-bottom: 1rem; }
+    .sidebar{background:#fff;border-left:1px solid #e5e7eb;padding:1.25rem;display:flex;flex-direction:column;gap:1rem;overflow-y:auto}
 
-    /* ===== TABS ===== */
-    .tabs {
-      display: flex;
-      justify-content: center;
-      gap: .5rem;
-      flex-wrap: wrap;
-      padding: 0 1rem 1.5rem;
-      background: radial-gradient(ellipse at top, #003d1f 0%, #0a1a0f 70%);
-    }
-    .tab-btn {
-      background: rgba(0,108,53,.3);
-      border: 1px solid var(--green);
-      color: #a5d6b0;
-      padding: .45rem 1.1rem;
-      border-radius: 25px;
-      font-family: 'Cairo', sans-serif;
-      font-size: .9rem;
-      cursor: pointer;
-      transition: all .25s;
-    }
-    .tab-btn.active, .tab-btn:hover {
-      background: var(--green);
-      color: #fff;
-      border-color: var(--green-light);
-    }
+    .section-title{font-size:11px;font-weight:600;color:#9ca3af;letter-spacing:.8px;margin-bottom:.5rem}
 
-    /* ===== MAIN LAYOUT ===== */
-    .main { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+    .occ-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+    .occ-btn{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:8px 6px;cursor:pointer;text-align:center;transition:all .15s;font-family:'Cairo',sans-serif}
+    .occ-btn .occ-icon{font-size:20px;display:block;margin-bottom:3px}
+    .occ-btn .occ-label{font-size:11px;color:#6b7280}
+    .occ-btn.sel{border-color:#7c3aed;background:#f5f3ff}
+    .occ-btn.sel .occ-label{color:#7c3aed;font-weight:600}
 
-    /* ===== FORM SECTION ===== */
-    .form-card {
-      background: linear-gradient(135deg, #0f2318, #0a1a0f);
-      border: 1px solid var(--green);
-      border-radius: 16px;
-      padding: 1.8rem;
-      margin-bottom: 2rem;
-    }
-    .form-card h2 {
-      font-size: 1.15rem;
-      color: var(--gold-light);
-      margin-bottom: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-    }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    @media(max-width:600px){ .form-grid { grid-template-columns: 1fr; } }
+    label{display:block;font-size:12px;color:#6b7280;margin-bottom:5px}
+    input,textarea{width:100%;font-family:'Cairo',sans-serif;font-size:13px;padding:8px 12px;border:1px solid #e5e7eb;border-radius:8px;background:#f9fafb;color:#111;outline:none;transition:border-color .15s}
+    input:focus,textarea:focus{border-color:#7c3aed;background:#fff}
+    textarea{height:64px;resize:none}
 
-    label { display: block; font-size: .85rem; color: #a5d6b0; margin-bottom: .4rem; }
-    .input-f, select.input-f {
-      width: 100%;
-      background: #0a1a0f;
-      border: 1px solid #1a4a2a;
-      border-radius: 8px;
-      padding: .6rem 1rem;
-      color: #fff;
-      font-family: 'Cairo', sans-serif;
-      font-size: .95rem;
-      transition: border-color .2s;
-    }
-    .input-f:focus, select.input-f:focus { border-color: var(--green-light); outline: none; }
-    select.input-f option { background: #0a1a0f; }
+    .palette-row{display:flex;gap:8px;flex-wrap:wrap}
+    .pal{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform .15s}
+    .pal.sel{border-color:#111;transform:scale(1.15)}
 
-    .full-col { grid-column: 1 / -1; }
+    .gen-btn{width:100%;padding:.8rem;background:#7c3aed;color:#fff;border:none;border-radius:10px;font-family:'Cairo',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .gen-btn:hover{background:#6d28d9}
 
-    .btn-gen {
-      width: 100%;
-      margin-top: 1.2rem;
-      padding: .9rem;
-      background: linear-gradient(135deg, var(--green), var(--green-light));
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform .2s, box-shadow .2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: .5rem;
-    }
-    .btn-gen:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,166,81,.35); }
+    .canvas-area{padding:2rem;display:flex;flex-direction:column;align-items:center;gap:1rem;background:#f4f3f8}
 
-    /* ===== CARD PREVIEW ===== */
-    #preview-area { display: none; }
-    #preview-area.visible { display: block; }
+    canvas#cardCanvas{border-radius:20px;max-width:100%;box-shadow:0 20px 60px rgba(0,0,0,.18);cursor:pointer}
 
-    .card-wrapper {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 1.5rem;
-    }
+    .action-row{display:flex;gap:8px;width:100%;max-width:420px;flex-wrap:wrap}
+    .act-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:.55rem .75rem;border-radius:8px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #e5e7eb;background:#fff;color:#374151;transition:background .15s;min-width:80px}
+    .act-btn:hover{background:#f3f4f6}
+    .act-btn.wa{background:#25D366;color:#fff;border-color:#25D366}
+    .act-btn.wa:hover{background:#22c55e}
+    .act-btn.tw{background:#000;color:#fff;border-color:#000}
 
-    /* THE CARD — 1080×1080 ratio */
-    .congrats-card {
-      width: 100%;
-      max-width: 540px;
-      aspect-ratio: 1;
-      border-radius: 18px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: 0 0 50px rgba(0,166,81,.4), 0 0 100px rgba(201,168,76,.15);
-    }
+    .hint{font-size:13px;color:#9ca3af;text-align:center;padding-top:.5rem}
 
-    /* Template styles */
-    .card-t1 { background: linear-gradient(160deg, #003d20 0%, #001a0e 50%, #002d18 100%); }
-    .card-t2 { background: linear-gradient(160deg, #1a0a00 0%, #2d1500 50%, #1a0a00 100%); }
-    .card-t3 { background: linear-gradient(135deg, #0a0020 0%, #1a0040 50%, #0a0020 100%); }
-    .card-t4 { background: radial-gradient(ellipse at center, #001a3d 0%, #000d1a 100%); }
+    #cfc{position:fixed;inset:0;pointer-events:none;z-index:9999}
 
-    .card-inner {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: clamp(1rem, 4%, 2rem);
-      text-align: center;
-    }
-
-    /* Decorative elements */
-    .deco-top, .deco-bot {
-      position: absolute;
-      width: 100%;
-      height: 6px;
-      left: 0;
-    }
-    .card-t1 .deco-top, .card-t1 .deco-bot { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-    .card-t2 .deco-top, .card-t2 .deco-bot { background: linear-gradient(90deg, transparent, #c9a84c, #fff, #c9a84c, transparent); }
-    .card-t3 .deco-top, .card-t3 .deco-bot { background: linear-gradient(90deg, transparent, #9b59b6, #fff, #9b59b6, transparent); }
-    .card-t4 .deco-top, .card-t4 .deco-bot { background: linear-gradient(90deg, transparent, #3498db, #fff, #3498db, transparent); }
-    .deco-top { top: 0; }
-    .deco-bot { bottom: 0; }
-
-    /* Corner ornaments */
-    .corner {
-      position: absolute;
-      width: 70px;
-      height: 70px;
-      opacity: .25;
-    }
-    .corner svg { width: 100%; height: 100%; }
-    .corner.tl { top: 8px; right: 8px; }
-    .corner.br { bottom: 8px; left: 8px; transform: rotate(180deg); }
-
-    /* Stars background */
-    .stars-bg {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .star {
-      position: absolute;
-      border-radius: 50%;
-      animation: twinkle var(--d, 2s) ease-in-out infinite;
-    }
-    @keyframes twinkle { 0%,100%{opacity:.2} 50%{opacity:.9} }
-
-    /* Content elements */
-    .card-flag { font-size: clamp(2.5rem, 8%, 4rem); margin-bottom: .3rem; display: block; }
-    .card-trophy { font-size: clamp(2.8rem, 9%, 4.5rem); display: block; margin-bottom: .2rem; animation: pulse 1.5s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
-
-    .card-year {
-      font-size: clamp(.8rem, 2.5%, 1.1rem);
-      letter-spacing: 4px;
-      color: var(--gold-light);
-      margin-bottom: .5rem;
-      font-weight: 600;
-    }
-    .card-main-title {
-      font-size: clamp(1.1rem, 3.5%, 1.7rem);
-      font-weight: 900;
-      line-height: 1.3;
-      color: #fff;
-      text-shadow: 0 2px 15px rgba(0,0,0,.5);
-      margin-bottom: .4rem;
-    }
-    .card-t1 .card-main-title { color: #fff; text-shadow: 0 0 20px rgba(201,168,76,.5); }
-
-    .card-gold-line {
-      width: 60%;
-      height: 2px;
-      margin: .6rem auto;
-      border-radius: 2px;
-    }
-    .card-t1 .card-gold-line { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-    .card-t2 .card-gold-line { background: linear-gradient(90deg, transparent, #fff, transparent); }
-    .card-t3 .card-gold-line { background: linear-gradient(90deg, transparent, #b39ddb, transparent); }
-    .card-t4 .card-gold-line { background: linear-gradient(90deg, transparent, #64b5f6, transparent); }
-
-    .card-name {
-      font-size: clamp(1rem, 3.2%, 1.5rem);
-      font-weight: 700;
-      color: var(--gold-light);
-      margin: .3rem 0;
-    }
-    .card-sub-msg {
-      font-size: clamp(.7rem, 2.2%, 1rem);
-      color: rgba(255,255,255,.75);
-      margin-top: .3rem;
-      line-height: 1.6;
-      max-width: 85%;
-    }
-    .card-team {
-      font-size: clamp(.6rem, 2%, .85rem);
-      color: rgba(255,255,255,.5);
-      margin-top: .6rem;
-      letter-spacing: 1px;
-    }
-    .card-palm { font-size: clamp(.8rem,2.5%,1.2rem); }
-
-    /* Action buttons */
-    .action-row {
-      display: flex;
-      gap: .8rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 1.5rem;
-    }
-    .btn-action {
-      display: flex;
-      align-items: center;
-      gap: .45rem;
-      padding: .65rem 1.3rem;
-      border-radius: 8px;
-      font-family: 'Cairo', sans-serif;
-      font-size: .9rem;
-      font-weight: 700;
-      cursor: pointer;
-      border: none;
-      transition: transform .2s, opacity .2s;
-      text-decoration: none;
-      color: #fff;
-    }
-    .btn-action:hover { transform: translateY(-2px); opacity: .9; }
-    .btn-dl { background: linear-gradient(135deg, #006c35, #00a651); }
-    .btn-wa { background: #25D366; }
-    .btn-tw { background: #000; }
-
-    /* Template picker */
-    .template-row {
-      display: flex;
-      gap: .7rem;
-      justify-content: center;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-    .tpl-btn {
-      width: 54px;
-      height: 54px;
-      border-radius: 10px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: border-color .2s, transform .2s;
-      position: relative;
-      overflow: hidden;
-    }
-    .tpl-btn:hover, .tpl-btn.selected { border-color: var(--gold); transform: scale(1.1); }
-    .tpl-btn span {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border-radius: 8px;
-    }
-    .tpl-btn:nth-child(1) span { background: linear-gradient(160deg, #003d20, #001a0e); }
-    .tpl-btn:nth-child(2) span { background: linear-gradient(160deg, #1a0a00, #2d1500); }
-    .tpl-btn:nth-child(3) span { background: linear-gradient(135deg, #0a0020, #1a0040); }
-    .tpl-btn:nth-child(4) span { background: radial-gradient(ellipse, #001a3d, #000d1a); }
-    .tpl-label { font-size: .7rem; color: #a5d6b0; text-align: center; margin-top: .3rem; display: block; }
-
-    .section-label {
-      text-align: center;
-      font-size: .85rem;
-      color: var(--gold-light);
-      font-weight: 700;
-      margin-bottom: .8rem;
-    }
-
-    /* ===== CONFETTI canvas ===== */
-    #confetti-canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    /* ===== FOOTER ===== */
-    footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      color: #3a6a4a;
-      font-size: .8rem;
-      border-top: 1px solid #0f2318;
-    }
-    footer a { color: var(--green-light); text-decoration: none; }
-
-    /* ===== TOAST ===== */
-    .toast {
-      position: fixed;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--green);
-      color: #fff;
-      padding: .7rem 1.5rem;
-      border-radius: 25px;
-      font-size: .9rem;
-      font-weight: 700;
-      z-index: 10000;
-      transition: transform .4s ease;
-      pointer-events: none;
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    footer{text-align:center;padding:1rem;font-size:12px;color:#9ca3af;background:#f4f3f8}
+    footer a{color:#7c3aed;text-decoration:none}
   </style>
 </head>
 <body>
 
-<canvas id="confetti-canvas"></canvas>
-<div class="toast" id="toast">✅ تم النسخ!</div>
+<canvas id="cfc"></canvas>
 
-<!-- HERO -->
-<div class="hero">
-  <span class="flag-emoji">🇸🇦</span>
-  <h1>🏆 المنتخب السعودي بطل مونديال 2026 🏆</h1>
-  <p>ولّد بطاقة تهنئة جاهزة للمشاركة في ثوانٍ</p>
-</div>
-
-<!-- TABS -->
-<div class="tabs">
-  <button class="tab-btn active" onclick="setTab('personal')">🎁 شخصية</button>
-  <button class="tab-btn" onclick="setTab('general')">🌐 عامة</button>
-  <button class="tab-btn" onclick="setTab('team')">👥 فريق / مجموعة</button>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-  <!-- FORM -->
-  <div class="form-card">
-    <h2>✏️ خصّص بطاقتك</h2>
-    <div class="form-grid">
-
-      <!-- Personal tab -->
-      <div id="tab-personal" class="full-col">
-        <div class="form-grid">
-          <div>
-            <label>اسمك (أو اسم المُهنَّأ)</label>
-            <input class="input-f" id="p-name" type="text" placeholder="مثال: محمد العمري" maxlength="40">
-          </div>
-          <div>
-            <label>رسالة تهنئة مختصرة</label>
-            <input class="input-f" id="p-msg" type="text" placeholder="يسعد الله أيامكم…" maxlength="80">
-          </div>
-        </div>
-      </div>
-
-      <!-- General tab -->
-      <div id="tab-general" class="full-col" style="display:none">
-        <div>
-          <label>رسالة التهنئة</label>
-          <input class="input-f" id="g-msg" type="text" placeholder="هنيئاً للشعب السعودي بهذا الإنجاز التاريخي!" maxlength="100">
-        </div>
-      </div>
-
-      <!-- Team tab -->
-      <div id="tab-team" class="full-col" style="display:none">
-        <div class="form-grid">
-          <div>
-            <label>اسم الفريق / المجموعة</label>
-            <input class="input-f" id="t-name" type="text" placeholder="مثال: فريق هندسة الطاقة" maxlength="50">
-          </div>
-          <div>
-            <label>رسالة الفريق</label>
-            <input class="input-f" id="t-msg" type="text" placeholder="نهنئ بعضنا بهذا الفرح الكروي!" maxlength="80">
-          </div>
-        </div>
-      </div>
-
-      <!-- Common -->
-      <div>
-        <label>المناسبة</label>
-        <select class="input-f" id="occasion">
-          <option value="champion">🏆 بطولة كأس العالم 2026</option>
-          <option value="final">⚽ التأهل للنهائي</option>
-          <option value="semi">🥇 التأهل لنصف النهائي</option>
-          <option value="quarter">🌟 التأهل لربع النهائي</option>
-          <option value="round16">💚 التأهل لدور الـ 16</option>
-        </select>
-      </div>
-
-      <div>
-        <label>الضيف / المنافس (اختياري)</label>
-        <input class="input-f" id="opponent" type="text" placeholder="مثال: الأرجنتين، فرنسا…" maxlength="30">
-      </div>
-
-    </div>
-
-    <button class="btn-gen" onclick="generateCard()">⚽ ولّد البطاقة</button>
+<div class="top-bar">
+  <div class="dot"></div>
+  <div>
+    <div class="top-bar-title">مولّد بطاقات التهنئة</div>
+    <div class="top-bar-sub">صمّم بطاقتك وشاركها فوراً</div>
   </div>
+</div>
 
-  <!-- PREVIEW -->
-  <div id="preview-area">
+<div class="body">
+  <div class="sidebar">
 
-    <div class="section-label">🎨 اختر القالب</div>
-    <div class="template-row">
-      <div onclick="setTemplate(1)" class="tpl-btn selected" id="tpl-1"><span></span></div>
-      <div onclick="setTemplate(2)" class="tpl-btn" id="tpl-2"><span></span></div>
-      <div onclick="setTemplate(3)" class="tpl-btn" id="tpl-3"><span></span></div>
-      <div onclick="setTemplate(4)" class="tpl-btn" id="tpl-4"><span></span></div>
-    </div>
-
-    <div class="card-wrapper">
-      <div class="congrats-card card-t1" id="card-el">
-        <!-- Stars -->
-        <div class="stars-bg" id="stars-bg"></div>
-        <!-- Deco lines -->
-        <div class="deco-top"></div>
-        <div class="deco-bot"></div>
-        <!-- Corner ornaments -->
-        <div class="corner tl">
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M90 10 L10 10 L10 90" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
-            <circle cx="10" cy="10" r="8" fill="currentColor"/>
-          </svg>
-        </div>
-        <div class="corner br">
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M90 10 L10 10 L10 90" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
-            <circle cx="10" cy="10" r="8" fill="currentColor"/>
-          </svg>
-        </div>
-        <!-- INNER -->
-        <div class="card-inner">
-          <span class="card-flag">🇸🇦</span>
-          <span class="card-trophy">🏆</span>
-          <div class="card-year" id="c-year">FIFA WORLD CUP 2026</div>
-          <div class="card-main-title" id="c-title">المنتخب السعودي بطلاً للعالم</div>
-          <div class="card-gold-line"></div>
-          <div class="card-name" id="c-name"></div>
-          <div class="card-sub-msg" id="c-msg">هنيئاً لهذا الوطن المُعطاء 💚</div>
-          <div class="card-team" id="c-team">🌴 المملكة العربية السعودية 🌴</div>
-        </div>
+    <div>
+      <div class="section-title">المناسبة</div>
+      <div class="occ-grid" id="occGrid">
+        <div class="occ-btn sel" data-occ="grad" onclick="pickOcc(this)"><span class="occ-icon">🎓</span><span class="occ-label">تخرج</span></div>
+        <div class="occ-btn" data-occ="pass" onclick="pickOcc(this)"><span class="occ-icon">✅</span><span class="occ-label">اجتياز اختبار</span></div>
+        <div class="occ-btn" data-occ="cert" onclick="pickOcc(this)"><span class="occ-icon">📜</span><span class="occ-label">شهادة</span></div>
+        <div class="occ-btn" data-occ="promo" onclick="pickOcc(this)"><span class="occ-icon">⭐</span><span class="occ-label">ترقية</span></div>
+        <div class="occ-btn" data-occ="job" onclick="pickOcc(this)"><span class="occ-icon">💼</span><span class="occ-label">وظيفة جديدة</span></div>
+        <div class="occ-btn" data-occ="award" onclick="pickOcc(this)"><span class="occ-icon">🏆</span><span class="occ-label">جائزة وتميز</span></div>
+        <div class="occ-btn" data-occ="course" onclick="pickOcc(this)"><span class="occ-icon">📚</span><span class="occ-label">إتمام دورة</span></div>
+        <div class="occ-btn" data-occ="win" onclick="pickOcc(this)"><span class="occ-icon">🚀</span><span class="occ-label">نجاح عام</span></div>
       </div>
     </div>
 
-    <!-- ACTIONS -->
-    <div class="action-row">
-      <button class="btn-action btn-dl" onclick="downloadCard()">
-        <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 15l-4-4h3V4h2v7h3l-4 4zm-7 4v-2h14v2H5z" fill="white"/></svg>
-        تحميل البطاقة
-      </button>
-      <button class="btn-action btn-wa" onclick="shareWhatsapp()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.143.567 4.148 1.546 5.88L.036 23.88l6.177-1.485A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.811 9.811 0 01-5.012-1.374l-.36-.214-3.664.882.916-3.548-.236-.375A9.82 9.82 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
-        واتساب
-      </button>
-      <button class="btn-action btn-tw" onclick="shareTwitter()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        X (تويتر)
-      </button>
+    <div>
+      <label>اسم المُهنَّأ</label>
+      <input type="text" id="nameInp" placeholder="مثال: محمد العمري" maxlength="40">
     </div>
+
+    <div>
+      <label>التخصص / المجال (اختياري)</label>
+      <input type="text" id="fieldInp" placeholder="مثال: هندسة الكهرباء" maxlength="40">
+    </div>
+
+    <div>
+      <label>رسالة خاصة (اختياري)</label>
+      <textarea id="msgInp" placeholder="وفقك الله وبارك في مسيرتك…" maxlength="100"></textarea>
+    </div>
+
+    <div>
+      <div class="section-title">لون البطاقة</div>
+      <div class="palette-row" id="palRow"></div>
+    </div>
+
+    <button class="gen-btn" onclick="generate()">
+      <i class="ti ti-sparkles" style="font-size:17px"></i>
+      ولّد البطاقة
+    </button>
 
   </div>
 
-</div><!-- /main -->
+  <div class="canvas-area">
+    <canvas id="cardCanvas" width="800" height="800"></canvas>
+    <div class="action-row" id="actRow" style="display:none">
+      <button class="act-btn" onclick="downloadCard()">
+        <i class="ti ti-download" style="font-size:15px"></i> تحميل PNG
+      </button>
+      <button class="act-btn wa" onclick="shareWa()">
+        <i class="ti ti-brand-whatsapp" style="font-size:15px"></i> واتساب
+      </button>
+      <button class="act-btn tw" onclick="shareTw()">
+        <i class="ti ti-brand-x" style="font-size:15px"></i> X
+      </button>
+    </div>
+    <div class="hint" id="hint">اختر المناسبة ثم اضغط "ولّد البطاقة"</div>
+  </div>
+</div>
 
 <footer>
-  مع تحيات المدرب فهد رفاعي — <a href="https://fahdacademy.org" target="_blank">fahdacademy.org</a>
-  &nbsp;|&nbsp; 🇸🇦 يحيا الأخضر 🇸🇦
+  المدرب فهد رفاعي — <a href="https://fahdacademy.org" target="_blank">fahdacademy.org</a>
 </footer>
 
-<!-- html2canvas -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 <script>
-  /* ======= STATE ======= */
-  let currentTab = 'personal';
-  let currentTemplate = 1;
-  let cardText = '';
+const PALETTES = [
+  { name:'بنفسجي',  bg:['#1e1040','#3b1d78','#6d28d9'], accent:'#a78bfa', gold:'#f5d07a' },
+  { name:'أزرق',   bg:['#0a1628','#1e3a5f','#1d4ed8'], accent:'#60a5fa', gold:'#fbbf24' },
+  { name:'أخضر',   bg:['#0a1f0f','#0d4f2f','#047857'], accent:'#6ee7b7', gold:'#fde68a' },
+  { name:'ذهبي',   bg:['#1c1005','#3d2809','#92400e'], accent:'#fcd34d', gold:'#fff'    },
+  { name:'وردي',   bg:['#1a0520','#4a1040','#9d174d'], accent:'#f9a8d4', gold:'#fef08a' },
+  { name:'فيروزي', bg:['#041212','#0c3535','#0f766e'], accent:'#5eead4', gold:'#fef08a' },
+];
 
-  const occasions = {
-    champion: 'المنتخب السعودي بطلاً للعالم 🏆',
-    final:    'الأخضر في نهائي كأس العالم ⚽',
-    semi:     'الأخضر في نصف نهائي كأس العالم 🌟',
-    quarter:  'الأخضر في ربع نهائي كأس العالم 💪',
-    round16:  'الأخضر في دور الـ16 كأس العالم 💚',
-  };
+const OCCASIONS = {
+  grad:  { icon:'🎓', title:'مبروك التخرج',              sub:'رحلة النجاح بدأت' },
+  pass:  { icon:'✅', title:'مبروك اجتياز الاختبار',      sub:'تستحق كل التقدير' },
+  cert:  { icon:'📜', title:'مبروك الحصول على الشهادة',   sub:'شهادة تعكس جهدك' },
+  promo: { icon:'⭐', title:'مبروك الترقية',               sub:'استحققتها بجدارة' },
+  job:   { icon:'💼', title:'مبروك الوظيفة الجديدة',      sub:'بداية مشوار جميل' },
+  award: { icon:'🏆', title:'مبروك الجائزة',               sub:'تميز حقيقي' },
+  course:{ icon:'📚', title:'مبروك إتمام الدورة',          sub:'علم يضاف لرصيدك' },
+  win:   { icon:'🚀', title:'مبروك النجاح',                sub:'إلى الأمام دائماً' },
+};
 
-  /* ======= TABS ======= */
-  function setTab(tab) {
-    currentTab = tab;
-    ['personal','general','team'].forEach(t => {
-      document.getElementById('tab-' + t).style.display = t === tab ? '' : 'none';
-    });
-    document.querySelectorAll('.tab-btn').forEach((b,i) => {
-      b.classList.toggle('active', ['personal','general','team'][i] === tab);
-    });
+let selOcc = 'grad', selPal = 0, shareText = '';
+
+function pickOcc(el) {
+  document.querySelectorAll('.occ-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  selOcc = el.dataset.occ;
+}
+
+const palRow = document.getElementById('palRow');
+PALETTES.forEach((p,i) => {
+  const d = document.createElement('div');
+  d.className = 'pal'+(i===0?' sel':'');
+  d.style.background = `linear-gradient(135deg,${p.bg[0]},${p.bg[2]})`;
+  d.title = p.name;
+  d.onclick = () => { document.querySelectorAll('.pal').forEach(x=>x.classList.remove('sel')); d.classList.add('sel'); selPal=i; };
+  palRow.appendChild(d);
+});
+
+function generate() {
+  const occ = OCCASIONS[selOcc];
+  const pal = PALETTES[selPal];
+  const name  = document.getElementById('nameInp').value.trim();
+  const field = document.getElementById('fieldInp').value.trim();
+  const msg   = document.getElementById('msgInp').value.trim() || 'وفقك الله وبارك في مسيرتك 🌟';
+  drawCard(occ, pal, name, field, msg);
+  document.getElementById('actRow').style.display = 'flex';
+  document.getElementById('hint').style.display = 'none';
+  shareText = `${occ.title}\n${name?'👤 '+name+'\n':''}${field?'📌 '+field+'\n':''}${msg}\n#تهنئة_بالنجاح`;
+  launchConfetti();
+}
+
+function drawCard(occ, pal, name, field, msg) {
+  const cv = document.getElementById('cardCanvas');
+  const ctx = cv.getContext('2d');
+  const W=800, H=800;
+  ctx.clearRect(0,0,W,H);
+
+  // BG
+  const gBg = ctx.createLinearGradient(0,0,W,H);
+  gBg.addColorStop(0, pal.bg[0]);
+  gBg.addColorStop(0.5, pal.bg[1]);
+  gBg.addColorStop(1, pal.bg[2]);
+  ctx.fillStyle = gBg;
+  roundRect(ctx,0,0,W,H,36); ctx.fill();
+
+  // Deco circles
+  ctx.save(); ctx.globalAlpha=0.07; ctx.strokeStyle=pal.accent; ctx.lineWidth=60;
+  ctx.beginPath(); ctx.arc(W*.85,H*.15,220,0,Math.PI*2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(W*.1,H*.85,160,0,Math.PI*2); ctx.stroke();
+  ctx.restore();
+  ctx.save(); ctx.globalAlpha=0.04; ctx.strokeStyle='#fff'; ctx.lineWidth=1;
+  for(let r=80;r<400;r+=60){ ctx.beginPath(); ctx.arc(W*.85,H*.12,r,0,Math.PI*2); ctx.stroke(); }
+  ctx.restore();
+
+  // Top line
+  const gL=ctx.createLinearGradient(60,0,W-60,0);
+  gL.addColorStop(0,'transparent'); gL.addColorStop(.3,pal.accent); gL.addColorStop(.7,pal.gold); gL.addColorStop(1,'transparent');
+  ctx.fillStyle=gL; ctx.fillRect(60,40,W-120,4);
+
+  // Bottom line
+  const gL2=ctx.createLinearGradient(60,0,W-60,0);
+  gL2.addColorStop(0,'transparent'); gL2.addColorStop(.3,pal.gold); gL2.addColorStop(.7,pal.accent); gL2.addColorStop(1,'transparent');
+  ctx.fillStyle=gL2; ctx.fillRect(60,H-44,W-120,4);
+
+  // Badge
+  ctx.save(); ctx.globalAlpha=.18; ctx.fillStyle=pal.accent;
+  roundRect(ctx,W/2-130,80,260,44,22); ctx.fill(); ctx.restore();
+  ctx.save(); ctx.globalAlpha=.4; ctx.strokeStyle=pal.accent; ctx.lineWidth=1;
+  roundRect(ctx,W/2-130,80,260,44,22); ctx.stroke(); ctx.restore();
+  ctx.fillStyle=pal.accent; ctx.font='500 22px Cairo,sans-serif';
+  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('تهنئة بالنجاح',W/2,102);
+
+  // Icon
+  ctx.font='120px serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(occ.icon,W/2,270);
+
+  // Sparkles
+  const sp=[[W/2-120,200],[W/2+120,210],[W/2-100,340],[W/2+115,330],[W/2,170]];
+  ctx.fillStyle=pal.gold;
+  sp.forEach(([sx,sy],i)=>{ ctx.save(); ctx.globalAlpha=.5+(i%3)*.15; ctx.font=`${16+i*4}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('✦',sx,sy); ctx.restore(); });
+
+  // Title
+  ctx.fillStyle='#fff'; ctx.font='700 52px Cairo,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  wrapText(ctx, occ.title, W/2, 385, W-120, 62);
+
+  // Divider
+  const gD=ctx.createLinearGradient(W/2-140,0,W/2+140,0);
+  gD.addColorStop(0,'transparent'); gD.addColorStop(.5,pal.gold); gD.addColorStop(1,'transparent');
+  ctx.fillStyle=gD; ctx.fillRect(W/2-140,440,280,2);
+
+  // Name
+  if(name){ ctx.fillStyle=pal.gold; ctx.font='600 40px Cairo,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(name,W/2,490); }
+
+  // Field
+  if(field){
+    ctx.font='400 24px Cairo,sans-serif';
+    const fw=ctx.measureText('📌 '+field).width+40;
+    ctx.save(); ctx.globalAlpha=.12; ctx.fillStyle='#fff'; roundRect(ctx,W/2-fw/2,530,fw,36,18); ctx.fill(); ctx.restore();
+    ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('📌 '+field,W/2,548);
   }
 
-  /* ======= TEMPLATE ======= */
-  function setTemplate(n) {
-    currentTemplate = n;
-    const card = document.getElementById('card-el');
-    card.className = `congrats-card card-t${n}`;
-    document.querySelectorAll('.tpl-btn').forEach((b,i) => {
-      b.classList.toggle('selected', i + 1 === n);
-    });
-  }
+  // Message
+  ctx.fillStyle='rgba(255,255,255,0.72)'; ctx.font='400 26px Cairo,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  const msgY = field?615 : name?575 : 540;
+  wrapText(ctx, msg, W/2, msgY, W-160, 36);
 
-  /* ======= GENERATE ======= */
-  function generateCard() {
-    const occasion = document.getElementById('occasion').value;
-    const opponent = document.getElementById('opponent').value.trim();
+  // Footer
+  ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.font='400 20px Cairo,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('fahdacademy.org — المدرب فهد رفاعي',W/2,H-68);
+}
 
-    let name = '', msg = '';
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+}
 
-    if (currentTab === 'personal') {
-      name = document.getElementById('p-name').value.trim();
-      msg  = document.getElementById('p-msg').value.trim();
-    } else if (currentTab === 'general') {
-      msg  = document.getElementById('g-msg').value.trim();
-    } else {
-      name = document.getElementById('t-name').value.trim();
-      msg  = document.getElementById('t-msg').value.trim();
-    }
+function wrapText(ctx,text,x,y,maxW,lineH){
+  const words=text.split(' '); let line='',lines=[];
+  for(let w of words){ const t=line?line+' '+w:w; if(ctx.measureText(t).width>maxW&&line){lines.push(line);line=w;}else line=t; }
+  if(line)lines.push(line);
+  const sy=y-((lines.length-1)*lineH)/2;
+  lines.forEach((l,i)=>ctx.fillText(l,x,sy+i*lineH));
+}
 
-    // Title
-    let title = occasions[occasion] || occasions.champion;
-    if (opponent) title += `\nضد ${opponent}`;
+function downloadCard(){ const a=document.createElement('a'); a.download='congratulations.png'; a.href=document.getElementById('cardCanvas').toDataURL('image/png'); a.click(); }
+function shareWa(){ window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(shareText),'_blank'); }
+function shareTw(){ window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(shareText),'_blank'); }
 
-    // Default messages
-    const defaults = {
-      personal: 'يسعد الله أيامك بكل فرح 💚',
-      general:  'هنيئاً لهذا الوطن المُعطاء 💚',
-      team:     'شاركتم الفرحة أجمل ما يكون 💚',
-    };
-    if (!msg) msg = defaults[currentTab];
-
-    // Update card
-    document.getElementById('c-title').textContent = title;
-    document.getElementById('c-name').textContent = name ? `تهانينا، ${name}` : '';
-    document.getElementById('c-msg').textContent = msg;
-
-    // Team line
-    let teamLine = '🌴 المملكة العربية السعودية 🌴';
-    if (currentTab === 'team' && name) teamLine = `💚 ${name} 💚`;
-    document.getElementById('c-team').textContent = teamLine;
-
-    // Store for sharing
-    const shareMsg = `${title}\n${name ? '🏅 ' + name + '\n' : ''}${msg}\n🇸🇦 #الأخضر_بطل_العالم #مونديال2026`;
-    cardText = shareMsg;
-
-    // Show preview
-    document.getElementById('preview-area').classList.add('visible');
-    document.getElementById('preview-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    // Confetti 🎉
-    launchConfetti();
-  }
-
-  /* ======= DOWNLOAD ======= */
-  async function downloadCard() {
-    const card = document.getElementById('card-el');
-    try {
-      const canvas = await html2canvas(card, {
-        scale: 3,
-        useCORS: true,
-        backgroundColor: null,
-        logging: false,
-      });
-      const link = document.createElement('a');
-      link.download = 'saudi-worldcup-2026.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      showToast('✅ تم تحميل البطاقة!');
-    } catch(e) {
-      showToast('⚠️ جرب من متصفح آخر');
-    }
-  }
-
-  /* ======= SHARE ======= */
-  function shareWhatsapp() {
-    const text = cardText || 'المنتخب السعودي بطلاً للعالم 2026! 🇸🇦🏆';
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
-  }
-  function shareTwitter() {
-    const text = cardText || 'المنتخب السعودي بطلاً للعالم 2026! 🇸🇦🏆 #الأخضر_بطل_العالم';
-    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
-  }
-
-  /* ======= TOAST ======= */
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
-  }
-
-  /* ======= STARS ======= */
-  function generateStars() {
-    const container = document.getElementById('stars-bg');
-    for (let i = 0; i < 40; i++) {
-      const s = document.createElement('div');
-      s.classList.add('star');
-      const size = Math.random() * 3 + 1;
-      s.style.cssText = `
-        width:${size}px; height:${size}px;
-        top:${Math.random()*100}%; left:${Math.random()*100}%;
-        background: ${Math.random() > .5 ? '#f5d07a' : '#fff'};
-        --d:${(Math.random()*2+1).toFixed(1)}s;
-        animation-delay: ${(Math.random()*2).toFixed(1)}s;
-      `;
-      container.appendChild(s);
-    }
-  }
-  generateStars();
-
-  /* ======= CONFETTI ======= */
-  function launchConfetti() {
-    const canvas = document.getElementById('confetti-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const pieces = [];
-    const colors = ['#006c35','#00a651','#c9a84c','#f5d07a','#ffffff','#003d20'];
-    for (let i = 0; i < 120; i++) {
-      pieces.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height - canvas.height,
-        w: Math.random() * 10 + 5,
-        h: Math.random() * 5 + 3,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        vy: Math.random() * 3 + 2,
-        vx: Math.random() * 2 - 1,
-        rot: Math.random() * 360,
-        rspd: Math.random() * 4 - 2,
-        opacity: 1,
-      });
-    }
-    let frames = 0;
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      pieces.forEach(p => {
-        p.y += p.vy; p.x += p.vx; p.rot += p.rspd;
-        if (frames > 90) p.opacity -= 0.008;
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, p.opacity);
-        ctx.translate(p.x + p.w/2, p.y + p.h/2);
-        ctx.rotate(p.rot * Math.PI / 180);
-        ctx.fillStyle = p.color;
-        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-        ctx.restore();
-      });
-      frames++;
-      if (frames < 200) requestAnimationFrame(draw);
-      else ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-    draw();
-  }
+function launchConfetti(){
+  const cv=document.getElementById('cfc'); cv.width=window.innerWidth; cv.height=window.innerHeight;
+  const ctx=cv.getContext('2d');
+  const cols=['#a78bfa','#60a5fa','#f5d07a','#6ee7b7','#f9a8d4','#fff','#fbbf24'];
+  const ps=Array.from({length:120},()=>({x:Math.random()*cv.width,y:-10-Math.random()*cv.height*.3,w:Math.random()*10+4,h:Math.random()*5+2,c:cols[Math.floor(Math.random()*cols.length)],vy:Math.random()*3+1.5,vx:Math.random()*2-1,rot:Math.random()*360,rs:Math.random()*5-2.5,op:1}));
+  let f=0;
+  (function d(){ ctx.clearRect(0,0,cv.width,cv.height); ps.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.rot+=p.rs;if(f>70)p.op-=.01;ctx.save();ctx.globalAlpha=Math.max(0,p.op);ctx.translate(p.x+p.w/2,p.y+p.h/2);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.c;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();}); f++; if(f<180)requestAnimationFrame(d); else ctx.clearRect(0,0,cv.width,cv.height); })();
+}
 </script>
 </body>
 </html>
