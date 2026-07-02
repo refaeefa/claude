@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>أكاديمية فهد رفاعي — المنصة التدريبية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-primary:#0a0e1a; --bg-card:#111827; --bg-elevated:#1a2235;
+  --accent-blue:#3b82f6; --accent-green:#10b981; --accent-yellow:#f59e0b; --accent-red:#ef4444;
+  --text-primary:#f1f5f9; --text-secondary:#94a3b8; --border:#2d3748;
+  --glow:0 0 20px rgba(59,130,246,.3);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg-primary);color:var(--text-primary);font-family:'Cairo',sans-serif;min-height:100%}
+a{color:var(--accent-blue);text-decoration:none}
+button{font-family:'Cairo',sans-serif}
+::selection{background:rgba(59,130,246,.35)}
+
+/* ---------- Header ---------- */
+header{position:sticky;top:0;z-index:50;background:rgba(10,14,26,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:.7rem 1rem;gap:1rem}
+.brand{display:flex;align-items:center;gap:.6rem;cursor:pointer}
+.brand-icon{font-size:1.7rem;filter:drop-shadow(0 0 8px rgba(245,158,11,.6))}
+.brand-name{font-weight:900;font-size:1.05rem;line-height:1.1}
+.brand-sub{font-size:.72rem;color:var(--text-secondary)}
+.header-actions{display:flex;align-items:center;gap:.6rem}
+.user-chip{background:var(--bg-elevated);border:1px solid var(--border);border-radius:20px;padding:.25rem .9rem;font-size:.8rem;color:var(--accent-green);display:none}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-secondary);border-radius:8px;padding:.35rem .9rem;font-size:.8rem;cursor:pointer;transition:.2s}
+.btn-ghost:hover{border-color:var(--accent-red);color:var(--accent-red)}
+
+/* ---------- Layout ---------- */
+main{max-width:1200px;margin:0 auto;padding:1.2rem 1rem 4rem}
+.view{display:none}.view.active{display:block;animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- Login ---------- */
+.login-wrap{min-height:70vh;display:flex;align-items:center;justify-content:center}
+.login-card{width:100%;max-width:430px;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:2.2rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.login-card .logo{font-size:3rem;margin-bottom:.5rem}
+.login-card h1{font-size:1.35rem;font-weight:900;margin-bottom:.3rem}
+.login-card p{color:var(--text-secondary);font-size:.85rem;margin-bottom:1.4rem}
+.input-field{background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;color:var(--text-primary);font-family:'JetBrains Mono',monospace;width:100%;font-size:1rem;text-align:center;letter-spacing:2px;transition:border-color .2s}
+.input-field:focus{border-color:var(--accent-blue);outline:none}
+.btn-primary{background:linear-gradient(135deg,var(--accent-blue),#1d4ed8);color:#fff;border:none;padding:.75rem 2rem;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;transition:transform .2s,box-shadow .2s;width:100%;margin-top:1rem}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:var(--glow)}
+.login-err{color:var(--accent-red);font-size:.82rem;margin-top:.8rem;min-height:1.2em}
+.login-help{margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid var(--border);font-size:.78rem;color:var(--text-secondary)}
+.login-help a{color:var(--accent-green)}
+
+/* ---------- Hero + Catalog ---------- */
+.hero{background:linear-gradient(135deg,#101a33,#0a0e1a 60%);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:1.6rem;position:relative;overflow:hidden}
+.hero::after{content:"⚡";position:absolute;left:-10px;bottom:-30px;font-size:9rem;opacity:.05}
+.hero h1{font-size:1.6rem;font-weight:900;margin-bottom:.4rem}
+.hero p{color:var(--text-secondary);max-width:640px;font-size:.92rem}
+.hero .stats{display:flex;gap:1.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.hero .stat b{color:var(--accent-yellow);font-size:1.25rem;font-family:'JetBrains Mono',monospace}
+.hero .stat span{display:block;font-size:.75rem;color:var(--text-secondary)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.course-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.3rem;cursor:pointer;transition:border-color .3s,box-shadow .3s,transform .2s;position:relative;display:flex;flex-direction:column;gap:.6rem}
+.course-card:hover{border-color:var(--accent-blue);box-shadow:var(--glow);transform:translateY(-3px)}
+.course-card.locked{opacity:.55;cursor:not-allowed}
+.course-card.locked:hover{border-color:var(--border);box-shadow:none;transform:none}
+.course-icon{font-size:2rem}
+.course-card h3{font-size:1rem;font-weight:700;line-height:1.5}
+.course-card .desc{font-size:.8rem;color:var(--text-secondary);flex:1}
+.badge{display:inline-block;padding:.15rem .8rem;border-radius:20px;font-size:.72rem;font-weight:600;width:fit-content}
+.badge-green{background:rgba(16,185,129,.15);color:var(--accent-green)}
+.badge-yellow{background:rgba(245,158,11,.15);color:var(--accent-yellow)}
+.badge-blue{background:rgba(59,130,246,.15);color:var(--accent-blue)}
+.progress-mini{height:5px;background:var(--bg-elevated);border-radius:5px;overflow:hidden;margin-top:.3rem}
+.progress-mini i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-green),var(--accent-blue));border-radius:5px;transition:width .5s}
+
+/* ---------- Course / Player ---------- */
+.back-link{display:inline-flex;align-items:center;gap:.4rem;color:var(--text-secondary);font-size:.85rem;margin-bottom:1rem;cursor:pointer;background:none;border:none}
+.back-link:hover{color:var(--accent-blue)}
+.course-layout{display:grid;grid-template-columns:1fr 360px;gap:1.2rem;align-items:start}
+.player-col{min-width:0}
+.player-shell{position:relative;background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--border);aspect-ratio:16/9}
+.player-shell iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.corner-block{position:absolute;top:0;inset-inline-end:0;width:64px;height:60px;z-index:5;background:transparent;cursor:default}
+.watermark{position:absolute;z-index:6;pointer-events:none;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:rgba(255,255,255,.28);text-shadow:0 0 4px rgba(0,0,0,.6);white-space:nowrap;transition:top 4s linear,inset-inline-start 4s linear;top:8%;inset-inline-start:8%}
+.player-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;color:var(--text-secondary);font-size:.9rem}
+.lesson-title-bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:.9rem 0;flex-wrap:wrap}
+.lesson-title-bar h2{font-size:1.05rem;font-weight:700}
+.nav-btns{display:flex;gap:.5rem}
+.btn-nav{background:var(--bg-elevated);border:1px solid var(--border);color:var(--text-primary);border-radius:8px;padding:.45rem 1rem;font-size:.82rem;cursor:pointer;transition:.2s}
+.btn-nav:hover:not(:disabled){border-color:var(--accent-blue)}
+.btn-nav:disabled{opacity:.35;cursor:not-allowed}
+.btn-done{background:rgba(16,185,129,.15);border:1px solid var(--accent-green);color:var(--accent-green)}
+.btn-done.completed{background:var(--accent-green);color:#04150e}
+
+.sidebar{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.sidebar-head{padding:1rem 1.1rem;border-bottom:1px solid var(--border)}
+.sidebar-head h3{font-size:.95rem;font-weight:700}
+.sidebar-head .meta{font-size:.75rem;color:var(--text-secondary);margin-top:.2rem}
+.course-progress{height:6px;background:var(--bg-elevated);border-radius:6px;overflow:hidden;margin-top:.6rem}
+.course-progress i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-green),var(--accent-blue));transition:width .5s}
+.lesson-list{max-height:62vh;overflow-y:auto}
+.lesson-list::-webkit-scrollbar{width:8px}
+.lesson-list::-webkit-scrollbar-thumb{background:var(--bg-elevated);border-radius:8px}
+.lesson-item{display:flex;align-items:center;gap:.7rem;padding:.7rem 1rem;border-bottom:1px solid rgba(45,55,72,.5);cursor:pointer;transition:background .15s;font-size:.83rem}
+.lesson-item:hover{background:var(--bg-elevated)}
+.lesson-item.active{background:rgba(59,130,246,.12);border-inline-start:3px solid var(--accent-blue)}
+.lesson-num{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-secondary);min-width:1.8em;text-align:center}
+.lesson-name{flex:1;line-height:1.5}
+.lesson-check{font-size:.9rem;color:var(--accent-green);opacity:0;transition:.2s}
+.lesson-item.done .lesson-check{opacity:1}
+.lesson-dur{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--text-secondary)}
+.loading-box{display:flex;flex-direction:column;align-items:center;gap:1rem;padding:3rem 1rem;color:var(--text-secondary)}
+.spinner{width:38px;height:38px;border:3px solid var(--bg-elevated);border-top-color:var(--accent-blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- Setup card ---------- */
+.setup-card{background:var(--bg-card);border:1px solid var(--accent-yellow);border-radius:12px;padding:1.6rem;max-width:640px;margin:1rem auto}
+.setup-card h3{color:var(--accent-yellow);font-size:1rem;margin-bottom:.8rem}
+.setup-card ol{margin:0 1.2rem .9rem 0;font-size:.85rem;color:var(--text-secondary);line-height:2}
+.setup-card code{font-family:'JetBrains Mono',monospace;background:var(--bg-elevated);padding:.1rem .45rem;border-radius:5px;font-size:.78rem;color:var(--accent-blue);direction:ltr;display:inline-block}
+.setup-row{display:flex;gap:.6rem;margin-top:.4rem}
+.setup-row .input-field{letter-spacing:0;text-align:left;direction:ltr;font-size:.85rem}
+.setup-row button{white-space:nowrap;width:auto;margin:0;padding:.6rem 1.2rem}
+
+/* ---------- Notice / Footer ---------- */
+.notice{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.3);border-radius:10px;padding:.8rem 1rem;font-size:.8rem;color:var(--text-secondary);margin-top:1rem}
+footer{border-top:1px solid var(--border);padding:1.4rem 1rem;text-align:center;font-size:.8rem;color:var(--text-secondary)}
+footer a{color:var(--accent-yellow)}
+
+@media(max-width:900px){
+  .course-layout{grid-template-columns:1fr}
+  .lesson-list{max-height:45vh}
+  .hero{padding:1.4rem}
+}
+</style>
+</head>
+<body oncontextmenu="return false">
+
+<header>
+  <div class="header-inner">
+    <div class="brand" onclick="go('catalog')">
+      <span class="brand-icon">⚡</span>
+      <div>
+        <div class="brand-name">أكاديمية فهد رفاعي</div>
+        <div class="brand-sub">fahdacademy.org — المنصة التدريبية</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="user-chip" id="userChip"></span>
+      <button class="btn-ghost" id="logoutBtn" style="display:none" onclick="logout()">خروج</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ================= LOGIN ================= -->
+  <section class="view" id="view-login">
+    <div class="login-wrap">
+      <div class="login-card">
+        <div class="logo">⚡</div>
+        <h1>المنصة التدريبية</h1>
+        <p>أدخل كود الاشتراك الخاص بك للوصول إلى الدورات</p>
+        <input type="text" class="input-field" id="codeInput" placeholder="كود الاشتراك" autocomplete="off" onkeydown="if(event.key==='Enter')login()">
+        <button class="btn-primary" onclick="login()">دخول المنصة</button>
+        <div class="login-err" id="loginErr"></div>
+        <div class="login-help">
+          ليس لديك كود اشتراك؟ تواصل مع المدرب فهد رفاعي عبر
+          <a href="https://fahdacademy.org" target="_blank" rel="noopener">fahdacademy.org</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CATALOG ================= -->
+  <section class="view" id="view-catalog">
+    <div class="hero">
+      <h1>تعلّم هندسة القدرة الكهربائية بطريقة عملية</h1>
+      <p>دورات فيديو متخصصة في أنظمة القدرة، الطاقة الشمسية، المحولات، والآلات الكهربائية — بأسلوب المدرب فهد رفاعي: من الصورة الكبيرة إلى التطبيق العملي.</p>
+      <div class="stats">
+        <div class="stat"><b id="statCourses">—</b><span>دورة تدريبية</span></div>
+        <div class="stat"><b id="statActive">—</b><span>متاحة الآن</span></div>
+        <div class="stat"><b>عربي</b><span>لغة المحتوى</span></div>
+      </div>
+    </div>
+    <div class="grid" id="catalogGrid"></div>
+  </section>
+
+  <!-- ================= COURSE ================= -->
+  <section class="view" id="view-course">
+    <button class="back-link" onclick="go('catalog')">← العودة إلى الدورات</button>
+    <div id="courseContent"></div>
+  </section>
+</main>
+
+<footer>
+  المدرب فهد رفاعي — <a href="https://fahdacademy.org" target="_blank" rel="noopener">fahdacademy.org</a>
+  <span style="opacity:.5"> · جميع الحقوق محفوظة © <span id="yr"></span> · المحتوى محمي ولا يجوز نسخه أو إعادة توزيعه</span>
+</footer>
+
+<script>
+/* =====================================================
+   CONFIG — إعدادات المنصة
+===================================================== */
+const CONFIG = {
+  // مفتاح Google Drive API (يُضاف مرة واحدة — أو مؤقتاً من شاشة الإعداد)
+  API_KEY: "",
+
+  // رموز الاشتراك (بصمات SHA-256 — لا تُخزَّن الرموز بنص صريح)
+  CODES: {
+    "d28cd488a157dd3ceec300cc05dea14947ddc053a368217938e4c53523856d67": "فهد رفاعي (مدير)",
+    "2abfe6b4591a7c8b1898259f6797f8cddddfb3d2c6aa972fbe076e66492af788": "مشترك تجريبي"
+  },
+
+  COURSES: [
+    {id:"solar-basics", icon:"☀️", active:true,  folder:"1KtHecFjFLcWGanzGbq7TJXtno1kmb9vZ",
+     title:"دورة أساسيات أنظمة الخلايا الشمسية",
+     desc:"من الخلية إلى النظام المتكامل: مكونات الأنظمة الشمسية، البطاريات، العواكس، وتشغيل الأحمال — الدورة التجريبية الأولى على المنصة."},
+    {id:"power-transformers", icon:"🔌", active:false, folder:"1-twfLn4ti-dGHQikCxnr7KppmqIT1m3S", title:"دورة محولات القدرة", desc:"نظرية التشغيل، الاختبارات، الحماية، والصيانة العملية لمحولات القدرة."},
+    {id:"dc-machines", icon:"⚙️", active:false, folder:"1L6sYeN-0-5xwQlsEX7yhXjoGJUuJOdAf", title:"دورة آلات التيار المستمر", desc:"المولدات والمحركات المستمرة: البناء، الخصائص، وطرق التحكم."},
+    {id:"power-generation", icon:"🏭", active:false, folder:"1xbTPmSrAki6ThjcvzexcI1BQVOakM8no", title:"دورة توليد وإنتاج الكهرباء", desc:"محطات التوليد وأنواعها ودورة إنتاج الطاقة الكهربائية."},
+    {id:"substations", icon:"🗼", active:false, folder:"1T9S9wrrIag9puSXIXCXANdlLO7UC-i6n", title:"دورة محطات التحويل الكهربائية", desc:"مكونات محطات التحويل، القواطع، العوازل، وأنظمة الحماية."},
+    {id:"grid-solar-calc", icon:"🧮", active:false, folder:"1i_IfL4dntCXScJey6-XCCb5VT8eNr0i3", title:"دورة حسابات الأنظمة الشمسية المتصلة بالشبكة", desc:"التحجيم والحسابات الهندسية لأنظمة On-Grid خطوة بخطوة."},
+    {id:"home-wiring", icon:"🏠", active:false, folder:"1o3Ow09UABsvJfurYgdHv-yzTh8wBl-q5", title:"دورة أساسيات كهرباء المنازل", desc:"التمديدات المنزلية، لوحات التوزيع، والحماية الكهربائية للمنازل."},
+    {id:"diesel-ups", icon:"🔋", active:false, folder:"1tIqaVXQopWpwEdipcYwmj5HNTcdD7K7z", title:"دورة محطات الديزل وأنظمة UPS", desc:"مولدات الديزل الاحتياطية وأنظمة الطاقة غير المنقطعة."},
+    {id:"ee-intro", icon:"🎓", active:false, folder:"1IcteRZpU8L2dqE_HeOxbnqYyhPbJmg-d", title:"دورة التعريف بتخصص الهندسة الكهربائية", desc:"خارطة طريق للطلاب الجدد: مسارات التخصص وفرص العمل."},
+    {id:"pro-mindset", icon:"🧠", active:false, folder:"1YjK2Q4ZwEiNgWtHz5rHLkqlC8TujLaZR", title:"دورة العقلية الهندسية المحترفة", desc:"كيف يفكر المهندس المحترف: حل المشكلات واتخاذ القرار الهندسي."},
+    {id:"self-marketing", icon:"💼", active:false, folder:"1IV3SdgzeOQ-rDZt5Kz1xopVsR25TR5Y6", title:"دورة تسويق نفسك للوظيفة والعمل الحر", desc:"بناء ملفك المهني والوصول إلى فرص العمل والعمل الحر."},
+    {id:"power-factor", icon:"📐", active:false, folder:"1ZSWF4C2OSvXh23pYrrvtORuKemwLE3qn", title:"معامل القدرة Power Factor", desc:"فهم وتحسين معامل القدرة في المنشآت الكهربائية."},
+    {id:"helioscope", icon:"🛰️", active:false, folder:"1RCvsA_hLlDCIWtKrBK55qLtrUvkoGkMD", title:"تصميم الأنظمة الشمسية بـ Helioscope", desc:"التصميم الاحترافي للمحطات الشمسية باستخدام Helioscope."},
+    {id:"plants-en", icon:"🌍", active:false, folder:"1fSJ7EzFlvTOzE4PwkoSAZ8Tx7SiN1GsL", title:"Electrical Power Plants & Substations", desc:"النسخة الإنجليزية: محطات القدرة ومحطات التحويل."}
+  ]
+};
+
+/* =====================================================
+   STATE + HELPERS
+===================================================== */
+const $ = id => document.getElementById(id);
+const store = {
+  get k(){ return CONFIG.API_KEY || localStorage.getItem("fa_apikey") || ""; },
+  user(){ return sessionStorage.getItem("fa_user") || ""; },
+  done(cid){ try{return JSON.parse(localStorage.getItem("fa_done_"+cid))||{}}catch(e){return{}} },
+  setDone(cid,obj){ localStorage.setItem("fa_done_"+cid, JSON.stringify(obj)); },
+  last(cid){ return localStorage.getItem("fa_last_"+cid); },
+  setLast(cid,fid){ localStorage.setItem("fa_last_"+cid, fid); }
+};
+let CUR = { course:null, lessons:[], idx:-1 };
+
+async function sha256(t){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+function fmtDur(ms){
+  if(!ms) return "";
+  const s = Math.round(ms/1000), m = Math.floor(s/60);
+  return m>=60 ? Math.floor(m/60)+":"+String(m%60).padStart(2,"0")+":"+String(s%60).padStart(2,"0")
+               : m+":"+String(s%60).padStart(2,"0");
+}
+function cleanName(n){ return n.replace(/\.(mp4|mov|m4v|webm|mkv)$/i,"").trim(); }
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
+
+/* =====================================================
+   ROUTING
+===================================================== */
+function go(view, courseId){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  if(!store.user()){ $("view-login").classList.add("active"); return; }
+  $("userChip").style.display="inline-block";
+  $("userChip").textContent="👤 "+store.user();
+  $("logoutBtn").style.display="inline-block";
+  if(view==="course" && courseId){ openCourse(courseId); $("view-course").classList.add("active"); }
+  else { renderCatalog(); $("view-catalog").classList.add("active"); }
+  window.scrollTo({top:0});
+}
+
+/* =====================================================
+   AUTH
+===================================================== */
+async function login(){
+  const code = $("codeInput").value.trim().toUpperCase();
+  if(!code){ $("loginErr").textContent="أدخل كود الاشتراك أولاً"; return; }
+  const h = await sha256(code);
+  if(CONFIG.CODES[h]){
+    sessionStorage.setItem("fa_user", CONFIG.CODES[h]);
+    sessionStorage.setItem("fa_code", code);
+    go("catalog");
+  } else {
+    $("loginErr").textContent="الكود غير صحيح — تأكد منه أو تواصل مع المدرب";
+    $("codeInput").value="";
+  }
+}
+function logout(){
+  sessionStorage.removeItem("fa_user"); sessionStorage.removeItem("fa_code");
+  $("userChip").style.display="none"; $("logoutBtn").style.display="none";
+  go("login");
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  $("view-login").classList.add("active");
+}
+
+/* =====================================================
+   CATALOG
+===================================================== */
+function renderCatalog(){
+  $("statCourses").textContent = CONFIG.COURSES.length;
+  $("statActive").textContent  = CONFIG.COURSES.filter(c=>c.active).length;
+  $("catalogGrid").innerHTML = CONFIG.COURSES.map(c=>{
+    const done = Object.keys(store.done(c.id)).length;
+    const cached = lessonCache(c.id);
+    const total = cached ? cached.length : 0;
+    const pct = total ? Math.round(done/total*100) : 0;
+    return `
+    <div class="course-card ${c.active?"":"locked"}" onclick="${c.active?`go('course','${c.id}')`:""}">
+      <div class="course-icon">${c.icon}</div>
+      <h3>${c.title}</h3>
+      <div class="desc">${c.desc}</div>
+      ${c.active
+        ? `<span class="badge badge-green">متاحة الآن</span>
+           ${total?`<div style="font-size:.72rem;color:var(--text-secondary)">${done} / ${total} درس مكتمل</div><div class="progress-mini"><i style="width:${pct}%"></i></div>`:""}`
+        : `<span class="badge badge-yellow">قريباً</span>`}
+    </div>`;
+  }).join("");
+}
+
+/* =====================================================
+   DRIVE API — تحميل الدروس تلقائياً من المجلد
+===================================================== */
+function lessonCache(cid){
+  try{
+    const raw = JSON.parse(localStorage.getItem("fa_lessons_"+cid));
+    if(raw && Date.now()-raw.t < 36e5) return raw.items; // صالح لمدة ساعة
+  }catch(e){}
+  return null;
+}
+async function fetchLessons(course){
+  const cached = lessonCache(course.id);
+  if(cached) return cached;
+  const url = "https://www.googleapis.com/drive/v3/files"
+    + "?q=" + encodeURIComponent(`'${course.folder}' in parents and mimeType contains 'video/' and trashed=false`)
+    + "&fields=" + encodeURIComponent("files(id,name,videoMediaMetadata(durationMillis))")
+    + "&pageSize=1000&key=" + store.k;
+  const res = await fetch(url);
+  if(!res.ok){ const e = await res.json().catch(()=>({})); throw new Error(e.error?.message || "HTTP "+res.status); }
+  const data = await res.json();
+  const items = (data.files||[])
+    .map(f=>({id:f.id, name:cleanName(f.name), dur:f.videoMediaMetadata?.durationMillis?+f.videoMediaMetadata.durationMillis:0}))
+    .sort((a,b)=>a.name.localeCompare(b.name,"ar",{numeric:true}));
+  localStorage.setItem("fa_lessons_"+course.id, JSON.stringify({t:Date.now(), items}));
+  return items;
+}
+
+/* =====================================================
+   COURSE VIEW
+===================================================== */
+async function openCourse(cid){
+  const course = CONFIG.COURSES.find(c=>c.id===cid);
+  if(!course) return go("catalog");
+  CUR = {course, lessons:[], idx:-1};
+  const box = $("courseContent");
+
+  if(!store.k){ box.innerHTML = setupCardHTML(cid); return; }
+
+  box.innerHTML = `<div class="loading-box"><div class="spinner"></div><div>جاري تحميل دروس الدورة من المكتبة...</div></div>`;
+  try{
+    CUR.lessons = await fetchLessons(course);
+  }catch(err){
+    box.innerHTML = `<div class="setup-card"><h3>⚠️ تعذر تحميل الدروس</h3>
+      <div style="font-size:.85rem;color:var(--text-secondary);line-height:2">
+      السبب: <code>${esc(err.message)}</code><br>
+      تأكد أن مفتاح API صحيح ومفعّل لخدمة Google Drive API، وأن مجلد الدورة مشارك بوضع «أي شخص لديه الرابط».
+      </div>
+      <div class="setup-row"><input class="input-field" id="apiKeyInput" placeholder="ألصق مفتاح API هنا"><button class="btn-primary" onclick="saveKey('${cid}')">حفظ وإعادة المحاولة</button></div>
+    </div>`;
+    return;
+  }
+  if(!CUR.lessons.length){
+    box.innerHTML = `<div class="setup-card"><h3>لا توجد فيديوهات</h3><div style="font-size:.85rem;color:var(--text-secondary)">لم يُعثر على فيديوهات في مجلد هذه الدورة، أو أن المجلد غير مشارك بشكل عام.</div></div>`;
+    return;
+  }
+
+  const doneMap = store.done(cid);
+  const total = CUR.lessons.length;
+  const doneCount = CUR.lessons.filter(l=>doneMap[l.id]).length;
+  const totalDur = CUR.lessons.reduce((s,l)=>s+l.dur,0);
+
+  box.innerHTML = `
+  <div class="course-layout">
+    <div class="player-col">
+      <div class="player-shell" id="playerShell">
+        <div class="player-empty" id="playerEmpty"><span style="font-size:2.5rem">${course.icon}</span><span>اختر درساً من قائمة الدروس لبدء المشاهدة</span></div>
+        <div class="corner-block" title=""></div>
+        <div class="watermark" id="wm"></div>
+      </div>
+      <div class="lesson-title-bar">
+        <h2 id="lessonTitle">${course.title}</h2>
+        <div class="nav-btns">
+          <button class="btn-nav" id="prevBtn" onclick="step(-1)" disabled>‹ السابق</button>
+          <button class="btn-nav btn-done" id="doneBtn" onclick="toggleDone()" style="display:none">أكملت الدرس ✓</button>
+          <button class="btn-nav" id="nextBtn" onclick="step(1)" disabled>التالي ›</button>
+        </div>
+      </div>
+      <div class="notice">🔒 هذا المحتوى مرخّص لمشترك واحد. المشاهدة مسجلة باسم <b>${esc(store.user())}</b> — يمنع مشاركة الحساب أو تسجيل المحتوى.</div>
+    </div>
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h3>محتوى الدورة</h3>
+        <div class="meta">${total} درس${totalDur?" · "+fmtDur(totalDur)+" ساعة":""} · <span id="doneMeta">${doneCount} مكتمل</span></div>
+        <div class="course-progress"><i id="courseBar" style="width:${total?Math.round(doneCount/total*100):0}%"></i></div>
+      </div>
+      <div class="lesson-list" id="lessonList"></div>
+    </aside>
+  </div>`;
+
+  renderLessons();
+  const last = store.last(cid);
+  const li = CUR.lessons.findIndex(l=>l.id===last);
+  if(li>=0) playIdx(li); // استئناف من آخر درس
+  startWatermark();
+}
+
+function setupCardHTML(cid){
+  return `<div class="setup-card">
+    <h3>⚙️ خطوة إعداد لمرة واحدة — مفتاح Google Drive API</h3>
+    <ol>
+      <li>افتح <code>console.cloud.google.com</code> وسجّل بحساب قوقل</li>
+      <li>أنشئ مشروعاً جديداً (أي اسم، مثل <code>fahd-academy</code>)</li>
+      <li>من القائمة: <b>APIs & Services → Library</b> → ابحث عن <code>Google Drive API</code> → <b>Enable</b></li>
+      <li><b>APIs & Services → Credentials → Create Credentials → API key</b></li>
+      <li>انسخ المفتاح وألصقه هنا:</li>
+    </ol>
+    <div class="setup-row">
+      <input class="input-field" id="apiKeyInput" placeholder="AIza...">
+      <button class="btn-primary" onclick="saveKey('${cid}')">حفظ</button>
+    </div>
+    <div style="font-size:.75rem;color:var(--text-secondary);margin-top:.8rem">المفتاح يُحفظ في متصفحك فقط الآن، وسنثبّته داخل الموقع لكل الزوار في التحديث القادم.</div>
+  </div>`;
+}
+function saveKey(cid){
+  const v = $("apiKeyInput").value.trim();
+  if(!v) return;
+  localStorage.setItem("fa_apikey", v);
+  openCourse(cid);
+}
+
+function renderLessons(){
+  const doneMap = store.done(CUR.course.id);
+  $("lessonList").innerHTML = CUR.lessons.map((l,i)=>`
+    <div class="lesson-item ${i===CUR.idx?"active":""} ${doneMap[l.id]?"done":""}" onclick="playIdx(${i})">
+      <span class="lesson-num">${i+1}</span>
+      <span class="lesson-name">${esc(l.name)}</span>
+      <span class="lesson-check">✔</span>
+      ${l.dur?`<span class="lesson-dur">${fmtDur(l.dur)}</span>`:""}
+    </div>`).join("");
+}
+
+function playIdx(i){
+  if(i<0||i>=CUR.lessons.length) return;
+  CUR.idx = i;
+  const l = CUR.lessons[i];
+  const shell = $("playerShell");
+  let ifr = shell.querySelector("iframe");
+  if(!ifr){
+    $("playerEmpty").style.display="none";
+    ifr = document.createElement("iframe");
+    ifr.setAttribute("allow","autoplay; fullscreen");
+    ifr.setAttribute("sandbox","allow-scripts allow-same-origin allow-presentation");
+    ifr.setAttribute("referrerpolicy","no-referrer");
+    shell.prepend(ifr);
+  }
+  ifr.src = `https://drive.google.com/file/d/${l.id}/preview`;
+  $("lessonTitle").textContent = l.name;
+  $("prevBtn").disabled = i===0;
+  $("nextBtn").disabled = i===CUR.lessons.length-1;
+  const doneMap = store.done(CUR.course.id);
+  const btn = $("doneBtn");
+  btn.style.display="inline-block";
+  btn.classList.toggle("completed", !!doneMap[l.id]);
+  btn.textContent = doneMap[l.id] ? "مكتمل ✓" : "أكملت الدرس ✓";
+  store.setLast(CUR.course.id, l.id);
+  renderLessons();
+}
+function step(d){ playIdx(CUR.idx+d); }
+function toggleDone(){
+  const l = CUR.lessons[CUR.idx]; if(!l) return;
+  const m = store.done(CUR.course.id);
+  if(m[l.id]) delete m[l.id]; else m[l.id]=1;
+  store.setDone(CUR.course.id, m);
+  const done = CUR.lessons.filter(x=>m[x.id]).length;
+  $("doneMeta").textContent = done+" مكتمل";
+  $("courseBar").style.width = Math.round(done/CUR.lessons.length*100)+"%";
+  playIdx(CUR.idx);
+  if(!m[l.id]) return;
+  if(CUR.idx < CUR.lessons.length-1) setTimeout(()=>step(1), 400); // انتقال تلقائي للدرس التالي
+}
+
+/* =====================================================
+   WATERMARK — علامة مائية متحركة باسم المشترك
+===================================================== */
+let wmTimer=null;
+function startWatermark(){
+  const wm = $("wm"); if(!wm) return;
+  const code = sessionStorage.getItem("fa_code")||"";
+  const tick = ()=>{
+    const w=$("wm"); if(!w){clearInterval(wmTimer);return;}
+    w.textContent = code+" · fahdacademy.org · "+new Date().toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit"});
+    w.style.top = (6+Math.random()*78)+"%";
+    w.style.insetInlineStart = (4+Math.random()*60)+"%";
+  };
+  clearInterval(wmTimer); tick(); wmTimer = setInterval(tick, 6000);
+}
+
+/* =====================================================
+   حماية أساسية + إقلاع
+===================================================== */
+document.addEventListener("keydown", e=>{
+  if((e.ctrlKey||e.metaKey) && ["s","u","p"].includes(e.key.toLowerCase())) e.preventDefault();
+});
+$("yr").textContent = new Date().getFullYear();
+go(store.user() ? "catalog" : "login");
+</script>
+</body>
+</html>
